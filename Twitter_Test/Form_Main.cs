@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using CoreTweet;
 using MyLib;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Twitter_Test
 {
@@ -76,13 +77,11 @@ namespace Twitter_Test
         {
             try
             {
-                var home = tokens.Statuses.HomeTimeline();
+                var home = tokens.Statuses.HomeTimeline(count => 50);
                 lv.Items.Clear();
 
                 for (int i = 0; i < home.Count; i++)
                 {
-                    List<string> source = getSourceNameAndUrl(home[i].Source);
-
                     string[] msg = 
                     {
                         home[i].CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss"),
@@ -116,7 +115,7 @@ namespace Twitter_Test
         {
             try
             {
-                var mention = tokens.Statuses.MentionsTimeline();
+                var mention = tokens.Statuses.MentionsTimeline(count => 50);
                 lv.Items.Clear();
 
                 for (int i = 0; i < mention.Count; i++)
@@ -242,7 +241,7 @@ namespace Twitter_Test
             {
                 if (this.button_Tweet.Text == "Tweet")
                 {
-                    tweet(this.tokens, this.textBox_Input.Text);
+                    tweet(this.tokens, this.textBox_Input.Text, this.uploadFilePathList);
                     this.textBox_Input.Text = string.Empty;
                 }
 
@@ -254,16 +253,32 @@ namespace Twitter_Test
             }
         }
 
-        private void tweet(Tokens tokens, string context)
+        private void tweet(Tokens tokens, string context, List<string> uploadFiles)
         {
-            if (this.status == null)
+            var image = uploadFiles.Select(m => this.tokens.Media.Upload(media => m).MediaId);
+
+            List<MediaUploadResult> results = new List<MediaUploadResult>();
+            foreach (string filePath in uploadFiles)
             {
-                tokens.Statuses.Update(status => context);
-                return;
+                MediaUploadResult result = tokens.Media.Upload(media: new FileInfo(filePath));
+                results.Add(result);
             }
 
-            tokens.Statuses.Update(in_reply_to_status_id => this.status.Id.ToString(), status => context);
+            var param = new Dictionary<string, object>();
+            param.Add("status", context);
+            if (0 < results.Count)
+            {
+                param.Add("media_ids", results.Select(x => x.MediaId));
+            }
+
+            if (this.status != null)
+            {
+                param.Add("in_reply_to_status_id", this.status.Id.ToString());
+            }
+
+            tokens.Statuses.Update(param);
             resetReply();
+            resetAppend();
         }
 
         private void textBox_Input_TextChanged(object sender, EventArgs e)
@@ -335,6 +350,17 @@ namespace Twitter_Test
             this.button_ResetReply.Visible = false;
         }
 
+        private void resetAppend()
+        {
+            this.uploadFilePathList.Clear();
+            setAppendFilesCount();
+        }
+
+        private void setAppendFilesCount()
+        {
+            this.label_AppendFilesCount.Text = string.Format("Files : {0}", this.uploadFilePathList.Count);
+        }
+
         private void webBrowser_Detail_DocumentClick(object sender, HtmlElementEventArgs e)
         {
             HtmlElement clickedElement = webBrowser_Detail.Document.GetElementFromPoint(e.MousePosition);
@@ -383,7 +409,7 @@ namespace Twitter_Test
                 {
                     if (this.button_Tweet.Text == "Tweet")
                     {
-                        tweet(this.tokens, this.textBox_Input.Text);
+                        tweet(this.tokens, this.textBox_Input.Text, this.uploadFilePathList);
                         this.textBox_Input.Text = string.Empty;
                     }
 
@@ -398,9 +424,38 @@ namespace Twitter_Test
             }
         }
 
+        List<string> uploadFilePathList = new List<string>();
+        private void textBox_Input_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.None;
+                return;
+            }
+
+            e.Effect = DragDropEffects.Copy;
+        }
+        
         private void textBox_Input_DragDrop(object sender, DragEventArgs e)
         {
+            string filePath = ((string[])e.Data.GetData(DataFormats.FileDrop, false))[0];
 
+            if (4 <= this.uploadFilePathList.Count)
+            {
+                MessageBox.Show("アップロードできる画像は4つまでです。",
+                    "Error!!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+                return;
+            }
+
+            this.uploadFilePathList.Add(filePath);
+            setAppendFilesCount();
+        }
+
+        private void label_AppendFilesCount_Click(object sender, EventArgs e)
+        {
+            resetAppend();
         }
     }
 }

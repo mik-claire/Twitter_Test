@@ -46,6 +46,7 @@
             this.webBrowser_Detail = new System.Windows.Forms.WebBrowser();
             this.label_InReplyTo = new System.Windows.Forms.Label();
             this.button_ResetReply = new System.Windows.Forms.Button();
+            this.label_AppendFilesCount = new System.Windows.Forms.Label();
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -167,6 +168,7 @@
             // 
             // textBox_Input
             // 
+            this.textBox_Input.AllowDrop = true;
             this.textBox_Input.Location = new System.Drawing.Point(12, 428);
             this.textBox_Input.Multiline = true;
             this.textBox_Input.Name = "textBox_Input";
@@ -174,6 +176,7 @@
             this.textBox_Input.TabIndex = 5;
             this.textBox_Input.TextChanged += new System.EventHandler(this.textBox_Input_TextChanged);
             this.textBox_Input.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragDrop);
+            this.textBox_Input.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragEnter);
             this.textBox_Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Input_KeyDown);
             // 
             // button_Tweet
@@ -217,11 +220,22 @@
             this.button_ResetReply.Visible = false;
             this.button_ResetReply.Click += new System.EventHandler(this.button_ResetReply_Click);
             // 
+            // label_AppendFilesCount
+            // 
+            this.label_AppendFilesCount.AutoSize = true;
+            this.label_AppendFilesCount.Location = new System.Drawing.Point(523, 426);
+            this.label_AppendFilesCount.Name = "label_AppendFilesCount";
+            this.label_AppendFilesCount.Size = new System.Drawing.Size(53, 15);
+            this.label_AppendFilesCount.TabIndex = 9;
+            this.label_AppendFilesCount.Text = "Files : 0";
+            this.label_AppendFilesCount.Click += new System.EventHandler(this.label_AppendFilesCount_Click);
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 478);
+            this.Controls.Add(this.label_AppendFilesCount);
             this.Controls.Add(this.button_ResetReply);
             this.Controls.Add(this.label_InReplyTo);
             this.Controls.Add(this.webBrowser_Detail);
@@ -265,6 +279,7 @@
         private System.Windows.Forms.WebBrowser webBrowser_Detail;
         private System.Windows.Forms.Label label_InReplyTo;
         private System.Windows.Forms.Button button_ResetReply;
+        private System.Windows.Forms.Label label_AppendFilesCount;
     }
 }
 
