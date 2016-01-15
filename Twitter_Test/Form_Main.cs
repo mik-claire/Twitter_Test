@@ -129,7 +129,7 @@ namespace Twitter_Test
         {
             try
             {
-                var fav = tokens.Favorites.List();
+                var fav = tokens.Favorites.List(count => 200);
 
                 for (int i = fav.Count - 1; i >= 0; i--)
                 {
@@ -748,9 +748,6 @@ namespace Twitter_Test
                     break;
                 case 1:
                     this.listView_Mention.Items[this.listView_Mention.Items.Count - 1].EnsureVisible();
-                    break;
-                case 2:
-                    this.listView_Fav.Items[this.listView_Fav.Items.Count - 1].EnsureVisible();
                     break;
                 default:
                     break;
