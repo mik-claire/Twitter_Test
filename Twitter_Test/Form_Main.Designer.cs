@@ -30,8 +30,8 @@
         {
             this.listView_Home = new System.Windows.Forms.ListView();
             this.columnHeader_HomeDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader_HomeId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader_HomeName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_HomeUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_HomeUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_HomeText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl_Timeline = new System.Windows.Forms.TabControl();
             this.tabPage_Home = new System.Windows.Forms.TabPage();
@@ -48,17 +48,24 @@
             this.button_ResetReply = new System.Windows.Forms.Button();
             this.label_AppendFilesCount = new System.Windows.Forms.Label();
             this.button_ShowTalk = new System.Windows.Forms.Button();
+            this.tabPage_Fav = new System.Windows.Forms.TabPage();
+            this.listView_Fav = new System.Windows.Forms.ListView();
+            this.columnHeader_FavDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FavUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FavUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FavText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
+            this.tabPage_Fav.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView_Home
             // 
             this.listView_Home.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader_HomeDate,
-            this.columnHeader_HomeId,
-            this.columnHeader_HomeName,
+            this.columnHeader_HomeUserId,
+            this.columnHeader_HomeUserName,
             this.columnHeader_HomeText});
             this.listView_Home.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.listView_Home.FullRowSelect = true;
@@ -80,15 +87,15 @@
             this.columnHeader_HomeDate.Text = "Date";
             this.columnHeader_HomeDate.Width = 155;
             // 
-            // columnHeader_HomeId
+            // columnHeader_HomeUserId
             // 
-            this.columnHeader_HomeId.Text = "UserId";
-            this.columnHeader_HomeId.Width = 80;
+            this.columnHeader_HomeUserId.Text = "UserId";
+            this.columnHeader_HomeUserId.Width = 80;
             // 
-            // columnHeader_HomeName
+            // columnHeader_HomeUserName
             // 
-            this.columnHeader_HomeName.Text = "UserName";
-            this.columnHeader_HomeName.Width = 100;
+            this.columnHeader_HomeUserName.Text = "UserName";
+            this.columnHeader_HomeUserName.Width = 100;
             // 
             // columnHeader_HomeText
             // 
@@ -99,6 +106,7 @@
             // 
             this.tabControl_Timeline.Controls.Add(this.tabPage_Home);
             this.tabControl_Timeline.Controls.Add(this.tabPage_Mention);
+            this.tabControl_Timeline.Controls.Add(this.tabPage_Fav);
             this.tabControl_Timeline.Location = new System.Drawing.Point(12, 12);
             this.tabControl_Timeline.Name = "tabControl_Timeline";
             this.tabControl_Timeline.SelectedIndex = 0;
@@ -247,6 +255,59 @@
             this.button_ShowTalk.UseVisualStyleBackColor = true;
             this.button_ShowTalk.Click += new System.EventHandler(this.button_ShowTalk_Click);
             // 
+            // tabPage_Fav
+            // 
+            this.tabPage_Fav.Controls.Add(this.listView_Fav);
+            this.tabPage_Fav.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_Fav.Name = "tabPage_Fav";
+            this.tabPage_Fav.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_Fav.Size = new System.Drawing.Size(578, 252);
+            this.tabPage_Fav.TabIndex = 2;
+            this.tabPage_Fav.Text = "Fav";
+            this.tabPage_Fav.UseVisualStyleBackColor = true;
+            // 
+            // listView_Fav
+            // 
+            this.listView_Fav.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader_FavDate,
+            this.columnHeader_FavUserId,
+            this.columnHeader_FavUserName,
+            this.columnHeader_FavText});
+            this.listView_Fav.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_Fav.FullRowSelect = true;
+            this.listView_Fav.GridLines = true;
+            this.listView_Fav.Location = new System.Drawing.Point(0, 0);
+            this.listView_Fav.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.listView_Fav.MultiSelect = false;
+            this.listView_Fav.Name = "listView_Fav";
+            this.listView_Fav.Size = new System.Drawing.Size(578, 252);
+            this.listView_Fav.TabIndex = 2;
+            this.listView_Fav.UseCompatibleStateImageBehavior = false;
+            this.listView_Fav.View = System.Windows.Forms.View.Details;
+            this.listView_Fav.SelectedIndexChanged += new System.EventHandler(this.listView_Timeline_SelectedIndexChanged);
+            this.listView_Fav.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseClick);
+            this.listView_Fav.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseDoubleClick);
+            // 
+            // columnHeader_FavDate
+            // 
+            this.columnHeader_FavDate.Text = "Date";
+            this.columnHeader_FavDate.Width = 155;
+            // 
+            // columnHeader_FavUserId
+            // 
+            this.columnHeader_FavUserId.Text = "UserId";
+            this.columnHeader_FavUserId.Width = 80;
+            // 
+            // columnHeader_FavUserName
+            // 
+            this.columnHeader_FavUserName.Text = "UserName";
+            this.columnHeader_FavUserName.Width = 100;
+            // 
+            // columnHeader_FavText
+            // 
+            this.columnHeader_FavText.Text = "Text";
+            this.columnHeader_FavText.Width = 220;
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -272,6 +333,7 @@
             this.tabControl_Timeline.ResumeLayout(false);
             this.tabPage_Home.ResumeLayout(false);
             this.tabPage_Mention.ResumeLayout(false);
+            this.tabPage_Fav.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -281,8 +343,8 @@
 
         private System.Windows.Forms.ListView listView_Home;
         private System.Windows.Forms.ColumnHeader columnHeader_HomeDate;
-        private System.Windows.Forms.ColumnHeader columnHeader_HomeId;
-        private System.Windows.Forms.ColumnHeader columnHeader_HomeName;
+        private System.Windows.Forms.ColumnHeader columnHeader_HomeUserId;
+        private System.Windows.Forms.ColumnHeader columnHeader_HomeUserName;
         private System.Windows.Forms.ColumnHeader columnHeader_HomeText;
         private System.Windows.Forms.TabControl tabControl_Timeline;
         private System.Windows.Forms.TabPage tabPage_Home;
@@ -299,6 +361,12 @@
         private System.Windows.Forms.Button button_ResetReply;
         private System.Windows.Forms.Label label_AppendFilesCount;
         private System.Windows.Forms.Button button_ShowTalk;
+        private System.Windows.Forms.TabPage tabPage_Fav;
+        private System.Windows.Forms.ListView listView_Fav;
+        private System.Windows.Forms.ColumnHeader columnHeader_FavDate;
+        private System.Windows.Forms.ColumnHeader columnHeader_FavUserId;
+        private System.Windows.Forms.ColumnHeader columnHeader_FavUserName;
+        private System.Windows.Forms.ColumnHeader columnHeader_FavText;
     }
 }
 

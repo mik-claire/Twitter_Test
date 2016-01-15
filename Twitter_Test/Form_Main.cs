@@ -84,6 +84,9 @@ namespace Twitter_Test
 
             showMentionTimeline(this.listView_Mention);
             this.listView_Mention.Items[this.listView_Mention.Items.Count - 1].EnsureVisible();
+
+            showFavTimeline(this.listView_Fav);
+            this.listView_Fav.Items[this.listView_Fav.Items.Count - 1].EnsureVisible();
         }
 
         private void showHomeTimeline(ListView lv)
@@ -113,6 +116,24 @@ namespace Twitter_Test
                 for (int i = mention.Count - 1; i >= 0; i--)
                 {
                     displayTimeline(this.listView_Mention, mention[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+                return;
+            }
+        }
+
+        private void showFavTimeline(ListView lv)
+        {
+            try
+            {
+                var fav = tokens.Favorites.List();
+
+                for (int i = fav.Count - 1; i >= 0; i--)
+                {
+                    displayTimeline(this.listView_Fav, fav[i]);
                 }
             }
             catch (Exception ex)
@@ -277,17 +298,16 @@ namespace Twitter_Test
 
         private ListView getFocusedListView()
         {
-            if (this.tabControl_Timeline.SelectedTab.Text == this.tabPage_Home.Text)
+            switch (this.tabControl_Timeline.SelectedIndex)
             {
-                return this.listView_Home;
-            }
-            else if (this.tabControl_Timeline.SelectedTab.Text == this.tabPage_Mention.Text)
-            {
-                return this.listView_Mention;
-            }
-            else
-            {
-                return null;
+                case 0:
+                    return this.listView_Home;
+                case 1:
+                    return this.listView_Mention;
+                case 2:
+                    return this.listView_Fav;
+                default:
+                    return this.listView_Home;
             }
         }
 
@@ -400,6 +420,8 @@ namespace Twitter_Test
         {
             var homeStream = tokens.Streaming.UserAsObservable().Publish();
             homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status));
+
+
 
             this.disposable = homeStream.Connect();
         }
@@ -728,7 +750,7 @@ namespace Twitter_Test
                     this.listView_Mention.Items[this.listView_Mention.Items.Count - 1].EnsureVisible();
                     break;
                 case 2:
-                    this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
+                    this.listView_Fav.Items[this.listView_Fav.Items.Count - 1].EnsureVisible();
                     break;
                 default:
                     break;
