@@ -71,6 +71,7 @@
             this.listView_Home.UseCompatibleStateImageBehavior = false;
             this.listView_Home.View = System.Windows.Forms.View.Details;
             this.listView_Home.SelectedIndexChanged += new System.EventHandler(this.listView_Timeline_SelectedIndexChanged);
+            this.listView_Home.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseClick);
             this.listView_Home.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseDoubleClick);
             // 
             // columnHeader_HomeDate
@@ -144,6 +145,7 @@
             this.listView_Mention.UseCompatibleStateImageBehavior = false;
             this.listView_Mention.View = System.Windows.Forms.View.Details;
             this.listView_Mention.SelectedIndexChanged += new System.EventHandler(this.listView_Timeline_SelectedIndexChanged);
+            this.listView_Mention.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseClick);
             this.listView_Mention.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseDoubleClick);
             // 
             // columnHeader_MentionDate

@@ -70,7 +70,6 @@ namespace Twitter_Test
             {
                 this.Close();
             }
-
             this.textBox_Input.Text = string.Empty;
             show(this.tokens);
 
@@ -138,6 +137,7 @@ namespace Twitter_Test
                         (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).User.ScreenName,
                         (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).User.Name,
                         (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).Text,
+                        (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).ToString()
                     };
                     ListViewItem item = new ListViewItem(msg);
                     item.Tag = tweet;
@@ -322,6 +322,12 @@ namespace Twitter_Test
         {
             ListView lv = getFocusedListView();
 
+            // 左クリック判定
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
             // フォーカス判定
             ListViewItem item = lv.FocusedItem;
             if (!lv.FocusedItem.Bounds.Contains(e.Location))
@@ -329,14 +335,14 @@ namespace Twitter_Test
                 return;
             }
 
-            this.status = ((Status)item.Tag).RetweetedStatus != null ? ((Status)item.Tag).RetweetedStatus : ((Status)item.Tag);
+            this.status = ((Status)item.Tag).RetweetedStatus != null ?
+                ((Status)item.Tag).RetweetedStatus : ((Status)item.Tag);
             string inReplyTo = string.Format(
 @"{0}: 
 {1}",
                 this.status.User.ScreenName,
                 this.status.Text.Substring(0, this.status.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1 == 0 ?
-                    this.status.Text.Length :
-                    this.status.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1));
+                    this.status.Text.Length : this.status.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1));
             this.label_InReplyTo.Text = inReplyTo;
             this.textBox_Input.Text =
                 this.textBox_Input.Text.Insert(0, string.Format("@{0} ", this.status.User.ScreenName));
@@ -506,6 +512,141 @@ namespace Twitter_Test
         private void label_AppendFilesCount_Click(object sender, EventArgs e)
         {
             resetAppend();
+        }
+
+        private void listView_Timeline_MouseClick(object sender, MouseEventArgs e)
+        {
+            ListView lv = getFocusedListView();
+
+            // 右クリック判定
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
+
+            // フォーカス判定
+            ListViewItem item = lv.FocusedItem;
+            if (!lv.FocusedItem.Bounds.Contains(e.Location))
+            {
+                return;
+            }
+
+            Status tweet = getTweetFromId(this.tokens, item.SubItems[4].Text);
+            if (tweet.RetweetedStatus != null)
+            {
+                tweet = tweet.RetweetedStatus;
+            }
+
+            ContextMenuStrip cMenu = new ContextMenuStrip();
+
+            // RT
+            ToolStripMenuItem menuItem_RT = new ToolStripMenuItem();
+            // menuItem_RT.Text = (bool)tweet.IsRetweeted ? "RT解除" : "RT";
+            menuItem_RT.Text = "RT";
+            menuItem_RT.Click += delegate
+            {
+                try
+                {
+                    /*
+                    if ((bool)tweet.IsRetweeted)
+                    {
+                        long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
+                        this.tokens.Statuses.Destroy(id => retweetId);
+                    }
+                    else
+                    {
+                        this.tokens.Statuses.Retweet(id => tweet.Id);
+                    }
+                    */
+
+                    this.tokens.Statuses.Retweet(id => tweet.Id);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            };
+            cMenu.Items.Add(menuItem_RT);
+
+            // QT
+            ToolStripMenuItem menuItem_QT = new ToolStripMenuItem();
+            menuItem_QT.Text = "QT";
+            menuItem_QT.Click += delegate
+            {
+                try
+                {
+                    this.textBox_Input.Text += string.Format(@"https://twitter.com/{0}/status/{1}",
+                        tweet.User.ScreenName,
+                        tweet.ToString());
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            };
+            cMenu.Items.Add(menuItem_QT);
+
+            // favorte / Un-favorite
+            ToolStripMenuItem menuItem_Favorite = new ToolStripMenuItem();
+            menuItem_Favorite.Text = (bool)tweet.IsFavorited ? "Un-favorite" : "favorite";
+            menuItem_Favorite.Click += delegate
+            {
+                try
+                {
+                    if ((bool)tweet.IsFavorited)
+                    {
+                        this.tokens.Favorites.Destroy(id => tweet.Id);
+                    }
+                    else
+                    {
+                        this.tokens.Favorites.Create(id => tweet.Id);
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            };
+            cMenu.Items.Add(menuItem_Favorite);
+
+            // delete
+            if (tweet.User.ScreenName == this.user.ScreenName)
+            {
+                ToolStripMenuItem menuItem_Delete = new ToolStripMenuItem();
+                menuItem_Delete.Text = "Delete";
+                menuItem_Delete.Click += delegate
+                {
+                    try
+                    {
+                        this.tokens.Statuses.Destroy(id => tweet.Id);
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("存在しないツイートです。",
+                            "Error!!",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                    }
+                };
+                cMenu.Items.Add(menuItem_Delete);
+            }
+
+            cMenu.Show(Cursor.Position);
+        }
+
+        private Status getTweetFromId(Tokens tokens, string tweetId)
+        {
+            var tweet = tokens.Statuses.Show(id => tweetId);
+            return tweet;
         }
     }
 }
