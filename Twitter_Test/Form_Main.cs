@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,12 +73,17 @@ namespace Twitter_Test
             show(this.tokens);
 
             streaming(this.tokens);
+
+            this.Text = "@" + this.user.ScreenName;
         }
 
         private void show(Tokens tokens)
         {
             showHomeTimeline(this.listView_Home);
+            this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
+
             showMentionTimeline(this.listView_Mention);
+            this.listView_Mention.Items[this.listView_Mention.Items.Count - 1].EnsureVisible();
         }
 
         private void showHomeTimeline(ListView lv)
@@ -146,6 +150,12 @@ namespace Twitter_Test
                     lv.Items.Add(item);
                     lv.Items[lv.Items.Count - 1].EnsureVisible();
                 }
+                /*
+                if (lvスクロールが一番下)
+                {
+                    lv.Items[lv.Items.Count - 1].EnsureVisible();
+                }
+                */
             }
             catch(Exception ex)
             {
@@ -210,15 +220,25 @@ namespace Twitter_Test
                 foreach(var media in tweet.ExtendedEntities.Media)
                 {
                     entities += string.Format(
-@"<a href=""{0}""><img border=""0"" src=""{0}"" width=""{1}"" height=""{2}"" alt=""{0}""></a>",
+@"<a href=""{0}"">
+  <img border=""0"" src=""{0}"" width=""{1}"" height=""{2}"" alt=""{0}"">
+</a>",
                         media.MediaUrl,
                         media.Sizes.Small.Width * (96 / (float)media.Sizes.Small.Width),
                         media.Sizes.Small.Height * (96 / (float)media.Sizes.Small.Width));
                 }
             }
 
+            if (tweet.InReplyToStatusId == null)
+            {
+                this.button_ShowTalk.Enabled = false;
+            }
+            else
+            {
+                this.button_ShowTalk.Enabled = true;
+            }
+
             StringBuilder sb2 = new StringBuilder();
-            sb2.Append("");
             sb2.Append("<font size=\"2\" face=\"Meiryo UI\">");
             sb2.Append(item.SubItems[0].Text);                                  // Date-Time
             sb2.AppendFormat(" via {0}<br>", tweet.Source);                     // via
@@ -229,7 +249,24 @@ namespace Twitter_Test
                 retweeter);                                                     // retweeter-Name
             sb2.AppendFormat("{0}<br></font>", context.Replace("\n", "<br>"));  // context
             this.webBrowser_Detail.DocumentText = string.Format(
-@"<html><head><style type=""text/css""><!-- #icon {{ float: left; }} //--></style></head><body><div id=""icon""><img border=""0"" src=""{0}"" width=""32"" height=""32""></div><div id=""context"">{1}</div>{2}</body></html>",
+@"<html>
+<head>
+  <style type=""text/css"">
+    <!--
+    #icon {{ float: left; }}
+    //-->
+  </style>
+</head>
+<body>
+  <div id=""icon"">
+    <img border=""0"" src=""{0}"" width=""32"" height=""32"">
+  </div>
+  <div id=""context"">
+    {1}
+  </div>
+  {2}
+</body>
+</html>",
                 tweet.RetweetedStatus == null ? tweet.User.ProfileImageUrl : tweet.RetweetedStatus.User.ProfileImageUrl,
                 sb2.ToString(),
                 entities == string.Empty ? string.Empty : "<div>" + entities + "</div>");
@@ -272,7 +309,6 @@ namespace Twitter_Test
 
         private void tweet(Tokens tokens, string context, List<string> uploadFiles)
         {
-            Console.WriteLine(tokens.ScreenName + "    " + tokens.UserId);
             var image = uploadFiles.Select(m => this.tokens.Media.Upload(media => m).MediaId);
 
             List<MediaUploadResult> results = new List<MediaUploadResult>();
@@ -315,6 +351,16 @@ namespace Twitter_Test
                 this.textBox_Input.Text = string.Empty;
                 this.afterTweet = false;
             }
+
+            string tmp = this.button_Tweet.Text;
+            if (140 < this.textBox_Input.Text.Length)
+            {
+                this.button_Tweet.Text = "Over!!";
+                this.button_Tweet.Enabled = false;
+                return;
+            }
+            this.button_Tweet.Text = tmp;
+            this.button_Tweet.Enabled = true;
         }
 
         private Status status = null;
@@ -384,7 +430,6 @@ namespace Twitter_Test
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message + ex.StackTrace);
             }
             finally
             {
@@ -647,6 +692,29 @@ namespace Twitter_Test
         {
             var tweet = tokens.Statuses.Show(id => tweetId);
             return tweet;
+        }
+
+        private List<Status> getTalk(Status tweet)
+        {
+            List<Status> talk = new List<Status>();
+            talk.Add(tweet);
+
+            while (tweet.InReplyToStatusId != null)
+            {
+                tweet = getTweetFromId(this.tokens, tweet.InReplyToStatusId.ToString());
+                talk.Add(tweet);
+            }
+
+            return talk;
+        }
+
+        private void button_ShowTalk_Click(object sender, EventArgs e)
+        {
+            ListView lv = getFocusedListView();
+            List<Status> talk =  getTalk((Status)lv.SelectedItems[0].Tag);
+
+            Form_Talk f = new Form_Talk(talk);
+            f.Show();
         }
     }
 }

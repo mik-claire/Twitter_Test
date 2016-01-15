@@ -47,6 +47,7 @@
             this.label_InReplyTo = new System.Windows.Forms.Label();
             this.button_ResetReply = new System.Windows.Forms.Button();
             this.label_AppendFilesCount = new System.Windows.Forms.Label();
+            this.button_ShowTalk = new System.Windows.Forms.Button();
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -232,11 +233,25 @@
             this.label_AppendFilesCount.Text = "Files : 0";
             this.label_AppendFilesCount.Click += new System.EventHandler(this.label_AppendFilesCount_Click);
             // 
+            // button_ShowTalk
+            // 
+            this.button_ShowTalk.Enabled = false;
+            this.button_ShowTalk.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_ShowTalk.Location = new System.Drawing.Point(523, 400);
+            this.button_ShowTalk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button_ShowTalk.Name = "button_ShowTalk";
+            this.button_ShowTalk.Size = new System.Drawing.Size(75, 23);
+            this.button_ShowTalk.TabIndex = 10;
+            this.button_ShowTalk.Text = "Talk";
+            this.button_ShowTalk.UseVisualStyleBackColor = true;
+            this.button_ShowTalk.Click += new System.EventHandler(this.button_ShowTalk_Click);
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 478);
+            this.Controls.Add(this.button_ShowTalk);
             this.Controls.Add(this.label_AppendFilesCount);
             this.Controls.Add(this.button_ResetReply);
             this.Controls.Add(this.label_InReplyTo);
@@ -250,7 +265,7 @@
             this.MaximizeBox = false;
             this.Name = "Form_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Main";
+            this.Text = "mik_Twitter_Test";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);
             this.Load += new System.EventHandler(this.Form_Main_Load);
             this.tabControl_Timeline.ResumeLayout(false);
@@ -282,6 +297,7 @@
         private System.Windows.Forms.Label label_InReplyTo;
         private System.Windows.Forms.Button button_ResetReply;
         private System.Windows.Forms.Label label_AppendFilesCount;
+        private System.Windows.Forms.Button button_ShowTalk;
     }
 }
 
