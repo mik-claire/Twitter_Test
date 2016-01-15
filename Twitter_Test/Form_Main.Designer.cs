@@ -104,6 +104,7 @@
             this.tabControl_Timeline.SelectedIndex = 0;
             this.tabControl_Timeline.Size = new System.Drawing.Size(586, 280);
             this.tabControl_Timeline.TabIndex = 4;
+            this.tabControl_Timeline.SelectedIndexChanged += new System.EventHandler(this.tabControl_Timeline_SelectedIndexChanged);
             // 
             // tabPage_Home
             // 

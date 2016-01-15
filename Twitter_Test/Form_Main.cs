@@ -716,5 +716,23 @@ namespace Twitter_Test
             Form_Talk f = new Form_Talk(talk);
             f.Show();
         }
+
+        private void tabControl_Timeline_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (this.tabControl_Timeline.SelectedIndex)
+            {
+                case 0:
+                    this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
+                    break;
+                case 1:
+                    this.listView_Mention.Items[this.listView_Mention.Items.Count - 1].EnsureVisible();
+                    break;
+                case 2:
+                    this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
