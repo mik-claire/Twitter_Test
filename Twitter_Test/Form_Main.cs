@@ -1,17 +1,22 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using CoreTweet;
 using MyLib;
-using System.Text.RegularExpressions;
-using System.IO;
+
+using CoreTweet;
+using CoreTweet.Streaming;
 
 namespace Twitter_Test
 {
@@ -40,6 +45,7 @@ namespace Twitter_Test
                     string pin = f.PinCode;
                     var t = OAuth.GetTokens(sessions, pin);
                     this.tokens = t;
+                    this.user = t.Account.VerifyCredentials();
                 }
 
                 return;
@@ -50,11 +56,13 @@ namespace Twitter_Test
                 apiKeySecret,
                 Properties.Settings.Default.AccessToken,
                 Properties.Settings.Default.AccessTokenSecret);
+            this.user = this.tokens.Account.VerifyCredentials();
         }
 
         private MyClass util = new MyClass();
 
         private Tokens tokens;
+        private User user;
 
         private void Form_Main_Load(object sender, EventArgs e)
         {
@@ -65,6 +73,8 @@ namespace Twitter_Test
 
             this.textBox_Input.Text = string.Empty;
             show(this.tokens);
+
+            streaming(this.tokens);
         }
 
         private void show(Tokens tokens)
@@ -77,31 +87,11 @@ namespace Twitter_Test
         {
             try
             {
-                var home = tokens.Statuses.HomeTimeline(count => 50);
-                lv.Items.Clear();
+                var home = tokens.Statuses.HomeTimeline(count => 100);
 
-                for (int i = 0; i < home.Count; i++)
+                for (int i = home.Count - 1; i >= 0; i--)
                 {
-                    string[] msg = 
-                    {
-                        home[i].CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss"),
-                        home[i].User.ScreenName,
-                        home[i].User.Name,
-                        home[i].Text
-                    };
-
-                    if (home[i].RetweetedStatus != null)
-                    {
-                        var origin = home[i].RetweetedStatus;
-                        msg[0] = origin.CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss");
-                        msg[1] = origin.User.ScreenName;
-                        msg[2] = origin.User.Name;
-                        msg[3] = origin.Text;
-                    }
-
-                    ListViewItem item = new ListViewItem(msg);
-                    item.Tag = home[i];
-                    lv.Items.Add(item);
+                    displayTimeline(this.listView_Home, home[i]);
                 }
             }
             catch(Exception ex)
@@ -115,23 +105,11 @@ namespace Twitter_Test
         {
             try
             {
-                var mention = tokens.Statuses.MentionsTimeline(count => 50);
-                lv.Items.Clear();
+                var mention = tokens.Statuses.MentionsTimeline(count => 100);
 
-                for (int i = 0; i < mention.Count; i++)
+                for (int i = mention.Count - 1; i >= 0; i--)
                 {
-                    List<string> source = getSourceNameAndUrl(mention[i].Source);
-
-                    string[] msg = 
-                    {
-                        mention[i].CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss"),
-                        mention[i].User.ScreenName,
-                        mention[i].User.Name,
-                        mention[i].Text,
-                    };
-                    ListViewItem item = new ListViewItem(msg);
-                    item.Tag = mention[i];
-                    lv.Items.Add(item);
+                    displayTimeline(this.listView_Mention, mention[i]);
                 }
             }
             catch (Exception ex)
@@ -139,7 +117,48 @@ namespace Twitter_Test
                 util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
                 return;
             }
+        }
 
+        private delegate void delegateDispay(ListView lv, Status tweet);
+        private void displayTimeline(ListView lv, Status tweet)
+        {
+            try
+            {
+                if (lv.InvokeRequired)
+                {
+                    delegateDispay d = new delegateDispay(displayTimeline);
+
+                    this.Invoke(d, new object[] { lv, tweet });
+                }
+                else
+                {
+                    string[] msg = 
+                    {
+                        (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss"),
+                        (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).User.ScreenName,
+                        (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).User.Name,
+                        (tweet.RetweetedStatus != null ? tweet.RetweetedStatus : tweet).Text,
+                    };
+                    ListViewItem item = new ListViewItem(msg);
+                    item.Tag = tweet;
+
+                    deleteOldTweet(lv);
+                    lv.Items.Add(item);
+                    lv.Items[lv.Items.Count - 1].EnsureVisible();
+                }
+            }
+            catch(Exception ex)
+            {
+                util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+            }
+        }
+
+        private void deleteOldTweet(ListView lv)
+        {
+            while (100 < lv.Items.Count)
+            {
+                lv.Items.RemoveAt(0);
+            }
         }
 
         private List<string> getSourceNameAndUrl(string source)
@@ -244,8 +263,6 @@ namespace Twitter_Test
                     tweet(this.tokens, this.textBox_Input.Text, this.uploadFilePathList);
                     this.textBox_Input.Text = string.Empty;
                 }
-
-                show(this.tokens);
             }
             catch(Exception ex)
             {
@@ -255,6 +272,7 @@ namespace Twitter_Test
 
         private void tweet(Tokens tokens, string context, List<string> uploadFiles)
         {
+            Console.WriteLine(tokens.ScreenName + "    " + tokens.UserId);
             var image = uploadFiles.Select(m => this.tokens.Media.Upload(media => m).MediaId);
 
             List<MediaUploadResult> results = new List<MediaUploadResult>();
@@ -311,7 +329,7 @@ namespace Twitter_Test
                 return;
             }
 
-            this.status = (Status)item.Tag;
+            this.status = ((Status)item.Tag).RetweetedStatus != null ? ((Status)item.Tag).RetweetedStatus : ((Status)item.Tag);
             string inReplyTo = string.Format(
 @"{0}: 
 {1}",
@@ -325,6 +343,26 @@ namespace Twitter_Test
             this.button_ResetReply.Visible = true;
         }
 
+        IDisposable disposable = null;
+        private void streaming(Tokens tokens)
+        {
+            var homeStream = tokens.Streaming.UserAsObservable().Publish();
+            homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status));
+
+            this.disposable = homeStream.Connect();
+        }
+
+        private void streamTL(Status tweet)
+        {
+            displayTimeline(this.listView_Home, tweet);
+            
+            if (tweet.InReplyToScreenName != null &&
+                tweet.InReplyToScreenName == this.user.ScreenName)
+            {
+                displayTimeline(this.listView_Mention, tweet);
+            }
+        }
+
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (this.tokens == null)
@@ -332,9 +370,23 @@ namespace Twitter_Test
                 return;
             }
 
-            Properties.Settings.Default.AccessToken = this.tokens.AccessToken;
-            Properties.Settings.Default.AccessTokenSecret = this.tokens.AccessTokenSecret;
-            Properties.Settings.Default.Save();
+            try
+            {
+                Properties.Settings.Default.AccessToken = this.tokens.AccessToken;
+                Properties.Settings.Default.AccessTokenSecret = this.tokens.AccessTokenSecret;
+                Properties.Settings.Default.Save();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message + ex.StackTrace);
+            }
+            finally
+            {
+                if (this.disposable != null)
+                {
+                    this.disposable.Dispose();
+                }
+            }
         }
 
         private void button_ResetReply_Click(object sender, EventArgs e)
@@ -412,8 +464,6 @@ namespace Twitter_Test
                         tweet(this.tokens, this.textBox_Input.Text, this.uploadFilePathList);
                         this.textBox_Input.Text = string.Empty;
                     }
-
-                    show(this.tokens);
                 }
                 catch (Exception ex)
                 {
