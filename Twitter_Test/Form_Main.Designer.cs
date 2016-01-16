@@ -41,6 +41,12 @@
             this.columnHeader_MentionUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_MentionUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_MentionText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage_Fav = new System.Windows.Forms.TabPage();
+            this.listView_Fav = new System.Windows.Forms.ListView();
+            this.columnHeader_FavDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FavUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FavUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FavText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.textBox_Input = new System.Windows.Forms.TextBox();
             this.button_Tweet = new System.Windows.Forms.Button();
             this.webBrowser_Detail = new System.Windows.Forms.WebBrowser();
@@ -48,12 +54,7 @@
             this.button_ResetReply = new System.Windows.Forms.Button();
             this.label_AppendFilesCount = new System.Windows.Forms.Label();
             this.button_ShowTalk = new System.Windows.Forms.Button();
-            this.tabPage_Fav = new System.Windows.Forms.TabPage();
-            this.listView_Fav = new System.Windows.Forms.ListView();
-            this.columnHeader_FavDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader_FavUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader_FavUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader_FavText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.button_Account = new System.Windows.Forms.Button();
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -178,6 +179,59 @@
             this.columnHeader_MentionText.Text = "Text";
             this.columnHeader_MentionText.Width = 220;
             // 
+            // tabPage_Fav
+            // 
+            this.tabPage_Fav.Controls.Add(this.listView_Fav);
+            this.tabPage_Fav.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_Fav.Name = "tabPage_Fav";
+            this.tabPage_Fav.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_Fav.Size = new System.Drawing.Size(578, 252);
+            this.tabPage_Fav.TabIndex = 2;
+            this.tabPage_Fav.Text = "Fav";
+            this.tabPage_Fav.UseVisualStyleBackColor = true;
+            // 
+            // listView_Fav
+            // 
+            this.listView_Fav.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader_FavDate,
+            this.columnHeader_FavUserId,
+            this.columnHeader_FavUserName,
+            this.columnHeader_FavText});
+            this.listView_Fav.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_Fav.FullRowSelect = true;
+            this.listView_Fav.GridLines = true;
+            this.listView_Fav.Location = new System.Drawing.Point(0, 0);
+            this.listView_Fav.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.listView_Fav.MultiSelect = false;
+            this.listView_Fav.Name = "listView_Fav";
+            this.listView_Fav.Size = new System.Drawing.Size(578, 252);
+            this.listView_Fav.TabIndex = 2;
+            this.listView_Fav.UseCompatibleStateImageBehavior = false;
+            this.listView_Fav.View = System.Windows.Forms.View.Details;
+            this.listView_Fav.SelectedIndexChanged += new System.EventHandler(this.listView_Timeline_SelectedIndexChanged);
+            this.listView_Fav.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseClick);
+            this.listView_Fav.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseDoubleClick);
+            // 
+            // columnHeader_FavDate
+            // 
+            this.columnHeader_FavDate.Text = "Date";
+            this.columnHeader_FavDate.Width = 155;
+            // 
+            // columnHeader_FavUserId
+            // 
+            this.columnHeader_FavUserId.Text = "UserId";
+            this.columnHeader_FavUserId.Width = 80;
+            // 
+            // columnHeader_FavUserName
+            // 
+            this.columnHeader_FavUserName.Text = "UserName";
+            this.columnHeader_FavUserName.Width = 100;
+            // 
+            // columnHeader_FavText
+            // 
+            this.columnHeader_FavText.Text = "Text";
+            this.columnHeader_FavText.Width = 220;
+            // 
             // textBox_Input
             // 
             this.textBox_Input.AllowDrop = true;
@@ -255,64 +309,22 @@
             this.button_ShowTalk.UseVisualStyleBackColor = true;
             this.button_ShowTalk.Click += new System.EventHandler(this.button_ShowTalk_Click);
             // 
-            // tabPage_Fav
+            // button_Account
             // 
-            this.tabPage_Fav.Controls.Add(this.listView_Fav);
-            this.tabPage_Fav.Location = new System.Drawing.Point(4, 24);
-            this.tabPage_Fav.Name = "tabPage_Fav";
-            this.tabPage_Fav.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Fav.Size = new System.Drawing.Size(578, 252);
-            this.tabPage_Fav.TabIndex = 2;
-            this.tabPage_Fav.Text = "Fav";
-            this.tabPage_Fav.UseVisualStyleBackColor = true;
-            // 
-            // listView_Fav
-            // 
-            this.listView_Fav.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader_FavDate,
-            this.columnHeader_FavUserId,
-            this.columnHeader_FavUserName,
-            this.columnHeader_FavText});
-            this.listView_Fav.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.listView_Fav.FullRowSelect = true;
-            this.listView_Fav.GridLines = true;
-            this.listView_Fav.Location = new System.Drawing.Point(0, 0);
-            this.listView_Fav.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.listView_Fav.MultiSelect = false;
-            this.listView_Fav.Name = "listView_Fav";
-            this.listView_Fav.Size = new System.Drawing.Size(578, 252);
-            this.listView_Fav.TabIndex = 2;
-            this.listView_Fav.UseCompatibleStateImageBehavior = false;
-            this.listView_Fav.View = System.Windows.Forms.View.Details;
-            this.listView_Fav.SelectedIndexChanged += new System.EventHandler(this.listView_Timeline_SelectedIndexChanged);
-            this.listView_Fav.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseClick);
-            this.listView_Fav.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Timeline_MouseDoubleClick);
-            // 
-            // columnHeader_FavDate
-            // 
-            this.columnHeader_FavDate.Text = "Date";
-            this.columnHeader_FavDate.Width = 155;
-            // 
-            // columnHeader_FavUserId
-            // 
-            this.columnHeader_FavUserId.Text = "UserId";
-            this.columnHeader_FavUserId.Width = 80;
-            // 
-            // columnHeader_FavUserName
-            // 
-            this.columnHeader_FavUserName.Text = "UserName";
-            this.columnHeader_FavUserName.Width = 100;
-            // 
-            // columnHeader_FavText
-            // 
-            this.columnHeader_FavText.Text = "Text";
-            this.columnHeader_FavText.Width = 220;
+            this.button_Account.Location = new System.Drawing.Point(522, 8);
+            this.button_Account.Name = "button_Account";
+            this.button_Account.Size = new System.Drawing.Size(75, 23);
+            this.button_Account.TabIndex = 1;
+            this.button_Account.Text = "Account";
+            this.button_Account.UseVisualStyleBackColor = true;
+            this.button_Account.Click += new System.EventHandler(this.button_Account_Click);
             // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 478);
+            this.Controls.Add(this.button_Account);
             this.Controls.Add(this.button_ShowTalk);
             this.Controls.Add(this.label_AppendFilesCount);
             this.Controls.Add(this.button_ResetReply);
@@ -367,6 +379,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader_FavUserId;
         private System.Windows.Forms.ColumnHeader columnHeader_FavUserName;
         private System.Windows.Forms.ColumnHeader columnHeader_FavText;
+        private System.Windows.Forms.Button button_Account;
     }
 }
 

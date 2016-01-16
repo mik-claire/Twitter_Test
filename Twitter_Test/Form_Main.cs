@@ -65,20 +65,20 @@ namespace Twitter_Test
 
         private void Form_Main_Load(object sender, EventArgs e)
         {
+            show(this.tokens);
+
+            streaming(this.tokens);
+        }
+
+        private void show(Tokens tokens)
+        {
             if (this.tokens == null)
             {
                 this.Close();
             }
             this.textBox_Input.Text = string.Empty;
-            show(this.tokens);
-
-            streaming(this.tokens);
-
             this.Text = "@" + this.user.ScreenName;
-        }
 
-        private void show(Tokens tokens)
-        {
             showHomeTimeline(this.listView_Home);
             this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
 
@@ -752,6 +752,37 @@ namespace Twitter_Test
                 default:
                     break;
             }
+        }
+
+        private void button_Account_Click(object sender, EventArgs e)
+        {
+            string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
+            string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
+            var sessions = OAuth.Authorize(apiKey, apiKeySecret);
+            var url = sessions.AuthorizeUri;
+
+            using (Form_InputPinCode f = new Form_InputPinCode(url.ToString()))
+            {
+                DialogResult dr = f.ShowDialog();
+                if (dr != DialogResult.OK)
+                {
+                    return;
+                }
+
+                string pin = f.PinCode;
+                var t = OAuth.GetTokens(sessions, pin);
+                this.tokens = t;
+                this.user = t.Account.VerifyCredentials();
+            }
+
+            show(this.tokens);
+
+            if (this.disposable != null)
+            {
+                this.disposable.Dispose();
+            }
+
+            streaming(this.tokens);
         }
     }
 }
