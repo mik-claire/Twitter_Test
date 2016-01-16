@@ -410,6 +410,14 @@ namespace Twitter_Test
                 this.status.Text.Substring(0, this.status.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1 == 0 ?
                     this.status.Text.Length : this.status.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1));
             this.label_InReplyTo.Text = inReplyTo;
+            this.toolTip.Active = false;
+            
+            if (70 < inReplyTo.Length)
+            {
+                this.label_InReplyTo.Text = inReplyTo.Substring(0, 70) + "...";
+                this.toolTip.SetToolTip(this.label_InReplyTo, inReplyTo);
+                this.toolTip.Active = true;
+            }
             this.textBox_Input.Text =
                 this.textBox_Input.Text.Insert(0, string.Format("@{0} ", this.status.User.ScreenName));
             this.button_ResetReply.Visible = true;

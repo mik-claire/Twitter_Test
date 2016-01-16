@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listView_Home = new System.Windows.Forms.ListView();
             this.columnHeader_HomeDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_HomeUserId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -55,6 +56,7 @@
             this.label_AppendFilesCount = new System.Windows.Forms.Label();
             this.button_ShowTalk = new System.Windows.Forms.Button();
             this.button_Account = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -380,6 +382,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader_FavUserName;
         private System.Windows.Forms.ColumnHeader columnHeader_FavText;
         private System.Windows.Forms.Button button_Account;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
 
