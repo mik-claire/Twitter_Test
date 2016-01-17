@@ -33,20 +33,21 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CoreTweet, Version=0.6.0.251, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CoreTweet.0.6.0.251\lib\net45\CoreTweet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MyLib">
-      <HintPath>..\..\MyLib\MyLib\bin\Debug\MyLib.dll</HintPath>
+    <Reference Include="MyLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MyLib\MyLib\bin\Release\MyLib.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\..\..\tool\NLog\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -139,6 +140,13 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>set fname_new=$(TargetName)_merge$(TargetExt)
+if $(ConfigurationName) == Release (
+  "C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe" /wildcards /out:%25fname_new%25 $(TargetFileName) *.dll /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319"
+  copy "C:\git\Twitter_Test\Twitter_Test\bin\Release\Twitter_Test_merge.exe" "C:\Users\Mikaze\Documents\ついったてすと\Twitter_Test.exe"
+)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
