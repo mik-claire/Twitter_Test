@@ -105,21 +105,29 @@ namespace Twitter_Test
             {
                 this.Close();
             }
-            this.textBox_Input.Text = string.Empty;
-            this.Title = "@" + this.user.ScreenName;
-            this.pictureBox_UserIcon.ImageLocation = this.user.ProfileImageUrl;
-            this.pictureBox_UserIcon.Refresh();
 
-            this.timer_ShowStatus.Stop();
+            try
+            {
+                this.textBox_Input.Text = string.Empty;
+                this.Title = "@" + this.user.ScreenName;
+                this.pictureBox_UserIcon.ImageLocation = this.user.ProfileImageUrl;
+                this.pictureBox_UserIcon.Refresh();
 
-            showHomeTimeline(this.listView_Home);
-            this.listView_Home.Items[0].EnsureVisible();
+                this.timer_ShowStatus.Stop();
 
-            showMentionTimeline(this.listView_Mention);
-            this.listView_Mention.Items[0].EnsureVisible();
+                showHomeTimeline(this.listView_Home);
+                this.listView_Home.Items[0].EnsureVisible();
 
-            showFavTimeline(this.listView_Fav);
-            this.listView_Fav.Items[0].EnsureVisible();
+                showMentionTimeline(this.listView_Mention);
+                this.listView_Mention.Items[0].EnsureVisible();
+
+                showFavTimeline(this.listView_Fav);
+                this.listView_Fav.Items[0].EnsureVisible();
+            }
+            catch(Exception ex)
+            {
+                this.util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+            }
         }
 
         private void showHomeTimeline(ListView lv)
@@ -475,8 +483,6 @@ namespace Twitter_Test
         {
             var homeStream = tokens.Streaming.UserAsObservable().Publish();
             homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status));
-
-
 
             this.disposable = homeStream.Connect();
         }
