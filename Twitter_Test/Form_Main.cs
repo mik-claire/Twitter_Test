@@ -86,6 +86,8 @@ namespace Twitter_Test
             this.textBox_Input.Text = string.Empty;
             this.Title = "@" + this.user.ScreenName;
 
+            this.timer_ShowStatus.Stop();
+
             showHomeTimeline(this.listView_Home);
             this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
 
@@ -371,6 +373,9 @@ namespace Twitter_Test
             tokens.Statuses.Update(param);
             resetReply();
             resetAppend();
+
+            string message = string.Format("Tweeted: {0}", context);
+            changeStatus(message);
         }
 
         private void textBox_Input_TextChanged(object sender, EventArgs e)
@@ -460,6 +465,10 @@ namespace Twitter_Test
                 tweet.InReplyToScreenName == this.user.ScreenName)
             {
                 displayTimeline(this.listView_Mention, tweet);
+                string message = string.Format("Reply from @{0}: {1}",
+                    tweet.User.ScreenName,
+                    tweet.Text);
+                changeStatus(message);
             }
         }
 
@@ -635,7 +644,7 @@ namespace Twitter_Test
 
             if (tweet.InReplyToStatusId != null)
             {
-                // RT
+                // Talk
                 ToolStripMenuItem menuItem_Talk = new ToolStripMenuItem();
                 menuItem_Talk.Text = "Talk";
                 menuItem_Talk.Click += delegate
@@ -680,6 +689,10 @@ namespace Twitter_Test
                     */
 
                     this.tokens.Statuses.Retweet(id => tweet.Id);
+                    string message = string.Format("Retweeted to {0}: {1}",
+                        tweet.User.ScreenName,
+                        tweet.Text);
+                    changeStatus(message);
                 }
                 catch (Exception)
                 {
@@ -722,10 +735,19 @@ namespace Twitter_Test
                     if ((bool)tweet.IsFavorited)
                     {
                         this.tokens.Favorites.Destroy(id => tweet.Id);
+                        lv.Items.RemoveAt(lv.SelectedIndices[0]);
+                        string message = string.Format("Un-Favorited to {0}: {1}",
+                            tweet.User.ScreenName,
+                            tweet.Text);
+                        changeStatus(message);
                     }
                     else
                     {
                         this.tokens.Favorites.Create(id => tweet.Id);
+                        string message = string.Format("Favorited to {0}: {1}",
+                            tweet.User.ScreenName,
+                            tweet.Text);
+                        changeStatus(message);
                     }
                 }
                 catch (Exception)
@@ -748,6 +770,10 @@ namespace Twitter_Test
                     try
                     {
                         this.tokens.Statuses.Destroy(id => tweet.Id);
+                        lv.Items.RemoveAt(lv.SelectedIndices[0]);
+                        string message = string.Format("Deleted: {0}",
+                            tweet.Text);
+                        changeStatus(message);
                     }
                     catch (Exception)
                     {
@@ -836,6 +862,49 @@ namespace Twitter_Test
             }
 
             streaming(this.tokens);
+        }
+
+        private delegate void delegateChangeStatus(string message);
+        private void changeStatus(string message)
+        {
+            if (this.label_Status.InvokeRequired)
+            {
+                delegateChangeStatus d = new delegateChangeStatus(changeStatus);
+
+                this.Invoke(d, new object[] { message });
+            }
+            else
+            {
+                this.label_Status.ForeColor = Color.RoyalBlue;
+                this.label_Status.BackColor = Color.AliceBlue;
+                this.label_Status.Text = message;
+                if (58 < message.Length)
+                {
+                    this.label_Status.Text = message.Substring(0, 58) + "...";
+                }
+                if (this.label_Status.Text != string.Empty)
+                {
+                    this.timerCount = 0;
+                    this.timer_ShowStatus.Stop();
+                }
+
+                this.timer_ShowStatus.Start();
+            }
+
+        }
+
+        private int timerCount = 0;
+        private void timer_ShowStatus_Tick(object sender, EventArgs e)
+        {
+            this.timerCount++;
+            if ( 5 < this.timerCount)
+            {
+                this.label_Status.ForeColor = Color.AliceBlue;
+                this.label_Status.BackColor = Color.FromArgb(64, 64, 64);
+                this.timerCount = 0;
+                this.label_Status.Text = string.Empty;
+                this.timer_ShowStatus.Stop();
+            }
         }
     }
 }

@@ -56,6 +56,8 @@
             this.button_ResetReply = new MyControls.Mik_LabelButton();
             this.button_Tweet = new MyControls.Mik_LabelButton();
             this.button_AccountChange = new MyControls.Mik_LabelButton();
+            this.label_Status = new MyControls.Mik_Label();
+            this.timer_ShowStatus = new System.Windows.Forms.Timer(this.components);
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -328,11 +330,28 @@
             this.button_AccountChange.Text = " Account Change ";
             this.button_AccountChange.Click += new System.EventHandler(this.button_AccountChange_Click);
             // 
+            // label_Status
+            // 
+            this.label_Status.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label_Status.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.label_Status.ForeColor = System.Drawing.Color.AliceBlue;
+            this.label_Status.Location = new System.Drawing.Point(0, 485);
+            this.label_Status.Name = "label_Status";
+            this.label_Status.Size = new System.Drawing.Size(610, 15);
+            this.label_Status.TabIndex = 14;
+            // 
+            // timer_ShowStatus
+            // 
+            this.timer_ShowStatus.Enabled = true;
+            this.timer_ShowStatus.Interval = 1000;
+            this.timer_ShowStatus.Tick += new System.EventHandler(this.timer_ShowStatus_Tick);
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(610, 478);
+            this.ClientSize = new System.Drawing.Size(610, 500);
+            this.Controls.Add(this.label_Status);
             this.Controls.Add(this.button_ResetReply);
             this.Controls.Add(this.button_Tweet);
             this.Controls.Add(this.button_AccountChange);
@@ -355,6 +374,7 @@
             this.Controls.SetChildIndex(this.button_AccountChange, 0);
             this.Controls.SetChildIndex(this.button_Tweet, 0);
             this.Controls.SetChildIndex(this.button_ResetReply, 0);
+            this.Controls.SetChildIndex(this.label_Status, 0);
             this.tabControl_Timeline.ResumeLayout(false);
             this.tabPage_Home.ResumeLayout(false);
             this.tabPage_Mention.ResumeLayout(false);
@@ -393,6 +413,8 @@
         private MyControls.Mik_LabelButton button_AccountChange;
         private MyControls.Mik_LabelButton button_Tweet;
         private MyControls.Mik_LabelButton button_ResetReply;
+        private MyControls.Mik_Label label_Status;
+        private System.Windows.Forms.Timer timer_ShowStatus;
     }
 }
 
