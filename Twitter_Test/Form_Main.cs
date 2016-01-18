@@ -691,7 +691,7 @@ namespace Twitter_Test
                     */
 
                     this.tokens.Statuses.Retweet(id => tweet.Id);
-                    string message = string.Format("Retweeted to {0}: {1}",
+                    string message = string.Format("Retweeted to @{0}: {1}",
                         tweet.User.ScreenName,
                         tweet.Text);
                     changeStatus(message, NotificationStatus.DoRetweet);
@@ -738,7 +738,7 @@ namespace Twitter_Test
                     {
                         this.tokens.Favorites.Destroy(id => tweet.Id);
                         lv.Items.RemoveAt(lv.SelectedIndices[0]);
-                        string message = string.Format("Un-Favorited to {0}: {1}",
+                        string message = string.Format("Un-Favorited to @{0}: {1}",
                             tweet.User.ScreenName,
                             tweet.Text);
                         changeStatus(message, NotificationStatus.DoUnFavorite);
@@ -746,7 +746,7 @@ namespace Twitter_Test
                     else
                     {
                         this.tokens.Favorites.Create(id => tweet.Id);
-                        string message = string.Format("Favorited to {0}: {1}",
+                        string message = string.Format("Favorited to @{0}: {1}",
                             tweet.User.ScreenName,
                             tweet.Text);
                         changeStatus(message, NotificationStatus.DoFavorite);
