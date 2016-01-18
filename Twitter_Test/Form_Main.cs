@@ -739,7 +739,7 @@ namespace Twitter_Test
                         string message = string.Format("Un-Favorited to {0}: {1}",
                             tweet.User.ScreenName,
                             tweet.Text);
-                        changeStatus(message, NotificationStatus.DoUnFavorited);
+                        changeStatus(message, NotificationStatus.DoUnFavorite);
                     }
                     else
                     {
@@ -747,7 +747,7 @@ namespace Twitter_Test
                         string message = string.Format("Favorited to {0}: {1}",
                             tweet.User.ScreenName,
                             tweet.Text);
-                        changeStatus(message, NotificationStatus.DoFavorited);
+                        changeStatus(message, NotificationStatus.DoFavorite);
                     }
                 }
                 catch (Exception)
@@ -871,7 +871,7 @@ namespace Twitter_Test
             {
                 delegateChangeStatus d = new delegateChangeStatus(changeStatus);
 
-                this.Invoke(d, new object[] { message });
+                this.Invoke(d, new object[] { message, status });
             }
             else
             {
@@ -880,7 +880,7 @@ namespace Twitter_Test
                     case NotificationStatus.DoTweet:
                     case NotificationStatus.DoRetweet:
                     case NotificationStatus.DoFavorite:
-                    case NotificationStatus.DoUnFavorited:
+                    case NotificationStatus.DoUnFavorite:
                     case NotificationStatus.DoDelete:
                         break;
                     case NotificationStatus.GetReply:

@@ -8,28 +8,44 @@ namespace Twitter_Test
 {
     enum NotificationStatus
     {
-        // ツイートした
+        /// <summary>
+        /// ツイートした
+        /// </summary>
         DoTweet,
 
-        // リツイートした
+        /// <summary>
+        /// リツイートした
+        /// </summary>
         DoRetweet,
 
-        // ふぁぼった
+        /// <summary>
+        /// ふぁぼった
+        /// </summary>
         DoFavorite,
 
-        // ふぁぼ解除した
-        DoUnFavorited,
+        /// <summary>
+        /// ふぁぼ解除した
+        /// </summary>
+        DoUnFavorite,
 
-        // 削除した
+        /// <summary>
+        /// 削除した
+        /// </summary>
         DoDelete,
 
-        // リプライが来た
+        /// <summary>
+        /// リプライが来た
+        /// </summary>
         GetReply,
 
-        // リツイートされた
+        /// <summary>
+        /// リツイートされた
+        /// </summary>
         BeRetweet,
 
-        // ふぁぼられた
+        /// <summary>
+        /// ふぁぼられた
+        /// </summary>
         BeFavorite
     }
 }
