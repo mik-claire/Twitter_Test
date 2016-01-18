@@ -643,6 +643,25 @@ namespace Twitter_Test
 
             ContextMenuStrip cMenu = new ContextMenuStrip();
 
+            // UserInfo
+            ToolStripMenuItem menuItem_UserInfo = new ToolStripMenuItem();
+            menuItem_UserInfo.Text = "UserInfo";
+            menuItem_UserInfo.Click += delegate
+            {
+                try
+                {
+                    Form_UserInfo f = new Form_UserInfo(tweet.User);
+                    f.Show();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            };
+            cMenu.Items.Add(menuItem_UserInfo);
 
             if (tweet.InReplyToStatusId != null)
             {
@@ -667,7 +686,6 @@ namespace Twitter_Test
                     }
                 };
                 cMenu.Items.Add(menuItem_Talk);
-
             }
 
             // RT
