@@ -34,11 +34,11 @@
             // 
             // webBrowser_Talk
             // 
-            this.webBrowser_Talk.Location = new System.Drawing.Point(0, 21);
+            this.webBrowser_Talk.Location = new System.Drawing.Point(6, 21);
             this.webBrowser_Talk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.webBrowser_Talk.MinimumSize = new System.Drawing.Size(23, 25);
             this.webBrowser_Talk.Name = "webBrowser_Talk";
-            this.webBrowser_Talk.Size = new System.Drawing.Size(580, 315);
+            this.webBrowser_Talk.Size = new System.Drawing.Size(568, 315);
             this.webBrowser_Talk.TabIndex = 0;
             this.webBrowser_Talk.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser_Talk_Navigating);
             // 
