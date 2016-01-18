@@ -18,7 +18,7 @@ namespace Twitter_Test
         {
             InitializeComponent();
             this.authorizeUrl = url;
-            this.Title = "Enter PIN code.";
+            this.Title = "Startup.";
         }
 
         /// <summary>
@@ -47,6 +47,17 @@ namespace Twitter_Test
 
         private void button_OK_Click(object sender, EventArgs e)
         {
+            int pin = 0;
+            if (!int.TryParse(this.textBox_PINcode.Text, out pin) ||
+                this.textBox_PINcode.Text.Length != 7)
+            {
+                MessageBox.Show("It is not PIN code.",
+                    "Error!!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+                return;
+            }
+
             this.pinCode = this.textBox_PINcode.Text;
             this.DialogResult = DialogResult.OK;
             this.Close();
