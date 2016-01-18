@@ -375,7 +375,7 @@ namespace Twitter_Test
             resetAppend();
 
             string message = string.Format("Tweeted: {0}", context);
-            changeStatus(message);
+            changeStatus(message, NotificationStatus.DoTweet);
         }
 
         private void textBox_Input_TextChanged(object sender, EventArgs e)
@@ -468,7 +468,7 @@ namespace Twitter_Test
                 string message = string.Format("Reply from @{0}: {1}",
                     tweet.User.ScreenName,
                     tweet.Text);
-                changeStatus(message);
+                changeStatus(message, NotificationStatus.GetReply);
             }
         }
 
@@ -692,7 +692,7 @@ namespace Twitter_Test
                     string message = string.Format("Retweeted to {0}: {1}",
                         tweet.User.ScreenName,
                         tweet.Text);
-                    changeStatus(message);
+                    changeStatus(message, NotificationStatus.DoRetweet);
                 }
                 catch (Exception)
                 {
@@ -739,7 +739,7 @@ namespace Twitter_Test
                         string message = string.Format("Un-Favorited to {0}: {1}",
                             tweet.User.ScreenName,
                             tweet.Text);
-                        changeStatus(message);
+                        changeStatus(message, NotificationStatus.DoUnFavorited);
                     }
                     else
                     {
@@ -747,7 +747,7 @@ namespace Twitter_Test
                         string message = string.Format("Favorited to {0}: {1}",
                             tweet.User.ScreenName,
                             tweet.Text);
-                        changeStatus(message);
+                        changeStatus(message, NotificationStatus.DoFavorited);
                     }
                 }
                 catch (Exception)
@@ -773,7 +773,7 @@ namespace Twitter_Test
                         lv.Items.RemoveAt(lv.SelectedIndices[0]);
                         string message = string.Format("Deleted: {0}",
                             tweet.Text);
-                        changeStatus(message);
+                        changeStatus(message, NotificationStatus.DoDelete);
                     }
                     catch (Exception)
                     {
@@ -864,8 +864,8 @@ namespace Twitter_Test
             streaming(this.tokens);
         }
 
-        private delegate void delegateChangeStatus(string message);
-        private void changeStatus(string message)
+        private delegate void delegateChangeStatus(string message, NotificationStatus status);
+        private void changeStatus(string message, NotificationStatus status)
         {
             if (this.label_Status.InvokeRequired)
             {
@@ -875,8 +875,30 @@ namespace Twitter_Test
             }
             else
             {
-                this.label_Status.ForeColor = Color.RoyalBlue;
-                this.label_Status.BackColor = Color.AliceBlue;
+                switch(status)
+                {
+                    case NotificationStatus.DoTweet:
+                    case NotificationStatus.DoRetweet:
+                    case NotificationStatus.DoFavorite:
+                    case NotificationStatus.DoUnFavorited:
+                    case NotificationStatus.DoDelete:
+                        break;
+                    case NotificationStatus.GetReply:
+                        this.label_Status.ForeColor = Color.RoyalBlue;
+                        this.label_Status.BackColor = Color.AliceBlue;
+                        break;
+                    case NotificationStatus.BeRetweet:
+                        this.label_Status.ForeColor = Color.DarkGreen;
+                        this.label_Status.BackColor = Color.AliceBlue;
+                        break;
+                    case NotificationStatus.BeFavorite:
+                        this.label_Status.ForeColor = Color.DarkOrange;
+                        this.label_Status.BackColor = Color.AliceBlue;
+                        break;
+                    default:
+                        break;
+                }
+
                 this.label_Status.Text = message;
                 if (58 < message.Length)
                 {
