@@ -49,14 +49,13 @@
             this.columnHeader_FavUserName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_FavText = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.textBox_Input = new System.Windows.Forms.TextBox();
-            this.button_Tweet = new System.Windows.Forms.Button();
             this.webBrowser_Detail = new System.Windows.Forms.WebBrowser();
             this.label_InReplyTo = new System.Windows.Forms.Label();
-            this.button_ResetReply = new System.Windows.Forms.Button();
             this.label_AppendFilesCount = new System.Windows.Forms.Label();
-            this.button_ShowTalk = new System.Windows.Forms.Button();
-            this.button_Account = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.button_ResetReply = new MyControls.Mik_LabelButton();
+            this.button_Tweet = new MyControls.Mik_LabelButton();
+            this.button_AccountChange = new MyControls.Mik_LabelButton();
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -65,19 +64,22 @@
             // 
             // listView_Home
             // 
+            this.listView_Home.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.listView_Home.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listView_Home.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader_HomeDate,
             this.columnHeader_HomeUserId,
             this.columnHeader_HomeUserName,
             this.columnHeader_HomeText});
             this.listView_Home.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_Home.ForeColor = System.Drawing.Color.AliceBlue;
             this.listView_Home.FullRowSelect = true;
             this.listView_Home.GridLines = true;
             this.listView_Home.Location = new System.Drawing.Point(0, 0);
             this.listView_Home.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Home.MultiSelect = false;
             this.listView_Home.Name = "listView_Home";
-            this.listView_Home.Size = new System.Drawing.Size(578, 252);
+            this.listView_Home.Size = new System.Drawing.Size(580, 252);
             this.listView_Home.TabIndex = 0;
             this.listView_Home.UseCompatibleStateImageBehavior = false;
             this.listView_Home.View = System.Windows.Forms.View.Details;
@@ -110,7 +112,7 @@
             this.tabControl_Timeline.Controls.Add(this.tabPage_Home);
             this.tabControl_Timeline.Controls.Add(this.tabPage_Mention);
             this.tabControl_Timeline.Controls.Add(this.tabPage_Fav);
-            this.tabControl_Timeline.Location = new System.Drawing.Point(12, 12);
+            this.tabControl_Timeline.Location = new System.Drawing.Point(12, 20);
             this.tabControl_Timeline.Name = "tabControl_Timeline";
             this.tabControl_Timeline.SelectedIndex = 0;
             this.tabControl_Timeline.Size = new System.Drawing.Size(586, 280);
@@ -119,41 +121,46 @@
             // 
             // tabPage_Home
             // 
+            this.tabPage_Home.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.tabPage_Home.Controls.Add(this.listView_Home);
+            this.tabPage_Home.ForeColor = System.Drawing.Color.AliceBlue;
             this.tabPage_Home.Location = new System.Drawing.Point(4, 24);
             this.tabPage_Home.Name = "tabPage_Home";
             this.tabPage_Home.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage_Home.Size = new System.Drawing.Size(578, 252);
             this.tabPage_Home.TabIndex = 0;
             this.tabPage_Home.Text = "Home";
-            this.tabPage_Home.UseVisualStyleBackColor = true;
             // 
             // tabPage_Mention
             // 
+            this.tabPage_Mention.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.tabPage_Mention.Controls.Add(this.listView_Mention);
+            this.tabPage_Mention.ForeColor = System.Drawing.Color.AliceBlue;
             this.tabPage_Mention.Location = new System.Drawing.Point(4, 24);
             this.tabPage_Mention.Name = "tabPage_Mention";
             this.tabPage_Mention.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage_Mention.Size = new System.Drawing.Size(578, 252);
             this.tabPage_Mention.TabIndex = 1;
             this.tabPage_Mention.Text = "Mention";
-            this.tabPage_Mention.UseVisualStyleBackColor = true;
             // 
             // listView_Mention
             // 
+            this.listView_Mention.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.listView_Mention.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listView_Mention.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader_MentionDate,
             this.columnHeader_MentionUserId,
             this.columnHeader_MentionUserName,
             this.columnHeader_MentionText});
             this.listView_Mention.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_Mention.ForeColor = System.Drawing.Color.AliceBlue;
             this.listView_Mention.FullRowSelect = true;
             this.listView_Mention.GridLines = true;
             this.listView_Mention.Location = new System.Drawing.Point(0, 0);
             this.listView_Mention.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Mention.MultiSelect = false;
             this.listView_Mention.Name = "listView_Mention";
-            this.listView_Mention.Size = new System.Drawing.Size(578, 252);
+            this.listView_Mention.Size = new System.Drawing.Size(580, 252);
             this.listView_Mention.TabIndex = 1;
             this.listView_Mention.UseCompatibleStateImageBehavior = false;
             this.listView_Mention.View = System.Windows.Forms.View.Details;
@@ -183,30 +190,34 @@
             // 
             // tabPage_Fav
             // 
+            this.tabPage_Fav.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
             this.tabPage_Fav.Controls.Add(this.listView_Fav);
+            this.tabPage_Fav.ForeColor = System.Drawing.Color.AliceBlue;
             this.tabPage_Fav.Location = new System.Drawing.Point(4, 24);
             this.tabPage_Fav.Name = "tabPage_Fav";
             this.tabPage_Fav.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage_Fav.Size = new System.Drawing.Size(578, 252);
             this.tabPage_Fav.TabIndex = 2;
             this.tabPage_Fav.Text = "Fav";
-            this.tabPage_Fav.UseVisualStyleBackColor = true;
             // 
             // listView_Fav
             // 
+            this.listView_Fav.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.listView_Fav.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.listView_Fav.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader_FavDate,
             this.columnHeader_FavUserId,
             this.columnHeader_FavUserName,
             this.columnHeader_FavText});
             this.listView_Fav.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_Fav.ForeColor = System.Drawing.Color.AliceBlue;
             this.listView_Fav.FullRowSelect = true;
             this.listView_Fav.GridLines = true;
             this.listView_Fav.Location = new System.Drawing.Point(0, 0);
             this.listView_Fav.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Fav.MultiSelect = false;
             this.listView_Fav.Name = "listView_Fav";
-            this.listView_Fav.Size = new System.Drawing.Size(578, 252);
+            this.listView_Fav.Size = new System.Drawing.Size(580, 252);
             this.listView_Fav.TabIndex = 2;
             this.listView_Fav.UseCompatibleStateImageBehavior = false;
             this.listView_Fav.View = System.Windows.Forms.View.Details;
@@ -237,31 +248,22 @@
             // textBox_Input
             // 
             this.textBox_Input.AllowDrop = true;
+            this.textBox_Input.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.textBox_Input.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox_Input.ForeColor = System.Drawing.Color.AliceBlue;
             this.textBox_Input.Location = new System.Drawing.Point(12, 428);
             this.textBox_Input.Multiline = true;
             this.textBox_Input.Name = "textBox_Input";
-            this.textBox_Input.Size = new System.Drawing.Size(505, 40);
+            this.textBox_Input.Size = new System.Drawing.Size(523, 40);
             this.textBox_Input.TabIndex = 5;
             this.textBox_Input.TextChanged += new System.EventHandler(this.textBox_Input_TextChanged);
             this.textBox_Input.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragDrop);
             this.textBox_Input.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragEnter);
             this.textBox_Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Input_KeyDown);
             // 
-            // button_Tweet
-            // 
-            this.button_Tweet.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button_Tweet.Location = new System.Drawing.Point(523, 445);
-            this.button_Tweet.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button_Tweet.Name = "button_Tweet";
-            this.button_Tweet.Size = new System.Drawing.Size(75, 23);
-            this.button_Tweet.TabIndex = 6;
-            this.button_Tweet.Text = "Reload";
-            this.button_Tweet.UseVisualStyleBackColor = true;
-            this.button_Tweet.Click += new System.EventHandler(this.button_Tweet_Click);
-            // 
             // webBrowser_Detail
             // 
-            this.webBrowser_Detail.Location = new System.Drawing.Point(12, 300);
+            this.webBrowser_Detail.Location = new System.Drawing.Point(12, 305);
             this.webBrowser_Detail.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_Detail.Name = "webBrowser_Detail";
             this.webBrowser_Detail.Size = new System.Drawing.Size(586, 93);
@@ -272,78 +274,87 @@
             // 
             this.label_InReplyTo.AutoSize = true;
             this.label_InReplyTo.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.label_InReplyTo.Location = new System.Drawing.Point(50, 396);
+            this.label_InReplyTo.ForeColor = System.Drawing.Color.AliceBlue;
+            this.label_InReplyTo.Location = new System.Drawing.Point(38, 398);
             this.label_InReplyTo.Name = "label_InReplyTo";
             this.label_InReplyTo.Size = new System.Drawing.Size(0, 14);
             this.label_InReplyTo.TabIndex = 7;
             // 
-            // button_ResetReply
-            // 
-            this.button_ResetReply.Location = new System.Drawing.Point(12, 399);
-            this.button_ResetReply.Name = "button_ResetReply";
-            this.button_ResetReply.Size = new System.Drawing.Size(23, 23);
-            this.button_ResetReply.TabIndex = 8;
-            this.button_ResetReply.Text = "X";
-            this.button_ResetReply.UseVisualStyleBackColor = true;
-            this.button_ResetReply.Visible = false;
-            this.button_ResetReply.Click += new System.EventHandler(this.button_ResetReply_Click);
-            // 
             // label_AppendFilesCount
             // 
             this.label_AppendFilesCount.AutoSize = true;
-            this.label_AppendFilesCount.Location = new System.Drawing.Point(523, 426);
+            this.label_AppendFilesCount.ForeColor = System.Drawing.Color.AliceBlue;
+            this.label_AppendFilesCount.Location = new System.Drawing.Point(549, 429);
             this.label_AppendFilesCount.Name = "label_AppendFilesCount";
             this.label_AppendFilesCount.Size = new System.Drawing.Size(53, 15);
             this.label_AppendFilesCount.TabIndex = 9;
             this.label_AppendFilesCount.Text = "Files : 0";
             this.label_AppendFilesCount.Click += new System.EventHandler(this.label_AppendFilesCount_Click);
             // 
-            // button_ShowTalk
+            // button_ResetReply
             // 
-            this.button_ShowTalk.Enabled = false;
-            this.button_ShowTalk.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.button_ShowTalk.Location = new System.Drawing.Point(523, 400);
-            this.button_ShowTalk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.button_ShowTalk.Name = "button_ShowTalk";
-            this.button_ShowTalk.Size = new System.Drawing.Size(75, 23);
-            this.button_ShowTalk.TabIndex = 10;
-            this.button_ShowTalk.Text = "Talk";
-            this.button_ShowTalk.UseVisualStyleBackColor = true;
-            this.button_ShowTalk.Click += new System.EventHandler(this.button_ShowTalk_Click);
+            this.button_ResetReply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button_ResetReply.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_ResetReply.ForeColor = System.Drawing.Color.AliceBlue;
+            this.button_ResetReply.Location = new System.Drawing.Point(12, 405);
+            this.button_ResetReply.Name = "button_ResetReply";
+            this.button_ResetReply.Size = new System.Drawing.Size(23, 15);
+            this.button_ResetReply.TabIndex = 13;
+            this.button_ResetReply.Text = " X ";
+            this.button_ResetReply.Visible = false;
+            this.button_ResetReply.Click += new System.EventHandler(this.button_ResetReply_Click);
             // 
-            // button_Account
+            // button_Tweet
             // 
-            this.button_Account.Location = new System.Drawing.Point(522, 8);
-            this.button_Account.Name = "button_Account";
-            this.button_Account.Size = new System.Drawing.Size(75, 23);
-            this.button_Account.TabIndex = 1;
-            this.button_Account.Text = "Account";
-            this.button_Account.UseVisualStyleBackColor = true;
-            this.button_Account.Click += new System.EventHandler(this.button_Account_Click);
+            this.button_Tweet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button_Tweet.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_Tweet.ForeColor = System.Drawing.Color.AliceBlue;
+            this.button_Tweet.Location = new System.Drawing.Point(546, 451);
+            this.button_Tweet.Name = "button_Tweet";
+            this.button_Tweet.Size = new System.Drawing.Size(54, 15);
+            this.button_Tweet.TabIndex = 12;
+            this.button_Tweet.Text = " Reload ";
+            this.button_Tweet.Click += new System.EventHandler(this.button_Tweet_Click);
+            // 
+            // button_AccountChange
+            // 
+            this.button_AccountChange.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button_AccountChange.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_AccountChange.ForeColor = System.Drawing.Color.AliceBlue;
+            this.button_AccountChange.Location = new System.Drawing.Point(384, 0);
+            this.button_AccountChange.Name = "button_AccountChange";
+            this.button_AccountChange.Size = new System.Drawing.Size(108, 15);
+            this.button_AccountChange.TabIndex = 11;
+            this.button_AccountChange.Text = " Account Change ";
+            this.button_AccountChange.Click += new System.EventHandler(this.button_AccountChange_Click);
             // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 478);
-            this.Controls.Add(this.button_Account);
-            this.Controls.Add(this.button_ShowTalk);
-            this.Controls.Add(this.label_AppendFilesCount);
             this.Controls.Add(this.button_ResetReply);
+            this.Controls.Add(this.button_Tweet);
+            this.Controls.Add(this.button_AccountChange);
+            this.Controls.Add(this.label_AppendFilesCount);
             this.Controls.Add(this.label_InReplyTo);
             this.Controls.Add(this.webBrowser_Detail);
-            this.Controls.Add(this.button_Tweet);
             this.Controls.Add(this.textBox_Input);
             this.Controls.Add(this.tabControl_Timeline);
-            this.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.MaximizeBox = false;
             this.Name = "Form_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "mik_Twitter_Test";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);
             this.Load += new System.EventHandler(this.Form_Main_Load);
+            this.Controls.SetChildIndex(this.tabControl_Timeline, 0);
+            this.Controls.SetChildIndex(this.textBox_Input, 0);
+            this.Controls.SetChildIndex(this.webBrowser_Detail, 0);
+            this.Controls.SetChildIndex(this.label_InReplyTo, 0);
+            this.Controls.SetChildIndex(this.label_AppendFilesCount, 0);
+            this.Controls.SetChildIndex(this.button_AccountChange, 0);
+            this.Controls.SetChildIndex(this.button_Tweet, 0);
+            this.Controls.SetChildIndex(this.button_ResetReply, 0);
             this.tabControl_Timeline.ResumeLayout(false);
             this.tabPage_Home.ResumeLayout(false);
             this.tabPage_Mention.ResumeLayout(false);
@@ -369,20 +380,19 @@
         private System.Windows.Forms.ColumnHeader columnHeader_MentionUserName;
         private System.Windows.Forms.ColumnHeader columnHeader_MentionText;
         private System.Windows.Forms.TextBox textBox_Input;
-        private System.Windows.Forms.Button button_Tweet;
         private System.Windows.Forms.WebBrowser webBrowser_Detail;
         private System.Windows.Forms.Label label_InReplyTo;
-        private System.Windows.Forms.Button button_ResetReply;
         private System.Windows.Forms.Label label_AppendFilesCount;
-        private System.Windows.Forms.Button button_ShowTalk;
         private System.Windows.Forms.TabPage tabPage_Fav;
         private System.Windows.Forms.ListView listView_Fav;
         private System.Windows.Forms.ColumnHeader columnHeader_FavDate;
         private System.Windows.Forms.ColumnHeader columnHeader_FavUserId;
         private System.Windows.Forms.ColumnHeader columnHeader_FavUserName;
         private System.Windows.Forms.ColumnHeader columnHeader_FavText;
-        private System.Windows.Forms.Button button_Account;
         private System.Windows.Forms.ToolTip toolTip;
+        private MyControls.Mik_LabelButton button_AccountChange;
+        private MyControls.Mik_LabelButton button_Tweet;
+        private MyControls.Mik_LabelButton button_ResetReply;
     }
 }
 

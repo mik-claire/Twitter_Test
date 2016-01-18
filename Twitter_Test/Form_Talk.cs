@@ -9,10 +9,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CoreTweet;
+using MyControls;
 
 namespace Twitter_Test
 {
-    public partial class Form_Talk : Form
+    public partial class Form_Talk :Mik_Form
     {
         public Form_Talk(List<Status> talk)
         {
@@ -29,6 +30,8 @@ namespace Twitter_Test
 
         private void Form_Talk_Load(object sender, EventArgs e)
         {
+            this.Title = "";
+
             StringBuilder documentText = new StringBuilder();
             documentText.Append(
 @"<html>
@@ -39,7 +42,7 @@ namespace Twitter_Test
     //-->
   </style>
 </head>
-<body>
+<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#6495ED"" vlink=""#FFB6C1"">
 ");
 
             foreach (Status tweet in this.talk)

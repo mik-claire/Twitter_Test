@@ -8,15 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MyLib;
+using MyControls;
 
 namespace Twitter_Test
 {
-    public partial class Form_InputPinCode : Form
+    public partial class Form_InputPinCode : Mik_Form
     {
         public Form_InputPinCode(string url)
         {
             InitializeComponent();
             this.authorizeUrl = url;
+            this.Title = "Enter PIN code.";
         }
 
         /// <summary>

@@ -13,13 +13,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MyLib;
+using MyControls;
 
 using CoreTweet;
 using CoreTweet.Streaming;
 
 namespace Twitter_Test
 {
-    public partial class Form_Main : Form
+    public partial class Form_Main : Mik_Form
     {
         public Form_Main()
         {
@@ -68,6 +69,9 @@ namespace Twitter_Test
             show(this.tokens);
 
             streaming(this.tokens);
+
+            this.webBrowser_Detail.DocumentText =
+@"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
         }
 
         private void show(Tokens tokens)
@@ -77,7 +81,7 @@ namespace Twitter_Test
                 this.Close();
             }
             this.textBox_Input.Text = string.Empty;
-            this.Text = "@" + this.user.ScreenName;
+            this.Title = "@" + this.user.ScreenName;
 
             showHomeTimeline(this.listView_Home);
             this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
@@ -210,7 +214,8 @@ namespace Twitter_Test
 
             if (lv.SelectedItems.Count == 0)
             {
-                this.webBrowser_Detail.DocumentText = string.Empty;
+                this.webBrowser_Detail.DocumentText =
+@"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
                 return;
             }
 
@@ -250,15 +255,6 @@ namespace Twitter_Test
                 }
             }
 
-            if (tweet.InReplyToStatusId == null)
-            {
-                this.button_ShowTalk.Enabled = false;
-            }
-            else
-            {
-                this.button_ShowTalk.Enabled = true;
-            }
-
             StringBuilder sb2 = new StringBuilder();
             sb2.Append("<font size=\"2\" face=\"Meiryo UI\">");
             sb2.Append(item.SubItems[0].Text);                                  // Date-Time
@@ -278,7 +274,8 @@ namespace Twitter_Test
     //-->
   </style>
 </head>
-<body>
+<body
+<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#6495ED"" vlink=""#FFB6C1"">
   <div id=""icon"">
     <img border=""0"" src=""{0}"" width=""32"" height=""32"">
   </div>
@@ -315,7 +312,7 @@ namespace Twitter_Test
         {
             try
             {
-                if (this.button_Tweet.Text == "Tweet")
+                if (this.button_Tweet.Text == " Tweet ")
                 {
                     tweet(this.tokens, this.textBox_Input.Text, this.uploadFilePathList);
                     this.textBox_Input.Text = string.Empty;
@@ -359,11 +356,11 @@ namespace Twitter_Test
         {
             if (this.textBox_Input.Text.Trim() == string.Empty)
             {
-                this.button_Tweet.Text = "Reload";
+                this.button_Tweet.Text = " Reload ";
             }
             else
             {
-                this.button_Tweet.Text = "Tweet";
+                this.button_Tweet.Text = " Tweet ";
             }
 
             if (this.afterTweet)
@@ -375,7 +372,7 @@ namespace Twitter_Test
             string tmp = this.button_Tweet.Text;
             if (140 < this.textBox_Input.Text.Length)
             {
-                this.button_Tweet.Text = "Over!!";
+                this.button_Tweet.Text = " Over!! ";
                 this.button_Tweet.Enabled = false;
                 return;
             }
@@ -458,7 +455,7 @@ namespace Twitter_Test
                 Properties.Settings.Default.AccessTokenSecret = this.tokens.AccessTokenSecret;
                 Properties.Settings.Default.Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             finally
@@ -540,7 +537,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    if (this.button_Tweet.Text == "Tweet")
+                    if (this.button_Tweet.Text == " Tweet ")
                     {
                         tweet(this.tokens, this.textBox_Input.Text, this.uploadFilePathList);
                         this.textBox_Input.Text = string.Empty;
@@ -613,6 +610,33 @@ namespace Twitter_Test
             }
 
             ContextMenuStrip cMenu = new ContextMenuStrip();
+
+
+            if (tweet.InReplyToStatusId != null)
+            {
+                // RT
+                ToolStripMenuItem menuItem_Talk = new ToolStripMenuItem();
+                menuItem_Talk.Text = "Talk";
+                menuItem_Talk.Click += delegate
+                {
+                    try
+                    {
+                        List<Status> talk = getTalk((Status)lv.SelectedItems[0].Tag);
+
+                        Form_Talk f = new Form_Talk(talk);
+                        f.Show();
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("存在しないツイートです。",
+                            "Error!!",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                    }
+                };
+                cMenu.Items.Add(menuItem_Talk);
+
+            }
 
             // RT
             ToolStripMenuItem menuItem_RT = new ToolStripMenuItem();
@@ -762,7 +786,7 @@ namespace Twitter_Test
             }
         }
 
-        private void button_Account_Click(object sender, EventArgs e)
+        private void button_AccountChange_Click(object sender, EventArgs e)
         {
             string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
             string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
