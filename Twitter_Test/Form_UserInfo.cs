@@ -53,7 +53,9 @@ namespace Twitter_Test
 
             this.pictureBox_UserIcon.ImageLocation = user.ProfileImageUrl;
             this.pictureBox_UserIcon.Refresh();
-            var cnt = user.StatusesCount;
+
+            this.webBrowser_Detail.DocumentText =
+@"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
 
             showUserTimeline(this.listView_Tweet);
         }
