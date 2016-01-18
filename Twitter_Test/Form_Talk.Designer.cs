@@ -34,7 +34,7 @@
             // 
             // webBrowser_Talk
             // 
-            this.webBrowser_Talk.Location = new System.Drawing.Point(0, 15);
+            this.webBrowser_Talk.Location = new System.Drawing.Point(0, 21);
             this.webBrowser_Talk.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.webBrowser_Talk.MinimumSize = new System.Drawing.Size(23, 25);
             this.webBrowser_Talk.Name = "webBrowser_Talk";
@@ -47,7 +47,7 @@
             this.button_Close.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_Close.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_Close.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_Close.Location = new System.Drawing.Point(522, 334);
+            this.button_Close.Location = new System.Drawing.Point(522, 340);
             this.button_Close.Name = "button_Close";
             this.button_Close.Size = new System.Drawing.Size(46, 15);
             this.button_Close.TabIndex = 3;
