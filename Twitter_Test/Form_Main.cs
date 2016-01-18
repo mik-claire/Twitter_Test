@@ -22,6 +22,28 @@ namespace Twitter_Test
 {
     public partial class Form_Main : Mik_Form
     {
+        public void setTweet(Status tweet, string inReplyTo)
+        {
+            this.status = tweet;
+            this.label_InReplyTo.Text = inReplyTo;
+            this.toolTip.Active = false;
+
+            if (70 < inReplyTo.Length)
+            {
+                this.label_InReplyTo.Text = inReplyTo.Substring(0, 70) + "...";
+                this.toolTip.SetToolTip(this.label_InReplyTo, inReplyTo);
+                this.toolTip.Active = true;
+            }
+            this.textBox_Input.Text =
+                this.textBox_Input.Text.Insert(0, string.Format("@{0} ", this.status.User.ScreenName));
+            this.button_ResetReply.Visible = true;
+        }
+
+        public void setQt(string context)
+        {
+            this.textBox_Input.Text += context;
+        }
+
         public Form_Main()
         {
             InitializeComponent();
@@ -91,13 +113,13 @@ namespace Twitter_Test
             this.timer_ShowStatus.Stop();
 
             showHomeTimeline(this.listView_Home);
-            this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
+            this.listView_Home.Items[0].EnsureVisible();
 
             showMentionTimeline(this.listView_Mention);
-            this.listView_Mention.Items[this.listView_Mention.Items.Count - 1].EnsureVisible();
+            this.listView_Mention.Items[0].EnsureVisible();
 
             showFavTimeline(this.listView_Fav);
-            this.listView_Fav.Items[this.listView_Fav.Items.Count - 1].EnsureVisible();
+            this.listView_Fav.Items[0].EnsureVisible();
         }
 
         private void showHomeTimeline(ListView lv)
@@ -179,8 +201,8 @@ namespace Twitter_Test
                     item.Tag = tweet;
 
                     deleteOldTweet(lv);
-                    lv.Items.Add(item);
-                    lv.Items[lv.Items.Count - 1].EnsureVisible();
+                    lv.Items.Insert(0, item);
+                    lv.Items[0].EnsureVisible();
                 }
                 /*
                 if (lvスクロールが一番下)
@@ -199,7 +221,7 @@ namespace Twitter_Test
         {
             while (100 < lv.Items.Count)
             {
-                lv.Items.RemoveAt(0);
+                lv.Items.RemoveAt(lv.Items.Count - 1);
             }
         }
 
@@ -650,7 +672,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    Form_UserInfo f = new Form_UserInfo(tweet.User);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, tweet.User, this);
                     f.Show();
                 }
                 catch (Exception)
@@ -843,10 +865,10 @@ namespace Twitter_Test
             switch (this.tabControl_Timeline.SelectedIndex)
             {
                 case 0:
-                    this.listView_Home.Items[this.listView_Home.Items.Count - 1].EnsureVisible();
+                    this.listView_Home.Items[0].EnsureVisible();
                     break;
                 case 1:
-                    this.listView_Mention.Items[this.listView_Mention.Items.Count - 1].EnsureVisible();
+                    this.listView_Mention.Items[0].EnsureVisible();
                     break;
                 default:
                     break;

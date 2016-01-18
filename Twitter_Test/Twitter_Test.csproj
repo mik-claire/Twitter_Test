@@ -41,8 +41,7 @@
       <HintPath>..\packages\CoreTweet.0.6.0.251\lib\net45\CoreTweet.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MyControls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="MyControls">
       <HintPath>..\..\MyControls\MyControls\bin\Release\MyControls.dll</HintPath>
     </Reference>
     <Reference Include="MyLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

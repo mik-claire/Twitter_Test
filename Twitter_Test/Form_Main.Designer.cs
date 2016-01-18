@@ -116,7 +116,7 @@
             this.tabControl_Timeline.Controls.Add(this.tabPage_Home);
             this.tabControl_Timeline.Controls.Add(this.tabPage_Mention);
             this.tabControl_Timeline.Controls.Add(this.tabPage_Fav);
-            this.tabControl_Timeline.Location = new System.Drawing.Point(12, 20);
+            this.tabControl_Timeline.Location = new System.Drawing.Point(12, 94);
             this.tabControl_Timeline.Name = "tabControl_Timeline";
             this.tabControl_Timeline.SelectedIndex = 0;
             this.tabControl_Timeline.Size = new System.Drawing.Size(586, 280);
@@ -255,7 +255,7 @@
             this.textBox_Input.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBox_Input.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox_Input.ForeColor = System.Drawing.Color.AliceBlue;
-            this.textBox_Input.Location = new System.Drawing.Point(58, 428);
+            this.textBox_Input.Location = new System.Drawing.Point(58, 24);
             this.textBox_Input.Multiline = true;
             this.textBox_Input.Name = "textBox_Input";
             this.textBox_Input.Size = new System.Drawing.Size(477, 40);
@@ -267,7 +267,7 @@
             // 
             // webBrowser_Detail
             // 
-            this.webBrowser_Detail.Location = new System.Drawing.Point(12, 305);
+            this.webBrowser_Detail.Location = new System.Drawing.Point(12, 380);
             this.webBrowser_Detail.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_Detail.Name = "webBrowser_Detail";
             this.webBrowser_Detail.Size = new System.Drawing.Size(586, 93);
@@ -279,7 +279,7 @@
             this.label_InReplyTo.AutoSize = true;
             this.label_InReplyTo.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_InReplyTo.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_InReplyTo.Location = new System.Drawing.Point(38, 398);
+            this.label_InReplyTo.Location = new System.Drawing.Point(60, 64);
             this.label_InReplyTo.Name = "label_InReplyTo";
             this.label_InReplyTo.Size = new System.Drawing.Size(0, 14);
             this.label_InReplyTo.TabIndex = 7;
@@ -288,7 +288,7 @@
             // 
             this.label_AppendFilesCount.AutoSize = true;
             this.label_AppendFilesCount.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_AppendFilesCount.Location = new System.Drawing.Point(548, 429);
+            this.label_AppendFilesCount.Location = new System.Drawing.Point(546, 49);
             this.label_AppendFilesCount.Name = "label_AppendFilesCount";
             this.label_AppendFilesCount.Size = new System.Drawing.Size(53, 15);
             this.label_AppendFilesCount.TabIndex = 9;
@@ -300,7 +300,7 @@
             this.button_ResetReply.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_ResetReply.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_ResetReply.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_ResetReply.Location = new System.Drawing.Point(12, 405);
+            this.button_ResetReply.Location = new System.Drawing.Point(22, 71);
             this.button_ResetReply.Name = "button_ResetReply";
             this.button_ResetReply.Size = new System.Drawing.Size(23, 15);
             this.button_ResetReply.TabIndex = 13;
@@ -313,7 +313,7 @@
             this.button_Tweet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_Tweet.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_Tweet.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_Tweet.Location = new System.Drawing.Point(546, 451);
+            this.button_Tweet.Location = new System.Drawing.Point(545, 24);
             this.button_Tweet.Name = "button_Tweet";
             this.button_Tweet.Size = new System.Drawing.Size(54, 15);
             this.button_Tweet.TabIndex = 12;
@@ -327,9 +327,10 @@
             this.button_AccountChange.ForeColor = System.Drawing.Color.AliceBlue;
             this.button_AccountChange.Location = new System.Drawing.Point(384, 0);
             this.button_AccountChange.Name = "button_AccountChange";
-            this.button_AccountChange.Size = new System.Drawing.Size(108, 15);
+            this.button_AccountChange.Size = new System.Drawing.Size(108, 20);
             this.button_AccountChange.TabIndex = 11;
             this.button_AccountChange.Text = " Account Change ";
+            this.button_AccountChange.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button_AccountChange.Click += new System.EventHandler(this.button_AccountChange_Click);
             // 
             // label_Status
@@ -337,10 +338,11 @@
             this.label_Status.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_Status.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_Status.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_Status.Location = new System.Drawing.Point(0, 485);
+            this.label_Status.Location = new System.Drawing.Point(0, 480);
             this.label_Status.Name = "label_Status";
-            this.label_Status.Size = new System.Drawing.Size(610, 15);
+            this.label_Status.Size = new System.Drawing.Size(610, 20);
             this.label_Status.TabIndex = 14;
+            this.label_Status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // timer_ShowStatus
             // 
@@ -350,7 +352,7 @@
             // 
             // pictureBox_UserIcon
             // 
-            this.pictureBox_UserIcon.Location = new System.Drawing.Point(12, 428);
+            this.pictureBox_UserIcon.Location = new System.Drawing.Point(12, 23);
             this.pictureBox_UserIcon.Name = "pictureBox_UserIcon";
             this.pictureBox_UserIcon.Size = new System.Drawing.Size(40, 40);
             this.pictureBox_UserIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;

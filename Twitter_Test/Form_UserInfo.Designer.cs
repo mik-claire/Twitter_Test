@@ -86,7 +86,7 @@
             this.label_Profile.ForeColor = System.Drawing.Color.AliceBlue;
             this.label_Profile.Location = new System.Drawing.Point(12, 72);
             this.label_Profile.Name = "label_Profile";
-            this.label_Profile.Size = new System.Drawing.Size(276, 102);
+            this.label_Profile.Size = new System.Drawing.Size(387, 102);
             this.label_Profile.TabIndex = 19;
             // 
             // label_CountTweet
@@ -105,7 +105,7 @@
             this.label_Following.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_Following.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_Following.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_Following.Location = new System.Drawing.Point(12, 199);
+            this.label_Following.Location = new System.Drawing.Point(143, 179);
             this.label_Following.Name = "label_Following";
             this.label_Following.Size = new System.Drawing.Size(125, 15);
             this.label_Following.TabIndex = 21;
@@ -116,7 +116,7 @@
             this.label_Follower.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_Follower.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_Follower.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_Follower.Location = new System.Drawing.Point(12, 219);
+            this.label_Follower.Location = new System.Drawing.Point(274, 179);
             this.label_Follower.Name = "label_Follower";
             this.label_Follower.Size = new System.Drawing.Size(125, 15);
             this.label_Follower.TabIndex = 22;
@@ -125,10 +125,10 @@
             // tabControl_Timeline
             // 
             this.tabControl_Timeline.Controls.Add(this.tabPage_Tweet);
-            this.tabControl_Timeline.Location = new System.Drawing.Point(12, 240);
+            this.tabControl_Timeline.Location = new System.Drawing.Point(12, 199);
             this.tabControl_Timeline.Name = "tabControl_Timeline";
             this.tabControl_Timeline.SelectedIndex = 0;
-            this.tabControl_Timeline.Size = new System.Drawing.Size(276, 248);
+            this.tabControl_Timeline.Size = new System.Drawing.Size(387, 289);
             this.tabControl_Timeline.TabIndex = 23;
             // 
             // tabPage_Tweet
@@ -140,16 +140,16 @@
             this.tabPage_Tweet.Location = new System.Drawing.Point(4, 24);
             this.tabPage_Tweet.Name = "tabPage_Tweet";
             this.tabPage_Tweet.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Tweet.Size = new System.Drawing.Size(268, 220);
+            this.tabPage_Tweet.Size = new System.Drawing.Size(379, 261);
             this.tabPage_Tweet.TabIndex = 0;
             this.tabPage_Tweet.Text = "Tweet";
             // 
             // webBrowser_Detail
             // 
-            this.webBrowser_Detail.Location = new System.Drawing.Point(1, 128);
+            this.webBrowser_Detail.Location = new System.Drawing.Point(1, 168);
             this.webBrowser_Detail.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_Detail.Name = "webBrowser_Detail";
-            this.webBrowser_Detail.Size = new System.Drawing.Size(267, 92);
+            this.webBrowser_Detail.Size = new System.Drawing.Size(377, 92);
             this.webBrowser_Detail.TabIndex = 24;
             // 
             // listView_Tweet
@@ -161,14 +161,18 @@
             this.columnHeader_Text});
             this.listView_Tweet.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.listView_Tweet.ForeColor = System.Drawing.Color.AliceBlue;
+            this.listView_Tweet.FullRowSelect = true;
             this.listView_Tweet.GridLines = true;
             this.listView_Tweet.Location = new System.Drawing.Point(2, 2);
             this.listView_Tweet.MultiSelect = false;
             this.listView_Tweet.Name = "listView_Tweet";
-            this.listView_Tweet.Size = new System.Drawing.Size(264, 120);
+            this.listView_Tweet.Size = new System.Drawing.Size(375, 160);
             this.listView_Tweet.TabIndex = 0;
             this.listView_Tweet.UseCompatibleStateImageBehavior = false;
             this.listView_Tweet.View = System.Windows.Forms.View.Details;
+            this.listView_Tweet.SelectedIndexChanged += new System.EventHandler(this.listView_Tweet_SelectedIndexChanged);
+            this.listView_Tweet.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Tweet_MouseClick);
+            this.listView_Tweet.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_Tweet_MouseDoubleClick);
             // 
             // columnHeader_Date
             // 
@@ -178,13 +182,13 @@
             // columnHeader_Text
             // 
             this.columnHeader_Text.Text = "Text";
-            this.columnHeader_Text.Width = 90;
+            this.columnHeader_Text.Width = 200;
             // 
             // Form_UserInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(300, 500);
+            this.ClientSize = new System.Drawing.Size(411, 500);
             this.Controls.Add(this.tabControl_Timeline);
             this.Controls.Add(this.label_Profile);
             this.Controls.Add(this.label_Follower);
