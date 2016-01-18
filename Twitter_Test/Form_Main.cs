@@ -57,6 +57,9 @@ namespace Twitter_Test
                 Properties.Settings.Default.AccessToken,
                 Properties.Settings.Default.AccessTokenSecret);
             this.user = this.tokens.Account.VerifyCredentials();
+
+            Properties.Settings.Default.AccessToken = string.Empty;
+            Properties.Settings.Default.AccessTokenSecret = string.Empty;
         }
 
         private MyClass util = new MyClass();
@@ -133,7 +136,7 @@ namespace Twitter_Test
         {
             try
             {
-                var fav = tokens.Favorites.List(count => 200);
+                var fav = tokens.Favorites.List(count => 300);
 
                 for (int i = fav.Count - 1; i >= 0; i--)
                 {
@@ -316,6 +319,24 @@ namespace Twitter_Test
                 {
                     tweet(this.tokens, this.textBox_Input.Text, this.uploadFilePathList);
                     this.textBox_Input.Text = string.Empty;
+                }
+                else if (this.button_Tweet.Text == " Reload ")
+                {
+                    ListView lv = getFocusedListView();
+                    switch(lv.Name)
+                    {
+                        case "listView_Home":
+                            showHomeTimeline(lv);
+                            break;
+                        case "listView_Mention":
+                            showHomeTimeline(lv);
+                            break;
+                        case "listView_Fav":
+                            showHomeTimeline(lv);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
             catch(Exception ex)
