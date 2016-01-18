@@ -85,6 +85,8 @@ namespace Twitter_Test
             }
             this.textBox_Input.Text = string.Empty;
             this.Title = "@" + this.user.ScreenName;
+            this.pictureBox_UserIcon.ImageLocation = this.user.ProfileImageUrl;
+            this.pictureBox_UserIcon.Refresh();
 
             this.timer_ShowStatus.Stop();
 

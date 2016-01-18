@@ -58,10 +58,12 @@
             this.button_AccountChange = new MyControls.Mik_LabelButton();
             this.label_Status = new MyControls.Mik_Label();
             this.timer_ShowStatus = new System.Windows.Forms.Timer(this.components);
+            this.pictureBox_UserIcon = new System.Windows.Forms.PictureBox();
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
             this.tabPage_Fav.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_UserIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // listView_Home
@@ -253,10 +255,10 @@
             this.textBox_Input.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBox_Input.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox_Input.ForeColor = System.Drawing.Color.AliceBlue;
-            this.textBox_Input.Location = new System.Drawing.Point(12, 428);
+            this.textBox_Input.Location = new System.Drawing.Point(58, 428);
             this.textBox_Input.Multiline = true;
             this.textBox_Input.Name = "textBox_Input";
-            this.textBox_Input.Size = new System.Drawing.Size(523, 40);
+            this.textBox_Input.Size = new System.Drawing.Size(477, 40);
             this.textBox_Input.TabIndex = 5;
             this.textBox_Input.TextChanged += new System.EventHandler(this.textBox_Input_TextChanged);
             this.textBox_Input.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragDrop);
@@ -286,7 +288,7 @@
             // 
             this.label_AppendFilesCount.AutoSize = true;
             this.label_AppendFilesCount.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_AppendFilesCount.Location = new System.Drawing.Point(549, 429);
+            this.label_AppendFilesCount.Location = new System.Drawing.Point(548, 429);
             this.label_AppendFilesCount.Name = "label_AppendFilesCount";
             this.label_AppendFilesCount.Size = new System.Drawing.Size(53, 15);
             this.label_AppendFilesCount.TabIndex = 9;
@@ -346,11 +348,21 @@
             this.timer_ShowStatus.Interval = 1000;
             this.timer_ShowStatus.Tick += new System.EventHandler(this.timer_ShowStatus_Tick);
             // 
+            // pictureBox_UserIcon
+            // 
+            this.pictureBox_UserIcon.Location = new System.Drawing.Point(12, 428);
+            this.pictureBox_UserIcon.Name = "pictureBox_UserIcon";
+            this.pictureBox_UserIcon.Size = new System.Drawing.Size(40, 40);
+            this.pictureBox_UserIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox_UserIcon.TabIndex = 15;
+            this.pictureBox_UserIcon.TabStop = false;
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(610, 500);
+            this.Controls.Add(this.pictureBox_UserIcon);
             this.Controls.Add(this.label_Status);
             this.Controls.Add(this.button_ResetReply);
             this.Controls.Add(this.button_Tweet);
@@ -375,10 +387,12 @@
             this.Controls.SetChildIndex(this.button_Tweet, 0);
             this.Controls.SetChildIndex(this.button_ResetReply, 0);
             this.Controls.SetChildIndex(this.label_Status, 0);
+            this.Controls.SetChildIndex(this.pictureBox_UserIcon, 0);
             this.tabControl_Timeline.ResumeLayout(false);
             this.tabPage_Home.ResumeLayout(false);
             this.tabPage_Mention.ResumeLayout(false);
             this.tabPage_Fav.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_UserIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -415,6 +429,7 @@
         private MyControls.Mik_LabelButton button_ResetReply;
         private MyControls.Mik_Label label_Status;
         private System.Windows.Forms.Timer timer_ShowStatus;
+        private System.Windows.Forms.PictureBox pictureBox_UserIcon;
     }
 }
 
