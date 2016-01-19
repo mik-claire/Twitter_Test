@@ -18,7 +18,7 @@ using MyControls;
 using CoreTweet;
 using CoreTweet.Core;
 
-namespace Twitter_Test.Properties
+namespace Twitter_Test
 {
     public partial class Form_SelectAccount : Mik_Form
     {
@@ -36,6 +36,11 @@ namespace Twitter_Test.Properties
         }
 
         private int selectedResult = 0;
+        public int SelectedResult
+        {
+            get { return this.selectedResult; }
+            set { this.selectedResult = value; }
+        }
 
         private void Form_SelectAccount_Load(object sender, EventArgs e)
         {

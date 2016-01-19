@@ -716,12 +716,25 @@ namespace Twitter_Test
                     }
 
                     streaming(this.tokens);
-                    return;
                 }
+
+                if (command == "account")
+                {
+                    
+                }
+
                 if (command == "exit")
                 {
                     this.Close();
                 }
+            }
+        }
+
+        private void addAccount()
+        {
+            using (Form_SelectAccount f = new Form_SelectAccount())
+            {
+                f.ShowDialog();
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace Twitter_Test.Properties
+﻿namespace Twitter_Test
 {
     partial class Form_SelectAccount
     {

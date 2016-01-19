@@ -123,7 +123,7 @@
     <EmbeddedResource Include="Form_Shell.resx">
       <DependentUpon>Form_Shell.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Form_SelectAccount.resx">
+    <EmbeddedResource Include="Form_SelectAccount.resx">
       <DependentUpon>Form_SelectAccount.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -137,10 +137,10 @@
     <Compile Include="Form_Shell.Designer.cs">
       <DependentUpon>Form_Shell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Form_SelectAccount.cs">
+    <Compile Include="Form_SelectAccount.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Properties\Form_SelectAccount.Designer.cs">
+    <Compile Include="Form_SelectAccount.Designer.cs">
       <DependentUpon>Form_SelectAccount.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
