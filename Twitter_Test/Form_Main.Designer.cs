@@ -264,6 +264,7 @@
             this.textBox_Input.TextChanged += new System.EventHandler(this.textBox_Input_TextChanged);
             this.textBox_Input.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragDrop);
             this.textBox_Input.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragEnter);
+            this.textBox_Input.Enter += new System.EventHandler(this.textBox_Input_Enter);
             this.textBox_Input.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_Input_KeyDown);
             // 
             // webBrowser_Detail

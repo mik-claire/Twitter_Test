@@ -107,7 +107,6 @@ namespace Twitter_Test
 
             this.webBrowser_Detail.DocumentText =
 @"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
-
         }
 
         private void show(Tokens tokens)
@@ -1126,6 +1125,11 @@ namespace Twitter_Test
                 this.label_Status.Text = string.Empty;
                 this.timer_ShowStatus.Stop();
             }
+        }
+
+        private void textBox_Input_Enter(object sender, EventArgs e)
+        {
+            this.textBox_Input.Select(this.textBox_Input.Text.Length, 0);
         }
     }
 }
