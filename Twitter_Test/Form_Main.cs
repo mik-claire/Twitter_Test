@@ -50,8 +50,9 @@ namespace Twitter_Test
 
             string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
             string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
-            if (string.IsNullOrEmpty(Properties.Settings.Default.AccessToken) &&
-                string.IsNullOrEmpty(Properties.Settings.Default.AccessTokenSecret))
+            /*if (string.IsNullOrEmpty(Properties.Settings.Default.AccessToken) &&
+                string.IsNullOrEmpty(Properties.Settings.Default.AccessTokenSecret))*/
+            if (Properties.Settings.Default.AccessTokenList.Count == 0)
             {
                 var sessions = OAuth.Authorize(apiKey, apiKeySecret);
                 var url = sessions.AuthorizeUri;
@@ -73,15 +74,26 @@ namespace Twitter_Test
                 return;
             }
 
+            /*
             this.tokens = Tokens.Create(
                 apiKey,
                 apiKeySecret,
                 Properties.Settings.Default.AccessToken,
                 Properties.Settings.Default.AccessTokenSecret);
             this.user = this.tokens.Account.VerifyCredentials();
-
+            
             Properties.Settings.Default.AccessToken = string.Empty;
             Properties.Settings.Default.AccessTokenSecret = string.Empty;
+            */
+
+            string[] tokenData = Properties.Settings.Default.AccessTokenList[0].Split(',');
+
+            this.tokens = Tokens.Create(
+                apiKey,
+                apiKeySecret,
+                tokenData[1],
+                tokenData[2]);
+            this.user = this.tokens.Account.VerifyCredentials();
         }
 
         private MyClass util = new MyClass();
@@ -100,6 +112,14 @@ namespace Twitter_Test
             this.webBrowser_Detail.DocumentText =
 @"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
 
+            System.Collections.Specialized.StringCollection col = new System.Collections.Specialized.StringCollection();
+            string tokenData = string.Format("{0},{1},{2}",
+                this.user.ScreenName,
+                this.tokens.AccessToken,
+                this.tokens.AccessTokenSecret);
+            col.Add(tokenData);
+            Properties.Settings.Default.AccessTokenList = col;
+            Properties.Settings.Default.Save();
         }
 
         private void show(Tokens tokens)
@@ -518,6 +538,14 @@ namespace Twitter_Test
             {
                 Properties.Settings.Default.AccessToken = this.tokens.AccessToken;
                 Properties.Settings.Default.AccessTokenSecret = this.tokens.AccessTokenSecret;
+                
+                System.Collections.Specialized.StringCollection col = new System.Collections.Specialized.StringCollection();
+                string tokenData = string.Format("{0},{1},{2}",
+                    this.user.ScreenName,
+                    this.tokens.AccessToken,
+                    this.tokens.AccessTokenSecret);
+                col.Add(tokenData);
+                Properties.Settings.Default.AccessTokenList = col;
                 Properties.Settings.Default.Save();
             }
             catch (Exception)

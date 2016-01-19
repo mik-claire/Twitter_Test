@@ -46,5 +46,28 @@ namespace Twitter_Test.Properties {
                 this["AccessTokenSecret"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection AccessTokenList {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["AccessTokenList"]));
+            }
+            set {
+                this["AccessTokenList"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastLoginUser {
+            get {
+                return ((int)(this["LastLoginUser"]));
+            }
+            set {
+                this["LastLoginUser"] = value;
+            }
+        }
     }
 }
