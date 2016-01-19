@@ -120,11 +120,20 @@
     <EmbeddedResource Include="Form_UserInfo.resx">
       <DependentUpon>Form_UserInfo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form_Shell.resx">
+      <DependentUpon>Form_Shell.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Form_Shell.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Shell.Designer.cs">
+      <DependentUpon>Form_Shell.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>

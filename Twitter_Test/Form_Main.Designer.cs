@@ -83,7 +83,7 @@
             this.listView_Home.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Home.MultiSelect = false;
             this.listView_Home.Name = "listView_Home";
-            this.listView_Home.Size = new System.Drawing.Size(580, 252);
+            this.listView_Home.Size = new System.Drawing.Size(579, 252);
             this.listView_Home.TabIndex = 0;
             this.listView_Home.UseCompatibleStateImageBehavior = false;
             this.listView_Home.View = System.Windows.Forms.View.Details;
@@ -258,6 +258,7 @@
             this.textBox_Input.Location = new System.Drawing.Point(58, 24);
             this.textBox_Input.Multiline = true;
             this.textBox_Input.Name = "textBox_Input";
+            this.textBox_Input.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox_Input.Size = new System.Drawing.Size(477, 40);
             this.textBox_Input.TabIndex = 5;
             this.textBox_Input.TextChanged += new System.EventHandler(this.textBox_Input_TextChanged);

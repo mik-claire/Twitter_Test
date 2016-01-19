@@ -103,7 +103,6 @@ namespace Twitter_Test
                 item.Tag = tweet;
 
                 lv.Items.Insert(0, item);
-                lv.Items[0].EnsureVisible();
             }
             catch (Exception ex)
             {
@@ -224,15 +223,38 @@ namespace Twitter_Test
                 }
             }
 
-            if (link != null && link != "")
+            if (link == null || link == string.Empty)
+            {
+                return;
+            }
+
+            Regex linkToAccount = new Regex("https://www.twitter.com/[a-zA-Z0-9_]+", RegexOptions.IgnoreCase);
+            if (linkToAccount.IsMatch(link))
             {
                 try
                 {
-                    System.Diagnostics.Process.Start(link);
+                    string screenName = link.Substring(24, link.Length - 24);
+                    var user = this.tokens.Users.Lookup(screen_name => screenName);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this.parentForm);
+                    f.Show();
+                    return;
                 }
-                catch
+                catch (Exception)
                 {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
                 }
+            }
+
+            try
+            {
+                System.Diagnostics.Process.Start(link);
+            }
+            catch
+            {
             }
         }
 
@@ -299,7 +321,7 @@ namespace Twitter_Test
                     {
                         List<Status> talk = getTalk((Status)lv.SelectedItems[0].Tag);
 
-                        Form_Talk f = new Form_Talk(talk);
+                        Form_Talk f = new Form_Talk(this.tokens, talk, this.parentForm);
                         f.Show();
                     }
                     catch (Exception)

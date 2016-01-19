@@ -15,13 +15,17 @@ namespace Twitter_Test
 {
     public partial class Form_Talk :Mik_Form
     {
-        public Form_Talk(List<Status> talk)
+        public Form_Talk(Tokens tokens, List<Status> talk, Form_Main parentForm)
         {
             InitializeComponent();
+            this.tokens = tokens;
             this.talk = talk;
+            this.parentForm = parentForm;
         }
 
+        private Tokens tokens = null;
         private List<Status> talk = new List<Status>();
+        private Form_Main parentForm = null;
 
         private void button_Close_Click(object sender, EventArgs e)
         {
@@ -30,7 +34,7 @@ namespace Twitter_Test
 
         private void Form_Talk_Load(object sender, EventArgs e)
         {
-            this.Title = "";
+            this.Title = "Talk";
 
             StringBuilder documentText = new StringBuilder();
             documentText.Append(
@@ -50,7 +54,7 @@ namespace Twitter_Test
                 Regex url = new Regex(@"s?https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+", RegexOptions.IgnoreCase);
                 Regex userId = new Regex(@"@([a-zA-Z0-9_]+)", RegexOptions.IgnoreCase);
                 string context = url.Replace(tweet.Text, "<a href=\"$&\">$&</a>");
-                context = userId.Replace(context, "<a href=\"http://www.twitter.com/$1\">$&</a>");
+                context = userId.Replace(context, "<a href=\"https://www.twitter.com/$1\">$&</a>");
 
                 string entities = string.Empty;
                 if (tweet.ExtendedEntities != null)
@@ -71,7 +75,7 @@ namespace Twitter_Test
                 doc.Append("<font size=\"2\" face=\"Meiryo UI\">");
                 doc.Append(tweet.CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss")); // Date-Time
                 doc.AppendFormat(" via {0}<br>", tweet.Source);                                 // via
-                doc.AppendFormat("<a href=\"https://twitter.com/{0}\">@{0}</a> / {1}<br>",
+                doc.AppendFormat("<a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}<br>",
                     tweet.User.ScreenName,                                                      // user-ID
                     tweet.User.Name);                                                           // user-Name
                 doc.AppendFormat("{0}<br></font>", context.Replace("\n", "<br>"));              // context
@@ -117,15 +121,38 @@ namespace Twitter_Test
                 }
             }
 
-            if (link != null && link != "")
+            if (link == null || link == string.Empty)
+            {
+                return;
+            }
+
+            Regex linkToAccount = new Regex("https://www.twitter.com/[a-zA-Z0-9_]+", RegexOptions.IgnoreCase);
+            if (linkToAccount.IsMatch(link))
             {
                 try
                 {
-                    System.Diagnostics.Process.Start(link);
+                    string screenName = link.Substring(24, link.Length - 24);
+                    var user = this.tokens.Users.Lookup(screen_name => screenName);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this.parentForm);
+                    f.Show();
+                    return;
                 }
-                catch
+                catch (Exception)
                 {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
                 }
+            }
+
+            try
+            {
+                System.Diagnostics.Process.Start(link);
+            }
+            catch
+            {
             }
         }
 

@@ -210,7 +210,7 @@ namespace Twitter_Test
 
                     deleteOldTweet(lv);
                     lv.Items.Insert(0, item);
-                    lv.Items[0].EnsureVisible();
+                    // lv.Items[0].EnsureVisible();
                 }
                 /*
                 if (lvスクロールが一番下)
@@ -267,12 +267,12 @@ namespace Twitter_Test
             Regex url = new Regex(@"s?https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+", RegexOptions.IgnoreCase);
             Regex userId = new Regex(@"@([a-zA-Z0-9_]+)", RegexOptions.IgnoreCase);
             string context = url.Replace(item.SubItems[3].Text, "<a href=\"$&\">$&</a>");
-            context = userId.Replace(context, "<a href=\"http://www.twitter.com/$1\">$&</a>");
+            context = userId.Replace(context, "<a href=\"https://www.twitter.com/$1\">$&</a>");
 
             string retweeter = string.Empty;
             if (tweet.RetweetedStatus != null)
             {
-                retweeter = string.Format(" retweeted by <a href=\"http://www.twitter.com/{0}\">@{0}</a> / {1}",
+                retweeter = string.Format(" retweeted by <a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}",
                     tweet.User.ScreenName,
                     tweet.User.Name);
             }
@@ -297,7 +297,7 @@ namespace Twitter_Test
             sb2.Append(item.SubItems[0].Text);                                  // Date-Time
             sb2.AppendFormat(" via {0}<br>", tweet.Source);                     // via
             sb2.AppendFormat(
-                "<a href=\"https://twitter.com/{0}\">@{0}</a> / {1}{2}<br>",
+                "<a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}{2}<br>",
                 item.SubItems[1].Text,                                          // user-ID
                 item.SubItems[2].Text,                                          // user-Name
                 retweeter);                                                     // retweeter-Name
@@ -567,15 +567,38 @@ namespace Twitter_Test
                 }
             }
 
-            if (link != null && link != "")
+            if (link == null || link == string.Empty)
+            {
+                return;
+            }
+
+            Regex linkToAccount = new Regex("https://www.twitter.com/[a-zA-Z0-9_]+", RegexOptions.IgnoreCase);
+            if (linkToAccount.IsMatch(link))
             {
                 try
                 {
-                    System.Diagnostics.Process.Start(link);
+                    string screenName = link.Substring(24, link.Length - 24);
+                    var user = this.tokens.Users.Lookup(screen_name => screenName);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this);
+                    f.Show();
+                    return;
                 }
-                catch
+                catch (Exception)
                 {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
                 }
+            }
+
+            try
+            {
+                System.Diagnostics.Process.Start(link);
+            }
+            catch
+            {
             }
         }
 
@@ -591,6 +614,12 @@ namespace Twitter_Test
         private void textBox_Input_KeyDown(object sender, KeyEventArgs e)
         {
             //e.Handled = true;
+
+            if (Control.ModifierKeys == Keys.Control &&
+                e.KeyCode == Keys.Space)
+            {
+                shell();
+            }
 
             if (Control.ModifierKeys == Keys.Control &&
                 e.KeyCode == Keys.Enter)
@@ -609,6 +638,51 @@ namespace Twitter_Test
                 }
 
                 this.afterTweet = true;
+            }
+        }
+
+        private void shell()
+        {
+            using (Form_Shell shell = new Form_Shell())
+            {
+                shell.ShowDialog();
+                string command = shell.Command;
+
+                if (command == "reset")
+                {
+                    string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
+                    string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
+                    var sessions = OAuth.Authorize(apiKey, apiKeySecret);
+                    var url = sessions.AuthorizeUri;
+
+                    using (Form_InputPinCode f = new Form_InputPinCode(url.ToString()))
+                    {
+                        DialogResult dr = f.ShowDialog();
+                        if (dr != DialogResult.OK)
+                        {
+                            return;
+                        }
+
+                        string pin = f.PinCode;
+                        var t = OAuth.GetTokens(sessions, pin);
+                        this.tokens = t;
+                        this.user = t.Account.VerifyCredentials();
+                    }
+
+                    show(this.tokens);
+
+                    if (this.disposable != null)
+                    {
+                        this.disposable.Dispose();
+                    }
+
+                    streaming(this.tokens);
+                    return;
+                }
+                if (command == "exit")
+                {
+                    this.Close();
+                }
             }
         }
 
@@ -702,7 +776,7 @@ namespace Twitter_Test
                     {
                         List<Status> talk = getTalk((Status)lv.SelectedItems[0].Tag);
 
-                        Form_Talk f = new Form_Talk(talk);
+                        Form_Talk f = new Form_Talk(this.tokens, talk, this);
                         f.Show();
                     }
                     catch (Exception)
@@ -862,12 +936,13 @@ namespace Twitter_Test
             ListView lv = getFocusedListView();
             List<Status> talk =  getTalk((Status)lv.SelectedItems[0].Tag);
 
-            Form_Talk f = new Form_Talk(talk);
+            Form_Talk f = new Form_Talk(this.tokens, talk, this);
             f.Show();
         }
 
         private void tabControl_Timeline_SelectedIndexChanged(object sender, EventArgs e)
         {
+            /*
             switch (this.tabControl_Timeline.SelectedIndex)
             {
                 case 0:
@@ -879,6 +954,7 @@ namespace Twitter_Test
                 default:
                     break;
             }
+            */
         }
 
         private void button_AccountChange_Click(object sender, EventArgs e)
