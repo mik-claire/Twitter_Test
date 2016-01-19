@@ -75,6 +75,7 @@ namespace Twitter_Test
                     this.user.Name,
                     this.tokens.AccessToken,
                     this.tokens.AccessTokenSecret);
+                Properties.Settings.Default.AccessTokenList = new System.Collections.Specialized.StringCollection();
                 Properties.Settings.Default.AccessTokenList.Add(tokenData);
                 Properties.Settings.Default.Save();
 
