@@ -735,6 +735,10 @@ namespace Twitter_Test
             using (Form_SelectAccount f = new Form_SelectAccount())
             {
                 f.ShowDialog();
+                if (f.SelectedResult == 1)
+                {
+
+                }
             }
         }
 
