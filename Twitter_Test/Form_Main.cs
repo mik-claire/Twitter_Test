@@ -51,8 +51,6 @@ namespace Twitter_Test
             string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
             string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
 
-            Console.WriteLine("### {0}", Properties.Settings.Default.AccessTokenList.Count);
-            MessageBox.Show(string.Format("count: {0}", Properties.Settings.Default.AccessTokenList.Count));
             if (Properties.Settings.Default.AccessTokenList == null ||
                 Properties.Settings.Default.AccessTokenList.Count == 0)
             {
@@ -665,7 +663,6 @@ namespace Twitter_Test
                     Properties.Settings.Default.AccessTokenList = null;
                     Properties.Settings.Default.LastLoginUser = 0;
                     Properties.Settings.Default.Save();
-                    Console.WriteLine("### {0}", Properties.Settings.Default.AccessTokenList.Count);
                     Application.Restart();
                 }
 
