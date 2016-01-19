@@ -28,12 +28,31 @@ namespace Twitter_Test.Properties
             this.Title = "Select your account.";
         }
 
+        private int accountNumber = 0;
+        public int AccountNumber
+        {
+            get { return this.accountNumber; }
+            set { this.accountNumber = value; }
+        }
+
+        private int selectedResult = 0;
+
         private void Form_SelectAccount_Load(object sender, EventArgs e)
+        {
+            foreach (var tokenData in Properties.Settings.Default.AccessTokenList)
+            {
+                string[] data = tokenData.Split(',');
+                ListViewItem item = new ListViewItem(data);
+                this.listView_Account.Items.Add(item);
+            }
+        }
+
+        private void listView_Account_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
         }
 
-        private void listView_Account_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void button_Add_Click(object sender, EventArgs e)
         {
 
         }

@@ -33,6 +33,7 @@
             this.columnHeader_ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label_01 = new System.Windows.Forms.Label();
+            this.button_Add = new MyControls.Mik_LabelButton();
             this.SuspendLayout();
             // 
             // button_Cancel
@@ -87,11 +88,25 @@
             this.label_01.TabIndex = 5;
             this.label_01.Text = "DoubleClick to select account.";
             // 
+            // button_Add
+            // 
+            this.button_Add.AutoSize = true;
+            this.button_Add.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button_Add.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.button_Add.ForeColor = System.Drawing.Color.AliceBlue;
+            this.button_Add.Location = new System.Drawing.Point(192, 156);
+            this.button_Add.Name = "button_Add";
+            this.button_Add.Size = new System.Drawing.Size(37, 15);
+            this.button_Add.TabIndex = 6;
+            this.button_Add.Text = " Add ";
+            this.button_Add.Click += new System.EventHandler(this.button_Add_Click);
+            // 
             // Form_SelectAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(300, 182);
+            this.Controls.Add(this.button_Add);
             this.Controls.Add(this.label_01);
             this.Controls.Add(this.listView_Account);
             this.Controls.Add(this.button_Cancel);
@@ -101,6 +116,7 @@
             this.Controls.SetChildIndex(this.button_Cancel, 0);
             this.Controls.SetChildIndex(this.listView_Account, 0);
             this.Controls.SetChildIndex(this.label_01, 0);
+            this.Controls.SetChildIndex(this.button_Add, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -113,5 +129,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader_ID;
         private System.Windows.Forms.ColumnHeader columnHeader_Name;
         private System.Windows.Forms.Label label_01;
+        private MyControls.Mik_LabelButton button_Add;
     }
 }
