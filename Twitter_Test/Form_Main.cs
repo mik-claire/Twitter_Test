@@ -667,6 +667,12 @@ namespace Twitter_Test
                     return;
                 }
 
+                if (command == "exit")
+                {
+                    this.Close();
+                    return;
+                }
+
                 if (command.Substring(0, 7) == "account")
                 {
                     int num = 0;
@@ -689,10 +695,6 @@ namespace Twitter_Test
                         MessageBoxIcon.Information);
                 }
 
-                if (command == "exit")
-                {
-                    this.Close();
-                }
             }
         }
 
