@@ -91,12 +91,15 @@ namespace Twitter_Test
 
         private void Form_Main_Load(object sender, EventArgs e)
         {
+            this.textBox_Input.Focus();
+
             show(this.tokens);
 
             streaming(this.tokens);
 
             this.webBrowser_Detail.DocumentText =
 @"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
+
         }
 
         private void show(Tokens tokens)
@@ -476,6 +479,8 @@ namespace Twitter_Test
             this.textBox_Input.Text =
                 this.textBox_Input.Text.Insert(0, string.Format("@{0} ", this.status.User.ScreenName));
             this.button_ResetReply.Visible = true;
+
+            this.textBox_Input.Focus();
         }
 
         IDisposable disposable = null;
@@ -619,6 +624,12 @@ namespace Twitter_Test
                 e.KeyCode == Keys.Space)
             {
                 shell();
+            }
+
+            if (Control.ModifierKeys == Keys.Control &&
+                e.KeyCode == Keys.A)
+            {
+                this.textBox_Input.SelectAll();
             }
 
             if (Control.ModifierKeys == Keys.Control &&

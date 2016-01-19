@@ -47,6 +47,19 @@ namespace Twitter_Test
 
         private void button_OK_Click(object sender, EventArgs e)
         {
+            enterPinCode(this.textBox_PINcode.Text);
+        }
+
+        private void textBox_PINcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                enterPinCode(this.textBox_PINcode.Text);
+            }
+        }
+
+        private void enterPinCode(string input)
+        {
             int pin = 0;
             if (!int.TryParse(this.textBox_PINcode.Text, out pin) ||
                 this.textBox_PINcode.Text.Length != 7)

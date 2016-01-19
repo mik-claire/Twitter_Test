@@ -53,7 +53,8 @@
             this.textBox_PINcode.Location = new System.Drawing.Point(12, 68);
             this.textBox_PINcode.Name = "textBox_PINcode";
             this.textBox_PINcode.Size = new System.Drawing.Size(168, 16);
-            this.textBox_PINcode.TabIndex = 1;
+            this.textBox_PINcode.TabIndex = 0;
+            this.textBox_PINcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_PINcode_KeyDown);
             // 
             // button_OK
             // 
@@ -64,7 +65,7 @@
             this.button_OK.Location = new System.Drawing.Point(104, 94);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(32, 15);
-            this.button_OK.TabIndex = 4;
+            this.button_OK.TabIndex = 1;
             this.button_OK.Text = " OK ";
             this.button_OK.Click += new System.EventHandler(this.button_OK_Click);
             // 
@@ -77,7 +78,7 @@
             this.button_Exit.Location = new System.Drawing.Point(151, 94);
             this.button_Exit.Name = "button_Exit";
             this.button_Exit.Size = new System.Drawing.Size(29, 15);
-            this.button_Exit.TabIndex = 5;
+            this.button_Exit.TabIndex = 2;
             this.button_Exit.Text = "Exit";
             this.button_Exit.Click += new System.EventHandler(this.button_Exit_Click);
             // 

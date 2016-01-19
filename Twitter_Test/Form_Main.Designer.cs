@@ -120,7 +120,7 @@
             this.tabControl_Timeline.Name = "tabControl_Timeline";
             this.tabControl_Timeline.SelectedIndex = 0;
             this.tabControl_Timeline.Size = new System.Drawing.Size(586, 280);
-            this.tabControl_Timeline.TabIndex = 4;
+            this.tabControl_Timeline.TabIndex = 3;
             this.tabControl_Timeline.SelectedIndexChanged += new System.EventHandler(this.tabControl_Timeline_SelectedIndexChanged);
             // 
             // tabPage_Home
@@ -260,7 +260,7 @@
             this.textBox_Input.Name = "textBox_Input";
             this.textBox_Input.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBox_Input.Size = new System.Drawing.Size(477, 40);
-            this.textBox_Input.TabIndex = 5;
+            this.textBox_Input.TabIndex = 0;
             this.textBox_Input.TextChanged += new System.EventHandler(this.textBox_Input_TextChanged);
             this.textBox_Input.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragDrop);
             this.textBox_Input.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragEnter);
@@ -272,7 +272,7 @@
             this.webBrowser_Detail.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_Detail.Name = "webBrowser_Detail";
             this.webBrowser_Detail.Size = new System.Drawing.Size(586, 93);
-            this.webBrowser_Detail.TabIndex = 2;
+            this.webBrowser_Detail.TabIndex = 7;
             this.webBrowser_Detail.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser_Detail_Navigating);
             // 
             // label_InReplyTo
@@ -304,7 +304,7 @@
             this.button_ResetReply.Location = new System.Drawing.Point(22, 71);
             this.button_ResetReply.Name = "button_ResetReply";
             this.button_ResetReply.Size = new System.Drawing.Size(23, 15);
-            this.button_ResetReply.TabIndex = 13;
+            this.button_ResetReply.TabIndex = 2;
             this.button_ResetReply.Text = " X ";
             this.button_ResetReply.Visible = false;
             this.button_ResetReply.Click += new System.EventHandler(this.button_ResetReply_Click);
@@ -317,7 +317,7 @@
             this.button_Tweet.Location = new System.Drawing.Point(545, 24);
             this.button_Tweet.Name = "button_Tweet";
             this.button_Tweet.Size = new System.Drawing.Size(54, 15);
-            this.button_Tweet.TabIndex = 12;
+            this.button_Tweet.TabIndex = 1;
             this.button_Tweet.Text = " Reload ";
             this.button_Tweet.Click += new System.EventHandler(this.button_Tweet_Click);
             // 
