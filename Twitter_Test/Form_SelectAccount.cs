@@ -54,12 +54,28 @@ namespace Twitter_Test
 
         private void listView_Account_MouseDoubleClick(object sender, MouseEventArgs e)
         {
+            // 左クリック判定
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
 
+            // フォーカス判定
+            ListViewItem item = this.listView_Account.FocusedItem;
+            if (!this.listView_Account.FocusedItem.Bounds.Contains(e.Location))
+            {
+                return;
+            }
+
+            this.accountNumber = this.listView_Account.SelectedIndices[0];
+            this.selectedResult = 1;
+            this.Close();
         }
 
         private void button_Add_Click(object sender, EventArgs e)
         {
-
+            this.selectedResult = 2;
+            this.Close();
         }
 
         private void button_Cancel_Click(object sender, EventArgs e)

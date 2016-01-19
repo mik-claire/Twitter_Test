@@ -50,9 +50,8 @@ namespace Twitter_Test
 
             string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
             string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
-            /*if (string.IsNullOrEmpty(Properties.Settings.Default.AccessToken) &&
-                string.IsNullOrEmpty(Properties.Settings.Default.AccessTokenSecret))*/
-            if (Properties.Settings.Default.AccessTokenList.Count == 0)
+            if (Properties.Settings.Default.AccessTokenList == null ||
+                Properties.Settings.Default.AccessTokenList.Count == 0)
             {
                 var sessions = OAuth.Authorize(apiKey, apiKeySecret);
                 var url = sessions.AuthorizeUri;
@@ -71,28 +70,24 @@ namespace Twitter_Test
                     this.user = t.Account.VerifyCredentials();
                 }
 
+                string tokenData = string.Format("{0},{1},{2},{3}",
+                    this.user.ScreenName,
+                    this.user.Name,
+                    this.tokens.AccessToken,
+                    this.tokens.AccessTokenSecret);
+                Properties.Settings.Default.AccessTokenList.Add(tokenData);
+                Properties.Settings.Default.Save();
+
                 return;
             }
 
-            /*
-            this.tokens = Tokens.Create(
-                apiKey,
-                apiKeySecret,
-                Properties.Settings.Default.AccessToken,
-                Properties.Settings.Default.AccessTokenSecret);
-            this.user = this.tokens.Account.VerifyCredentials();
-            
-            Properties.Settings.Default.AccessToken = string.Empty;
-            Properties.Settings.Default.AccessTokenSecret = string.Empty;
-            */
-
-            string[] tokenData = Properties.Settings.Default.AccessTokenList[0].Split(',');
+            string[] tokenDataArray = Properties.Settings.Default.AccessTokenList[Properties.Settings.Default.LastLoginUser].Split(',');
 
             this.tokens = Tokens.Create(
                 apiKey,
                 apiKeySecret,
-                tokenData[1],
-                tokenData[2]);
+                tokenDataArray[2],
+                tokenDataArray[3]);
             this.user = this.tokens.Account.VerifyCredentials();
         }
 
@@ -112,14 +107,6 @@ namespace Twitter_Test
             this.webBrowser_Detail.DocumentText =
 @"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
 
-            System.Collections.Specialized.StringCollection col = new System.Collections.Specialized.StringCollection();
-            string tokenData = string.Format("{0},{1},{2}",
-                this.user.ScreenName,
-                this.tokens.AccessToken,
-                this.tokens.AccessTokenSecret);
-            col.Add(tokenData);
-            Properties.Settings.Default.AccessTokenList = col;
-            Properties.Settings.Default.Save();
         }
 
         private void show(Tokens tokens)
@@ -534,29 +521,9 @@ namespace Twitter_Test
                 return;
             }
 
-            try
+            if (this.disposable != null)
             {
-                Properties.Settings.Default.AccessToken = this.tokens.AccessToken;
-                Properties.Settings.Default.AccessTokenSecret = this.tokens.AccessTokenSecret;
-                
-                System.Collections.Specialized.StringCollection col = new System.Collections.Specialized.StringCollection();
-                string tokenData = string.Format("{0},{1},{2}",
-                    this.user.ScreenName,
-                    this.tokens.AccessToken,
-                    this.tokens.AccessTokenSecret);
-                col.Add(tokenData);
-                Properties.Settings.Default.AccessTokenList = col;
-                Properties.Settings.Default.Save();
-            }
-            catch (Exception)
-            {
-            }
-            finally
-            {
-                if (this.disposable != null)
-                {
-                    this.disposable.Dispose();
-                }
+                this.disposable.Dispose();
             }
         }
 
@@ -687,40 +654,39 @@ namespace Twitter_Test
                 shell.ShowDialog();
                 string command = shell.Command;
 
-                if (command == "reset")
+                if (command == "reset account data")
                 {
-                    string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
-                    string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
-                    var sessions = OAuth.Authorize(apiKey, apiKeySecret);
-                    var url = sessions.AuthorizeUri;
-
-                    using (Form_InputPinCode f = new Form_InputPinCode(url.ToString()))
-                    {
-                        DialogResult dr = f.ShowDialog();
-                        if (dr != DialogResult.OK)
-                        {
-                            return;
-                        }
-
-                        string pin = f.PinCode;
-                        var t = OAuth.GetTokens(sessions, pin);
-                        this.tokens = t;
-                        this.user = t.Account.VerifyCredentials();
-                    }
-
-                    show(this.tokens);
-
-                    if (this.disposable != null)
-                    {
-                        this.disposable.Dispose();
-                    }
-
-                    streaming(this.tokens);
+                    Properties.Settings.Default.AccessTokenList = new System.Collections.Specialized.StringCollection(); ;
+                    Properties.Settings.Default.LastLoginUser = 0;
+                    addAccount();
                 }
 
                 if (command == "account")
                 {
-                    
+                    manageAccount();
+                    return;
+                }
+
+                if (command.Substring(0, 7) == "account")
+                {
+                    int num = 0;
+                    string inputScreenName = command.Substring(8, command.Length - 8);
+                    foreach(string row in Properties.Settings.Default.AccessTokenList)
+                    {
+                        string screenName = row.Split(',')[0];
+                        if (screenName == inputScreenName)
+                        {
+                            changeAccount(num);
+                            return;
+                        }
+                        num++;
+                    }
+
+                    string message = string.Format("Account \"{0}\" has not been added.", inputScreenName);
+                    MessageBox.Show(message,
+                        "Information.",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
 
                 if (command == "exit")
@@ -732,14 +698,92 @@ namespace Twitter_Test
 
         private void addAccount()
         {
+            string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
+            string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
+            var sessions = OAuth.Authorize(apiKey, apiKeySecret);
+            var url = sessions.AuthorizeUri;
+
+            using (Form_InputPinCode ff = new Form_InputPinCode(url.ToString()))
+            {
+                DialogResult dr = ff.ShowDialog();
+                if (dr != DialogResult.OK)
+                {
+                    return;
+                }
+
+                string pin = ff.PinCode;
+                var t = OAuth.GetTokens(sessions, pin);
+
+                foreach(string row in Properties.Settings.Default.AccessTokenList)
+                {
+                    string screenName = row.Split(',')[0];
+                    if (screenName == t.Account.VerifyCredentials().ScreenName)
+                    {
+                        MessageBox.Show("This user has been added.",
+                            "Information,",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                        return;
+                    }
+                }
+
+                this.tokens = t;
+                this.user = t.Account.VerifyCredentials();
+            }
+
+            show(this.tokens);
+
+            if (this.disposable != null)
+            {
+                this.disposable.Dispose();
+            }
+
+            streaming(this.tokens);
+
+            string tokenData = string.Format("{0},{1},{2},{3}",
+                this.user.ScreenName,
+                this.user.Name,
+                this.tokens.AccessToken,
+                this.tokens.AccessTokenSecret);
+            Properties.Settings.Default.AccessTokenList.Add(tokenData);
+            Properties.Settings.Default.Save();
+        }
+
+        private void manageAccount()
+        {
             using (Form_SelectAccount f = new Form_SelectAccount())
             {
                 f.ShowDialog();
                 if (f.SelectedResult == 1)
                 {
+                    changeAccount(f.AccountNumber);
+                }
 
+                if (f.SelectedResult == 2)
+                {
+                    addAccount();
                 }
             }
+        }
+
+        private void changeAccount(int accountNumber)
+        {
+            string[] tokenData = Properties.Settings.Default.AccessTokenList[accountNumber].Split(',');
+            this.tokens = Tokens.Create(
+                "9LQZDfaCSJR88d2HLkkXrBFz0",
+                "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7",
+                tokenData[2],
+                tokenData[3]);
+            this.user = this.tokens.Account.VerifyCredentials();
+
+            show(this.tokens);
+
+            if (this.disposable != null)
+            {
+                this.disposable.Dispose();
+            }
+
+            streaming(this.tokens);
         }
 
         List<string> uploadFilePathList = new List<string>();
@@ -1015,33 +1059,7 @@ namespace Twitter_Test
 
         private void button_AccountChange_Click(object sender, EventArgs e)
         {
-            string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
-            string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
-            var sessions = OAuth.Authorize(apiKey, apiKeySecret);
-            var url = sessions.AuthorizeUri;
-
-            using (Form_InputPinCode f = new Form_InputPinCode(url.ToString()))
-            {
-                DialogResult dr = f.ShowDialog();
-                if (dr != DialogResult.OK)
-                {
-                    return;
-                }
-
-                string pin = f.PinCode;
-                var t = OAuth.GetTokens(sessions, pin);
-                this.tokens = t;
-                this.user = t.Account.VerifyCredentials();
-            }
-
-            show(this.tokens);
-
-            if (this.disposable != null)
-            {
-                this.disposable.Dispose();
-            }
-
-            streaming(this.tokens);
+            manageAccount();
         }
 
         private delegate void delegateChangeStatus(string message, NotificationStatus status);

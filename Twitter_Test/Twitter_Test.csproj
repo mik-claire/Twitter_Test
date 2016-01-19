@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Twitter_Test</RootNamespace>
-    <AssemblyName>Twitter_Test</AssemblyName>
+    <AssemblyName>mik-Client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -176,7 +176,7 @@
     <PostBuildEvent>set fname_new=$(TargetName)_merge$(TargetExt)
 if $(ConfigurationName) == Release (
   "C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe" /wildcards /out:%25fname_new%25 $(TargetFileName) *.dll /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319"
-  copy "C:\git\Twitter_Test\Twitter_Test\bin\Release\Twitter_Test_merge.exe" "C:\Users\Mikaze\Documents\ついったてすと\Twitter_Test.exe"
+  copy "C:\git\Twitter_Test\Twitter_Test\bin\Release\mik-Client_merge.exe" "C:\Users\Mikaze\Documents\ついったてすと\mik-Client.exe"
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
