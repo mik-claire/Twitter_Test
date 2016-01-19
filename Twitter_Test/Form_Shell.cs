@@ -38,6 +38,11 @@ namespace Twitter_Test
 
         private void textBox_Console_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+
             if (e.KeyCode != Keys.Enter)
             {
                 return;

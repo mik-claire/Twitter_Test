@@ -50,6 +50,9 @@ namespace Twitter_Test
 
             string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
             string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
+
+            Console.WriteLine("### {0}", Properties.Settings.Default.AccessTokenList.Count);
+            MessageBox.Show(string.Format("count: {0}", Properties.Settings.Default.AccessTokenList.Count));
             if (Properties.Settings.Default.AccessTokenList == null ||
                 Properties.Settings.Default.AccessTokenList.Count == 0)
             {
@@ -100,6 +103,7 @@ namespace Twitter_Test
         private void Form_Main_Load(object sender, EventArgs e)
         {
             this.textBox_Input.Focus();
+            this.KeyPreview = true;
 
             show(this.tokens);
 
@@ -616,12 +620,6 @@ namespace Twitter_Test
             //e.Handled = true;
 
             if (Control.ModifierKeys == Keys.Control &&
-                e.KeyCode == Keys.Space)
-            {
-                shell();
-            }
-
-            if (Control.ModifierKeys == Keys.Control &&
                 e.KeyCode == Keys.A)
             {
                 this.textBox_Input.SelectAll();
@@ -654,27 +652,38 @@ namespace Twitter_Test
                 shell.ShowDialog();
                 string command = shell.Command;
 
-                if (command == "reset account data")
-                {
-                    Properties.Settings.Default.AccessTokenList = new System.Collections.Specialized.StringCollection(); ;
-                    Properties.Settings.Default.LastLoginUser = 0;
-                    addAccount();
-                }
-
-                if (command == "account")
-                {
-                    manageAccount();
-                    return;
-                }
-
-                if (command == "exit")
+                if (command.Length == 4 &&
+                    command == "exit")
                 {
                     this.Close();
                     return;
                 }
 
-                if (command.Substring(0, 7) == "account")
+                if (command.Length == 14 &&
+                    command == "reset all data")
                 {
+                    Properties.Settings.Default.AccessTokenList = null;
+                    Properties.Settings.Default.LastLoginUser = 0;
+                    Properties.Settings.Default.Save();
+                    Console.WriteLine("### {0}", Properties.Settings.Default.AccessTokenList.Count);
+                    Application.Restart();
+                }
+
+                if (command.Length >= 7 &&
+                    command.Substring(0, 7) == "account")
+                {
+                    if (command == "account")
+                    {
+                        manageAccount();
+                        return;
+                    }
+
+                    if (command == "account add")
+                    {
+                        addAccount();
+                        return;
+                    }
+
                     int num = 0;
                     string inputScreenName = command.Substring(8, command.Length - 8);
                     foreach(string row in Properties.Settings.Default.AccessTokenList)
@@ -694,7 +703,6 @@ namespace Twitter_Test
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                 }
-
             }
         }
 
@@ -748,6 +756,7 @@ namespace Twitter_Test
                 this.tokens.AccessToken,
                 this.tokens.AccessTokenSecret);
             Properties.Settings.Default.AccessTokenList.Add(tokenData);
+            Properties.Settings.Default.LastLoginUser = Properties.Settings.Default.AccessTokenList.Count - 1;
             Properties.Settings.Default.Save();
         }
 
@@ -1132,6 +1141,16 @@ namespace Twitter_Test
         private void textBox_Input_Enter(object sender, EventArgs e)
         {
             this.textBox_Input.Select(this.textBox_Input.Text.Length, 0);
+        }
+
+        private void Form_Main_KeyDown(object sender, KeyEventArgs e)
+        {
+            // shell open
+            if (Control.ModifierKeys == Keys.Control &&
+                e.KeyCode == Keys.Space)
+            {
+                shell();
+            }
         }
     }
 }

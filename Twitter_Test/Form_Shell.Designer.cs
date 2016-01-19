@@ -38,6 +38,7 @@
             this.textBox_Console.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox_Console.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_Console.ForeColor = System.Drawing.Color.AliceBlue;
+            this.textBox_Console.ImeMode = System.Windows.Forms.ImeMode.Off;
             this.textBox_Console.Location = new System.Drawing.Point(18, 1);
             this.textBox_Console.Name = "textBox_Console";
             this.textBox_Console.Size = new System.Drawing.Size(180, 15);
@@ -65,6 +66,7 @@
             this.Controls.Add(this.textBox_Console);
             this.Controls.Add(this.label_01);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form_Shell";
