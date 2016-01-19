@@ -62,7 +62,7 @@
             this.button_OK.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_OK.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_OK.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_OK.Location = new System.Drawing.Point(104, 94);
+            this.button_OK.Location = new System.Drawing.Point(102, 94);
             this.button_OK.Name = "button_OK";
             this.button_OK.Size = new System.Drawing.Size(32, 15);
             this.button_OK.TabIndex = 1;
@@ -75,11 +75,11 @@
             this.button_Exit.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_Exit.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_Exit.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_Exit.Location = new System.Drawing.Point(151, 94);
+            this.button_Exit.Location = new System.Drawing.Point(143, 94);
             this.button_Exit.Name = "button_Exit";
-            this.button_Exit.Size = new System.Drawing.Size(29, 15);
+            this.button_Exit.Size = new System.Drawing.Size(37, 15);
             this.button_Exit.TabIndex = 2;
-            this.button_Exit.Text = "Exit";
+            this.button_Exit.Text = " Exit ";
             this.button_Exit.Click += new System.EventHandler(this.button_Exit_Click);
             // 
             // Form_InputPinCode
