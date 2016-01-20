@@ -304,10 +304,21 @@ namespace Twitter_Test
                 }
             }
 
+            string rt = string.Format(
+@"<font color=""#6495ED""><u><rt id={0}>RT</rt></u></font>",
+                tweet.Id);
+            string qt = string.Format(
+@"<font color=""#6495ED""><u><qt id={0}>QT</qt></u></font>",
+                tweet.Id);
+            string fav = string.Format(
+@"<font color=""#6495ED""><u><fav id={0}>☆</fav></u></font>",
+                tweet.Id);
+
             StringBuilder sb2 = new StringBuilder();
             sb2.Append("<font size=\"2\" face=\"Meiryo UI\">");
             sb2.Append(item.SubItems[0].Text);                                  // Date-Time
-            sb2.AppendFormat(" via {0}<br>", tweet.Source);                     // via
+            sb2.AppendFormat(" via {0} {1} {2} {3}<br>", tweet.Source,          // via
+                rt, qt, fav);                                                   // contorl
             sb2.AppendFormat(
                 "<a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}{2}<br>",
                 item.SubItems[1].Text,                                          // user-ID

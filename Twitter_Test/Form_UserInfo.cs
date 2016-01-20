@@ -180,12 +180,12 @@ namespace Twitter_Test
             Regex url = new Regex(@"s?https?://[-_.!~*'()a-zA-Z0-9;/?:@&=+$,%#]+", RegexOptions.IgnoreCase);
             Regex userId = new Regex(@"@([a-zA-Z0-9_]+)", RegexOptions.IgnoreCase);
             string context = url.Replace(item.SubItems[1].Text, "<a href=\"$&\">$&</a>");
-            context = userId.Replace(context, "<a href=\"http://www.twitter.com/$1\">$&</a>");
+            context = userId.Replace(context, "<a href=\"https://www.twitter.com/$1\">$&</a>");
 
             string retweeter = string.Empty;
             if (tweet.RetweetedStatus != null)
             {
-                retweeter = string.Format(" retweeted by <a href=\"http://www.twitter.com/{0}\">@{0}</a> / {1}",
+                retweeter = string.Format(" retweeted by <a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}",
                     tweet.User.ScreenName,
                     tweet.User.Name);
             }
@@ -205,12 +205,23 @@ namespace Twitter_Test
                 }
             }
 
+            string rt = string.Format(
+@"<rt id={0}><font color=""#6495ED""><u>RT</u></font></rt>",
+                tweet.Id);
+            string qt = string.Format(
+@"<qt id={0}><font color=""#6495ED""><u>QT</u></font></qt>",
+                tweet.Id);
+            string fav = string.Format(
+@"<fav id={0}><font color=""#6495ED""><u>☆</u></font></fav>",
+                tweet.Id);
+
             StringBuilder sb2 = new StringBuilder();
             sb2.Append("<font size=\"2\" face=\"Meiryo UI\">");
             sb2.Append(item.SubItems[0].Text);                                  // Date-Time
-            sb2.AppendFormat(" via {0}<br>", tweet.Source);                     // via
+            sb2.AppendFormat(" via {0} {1} {2} {3}<br>", tweet.Source,          // via
+                rt, qt, fav);                                                   // control
             sb2.AppendFormat(
-                "<a href=\"https://twitter.com/{0}\">@{0}</a> / {1}{2}<br>",
+                "<a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}{2}<br>",
                 tweet.User.ScreenName,                                          // user-ID
                 tweet.User.Name,                                                // user-Name
                 retweeter);                                                     // retweeter-Name
@@ -312,6 +323,7 @@ namespace Twitter_Test
                 e.Cancel = true;
             }
         }
+
         private void listView_Tweet_MouseClick(object sender, MouseEventArgs e)
         {
             ListView lv = getFocusedListView();
@@ -390,22 +402,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    /*
-                    if ((bool)tweet.IsRetweeted)
-                    {
-                        long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
-                        this.tokens.Statuses.Destroy(id => retweetId);
-                    }
-                    else
-                    {
-                        this.tokens.Statuses.Retweet(id => tweet.Id);
-                    }
-                    */
-
-                    this.tokens.Statuses.Retweet(id => tweet.Id);
-                    string message = string.Format("Retweeted to @{0}: {1}",
-                        tweet.User.ScreenName,
-                        tweet.Text);
+                    retweet(tweet);
                 }
                 catch (Exception)
                 {
@@ -424,10 +421,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    string context = string.Format(@"https://twitter.com/{0}/status/{1}",
-                        tweet.User.ScreenName,
-                        tweet.ToString());
-                    this.parentForm.SetQt(context);
+                    quoteTweet(tweet);
                 }
                 catch (Exception)
                 {
@@ -446,21 +440,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    if ((bool)tweet.IsFavorited)
-                    {
-                        this.tokens.Favorites.Destroy(id => tweet.Id);
-                        lv.Items.RemoveAt(lv.SelectedIndices[0]);
-                        string message = string.Format("Un-Favorited to @{0}: {1}",
-                            tweet.User.ScreenName,
-                            tweet.Text);
-                    }
-                    else
-                    {
-                        this.tokens.Favorites.Create(id => tweet.Id);
-                        string message = string.Format("Favorited to @{0}: {1}",
-                            tweet.User.ScreenName,
-                            tweet.Text);
-                    }
+                    favorite(tweet);
                 }
                 catch (Exception)
                 {
@@ -498,6 +478,52 @@ namespace Twitter_Test
             }
 
             cMenu.Show(Cursor.Position);
+        }
+
+        private void retweet(Status tweet)
+        {
+            /*
+            if ((bool)tweet.IsRetweeted)
+            {
+                long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
+                this.tokens.Statuses.Destroy(id => retweetId);
+            }
+            else
+            {
+                this.tokens.Statuses.Retweet(id => tweet.Id);
+            }
+            */
+
+            this.tokens.Statuses.Retweet(id => tweet.Id);
+            string message = string.Format("Retweeted to @{0}: {1}",
+                tweet.User.ScreenName,
+                tweet.Text);
+        }
+
+        private void quoteTweet(Status tweet)
+        {
+            string context = string.Format(@"https://twitter.com/{0}/status/{1}",
+                tweet.User.ScreenName,
+                tweet.ToString());
+            this.parentForm.SetQt(context);
+        }
+
+        private void favorite(Status tweet)
+        {
+            if ((bool)tweet.IsFavorited)
+            {
+                this.tokens.Favorites.Destroy(id => tweet.Id);
+                string message = string.Format("Un-Favorited to @{0}: {1}",
+                    tweet.User.ScreenName,
+                    tweet.Text);
+            }
+            else
+            {
+                this.tokens.Favorites.Create(id => tweet.Id);
+                string message = string.Format("Favorited to @{0}: {1}",
+                    tweet.User.ScreenName,
+                    tweet.Text);
+            }
         }
 
         private Status getTweetFromId(Tokens tokens, string tweetId)

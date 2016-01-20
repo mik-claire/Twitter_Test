@@ -158,6 +158,7 @@
             this.webBrowser_Detail.Name = "webBrowser_Detail";
             this.webBrowser_Detail.Size = new System.Drawing.Size(377, 127);
             this.webBrowser_Detail.TabIndex = 24;
+            this.webBrowser_Detail.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser_Detail_Navigating);
             // 
             // listView_Tweet
             // 
