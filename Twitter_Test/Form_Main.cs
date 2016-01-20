@@ -22,7 +22,7 @@ namespace Twitter_Test
 {
     public partial class Form_Main : Mik_Form
     {
-        public void setTweet(Status tweet, string inReplyTo)
+        public void SetTweet(Status tweet, string inReplyTo)
         {
             this.status = tweet;
             this.label_InReplyTo.Text = inReplyTo;
@@ -39,7 +39,7 @@ namespace Twitter_Test
             this.button_ResetReply.Visible = true;
         }
 
-        public void setQt(string context)
+        public void SetQt(string context)
         {
             this.textBox_Input.Text += context;
         }
@@ -584,7 +584,7 @@ namespace Twitter_Test
                 {
                     string screenName = link.Substring(24, link.Length - 24);
                     var user = this.tokens.Users.Lookup(screen_name => screenName);
-                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this.user, this);
                     f.Show();
                     return;
                 }
@@ -885,7 +885,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    Form_UserInfo f = new Form_UserInfo(this.tokens, tweet.User, this);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, tweet.User, this.user, this);
                     f.Show();
                 }
                 catch (Exception)

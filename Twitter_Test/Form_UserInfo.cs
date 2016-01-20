@@ -22,16 +22,18 @@ namespace Twitter_Test
 {
     public partial class Form_UserInfo : Mik_Form
     {
-        public Form_UserInfo(Tokens tokens, User user, Form_Main parentForm)
+        public Form_UserInfo(Tokens tokens, User user, User myData, Form_Main parentForm)
         {
             InitializeComponent();
             this.tokens = tokens;
             this.user = user;
+            this.myData = myData;
             this.parentForm = parentForm;
         }
 
         private Tokens tokens = null;
         private User user = null;
+        private User myData = null;
 
         private Form_Main parentForm = null;
         private MyClass util = new MyClass();
@@ -44,12 +46,16 @@ namespace Twitter_Test
 
         private void setData(User user)
         {
+
+
             this.label_Id.Text += string.Format("{0} ", user.ScreenName);
             this.label_Name.Text = string.Format(" {0} ", user.Name);
             this.label_Profile.Text = user.Description != null ? user.Description : string.Empty;
             this.label_CountTweet.Text += string.Format("{0} ", user.StatusesCount);
             this.label_Following.Text += string.Format("{0} ", user.FriendsCount);
             this.label_Follower.Text += string.Format("{0} ", user.FollowersCount);
+
+            setRelation(user, this.myData, this.tokens);
 
             this.pictureBox_UserIcon.ImageLocation = user.ProfileImageUrl;
             this.pictureBox_UserIcon.Refresh();
@@ -58,6 +64,37 @@ namespace Twitter_Test
 @"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
 
             showUserTimeline(this.listView_Tweet);
+        }
+
+        private void setRelation(User user, User myData, Tokens tokens)
+        {
+            this.button_Follow.Text = " Follow ";
+            string myRelation = " Following : {0} ";
+            string following = "false";
+            var myFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => this.myData.Id);
+            foreach (var id in myFriendIds)
+            {
+                if (id == user.Id)
+                {
+                    following = "true";
+                    this.button_Follow.Text = " UnFollow ";
+                    break;
+                }
+            }
+            this.label_MyRelation.Text = string.Format(myRelation, following);
+
+            string userRelation = " Followed : {0} ";
+            string followed = "false";
+            var userFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => user.Id);
+            foreach (var id in userFriendIds)
+            {
+                if (id == this.myData.Id)
+                {
+                    followed = "true";
+                    break;
+                }
+            }
+            this.label_UserRelation.Text = string.Format(userRelation, followed);
         }
 
         private void showUserTimeline(ListView lv)
@@ -235,7 +272,7 @@ namespace Twitter_Test
                 {
                     string screenName = link.Substring(24, link.Length - 24);
                     var user = this.tokens.Users.Lookup(screen_name => screenName);
-                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this.parentForm);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this.myData, this.parentForm);
                     f.Show();
                     return;
                 }
@@ -297,7 +334,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    Form_UserInfo f = new Form_UserInfo(this.tokens, tweet.User, this.parentForm);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, tweet.User, this.myData, this.parentForm);
                     f.Show();
                 }
                 catch (Exception)
@@ -380,7 +417,7 @@ namespace Twitter_Test
                     string context = string.Format(@"https://twitter.com/{0}/status/{1}",
                         tweet.User.ScreenName,
                         tweet.ToString());
-                    this.parentForm.setQt(context);
+                    this.parentForm.SetQt(context);
                 }
                 catch (Exception)
                 {
@@ -498,7 +535,17 @@ namespace Twitter_Test
                 tweet.User.ScreenName,
                 tweet.Text.Substring(0, tweet.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1 == 0 ?
                     tweet.Text.Length : tweet.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1));
-            this.parentForm.setTweet(tweet, inReplyTo);
+            this.parentForm.SetTweet(tweet, inReplyTo);
+        }
+
+        private void button_Follow_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_Block_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

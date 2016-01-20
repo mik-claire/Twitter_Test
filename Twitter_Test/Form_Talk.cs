@@ -133,7 +133,7 @@ namespace Twitter_Test
                 {
                     string screenName = link.Substring(24, link.Length - 24);
                     var user = this.tokens.Users.Lookup(screen_name => screenName);
-                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this.parentForm);
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, user[0], this.tokens.Account.VerifyCredentials(), this.parentForm);
                     f.Show();
                     return;
                 }
