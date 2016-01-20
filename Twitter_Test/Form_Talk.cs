@@ -130,37 +130,42 @@ namespace Twitter_Test
                     link = clickedElement.Parent.GetAttribute("href");
                 }
             }
-			
-			if (clickedElement.InnerText == "RT")
-			{
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
-				Status tweet = getTweetFromId(this.tokens, tweetId);
 
-				retweet(tweet);
-				return;
-			}
+            if (clickedElement.InnerText == "RT")
+            {
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                tweetId = tweetId.Substring(5, tweetId.Length - 5);
+                Status tweet = getTweetFromId(this.tokens, tweetId);
 
-			if (clickedElement.InnerText == "QT")
-			{
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
-				Status tweet = getTweetFromId(this.tokens, tweetId);
+                retweet(tweet);
+                return;
+            }
 
-				quoteTweet(tweet);
-				return;
-			}
+            if (clickedElement.InnerText == "QT")
+            {
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                tweetId = tweetId.Substring(5, tweetId.Length - 5);
+                Status tweet = getTweetFromId(this.tokens, tweetId);
 
-			if (clickedElement.InnerText == "☆")
-			{
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
-				Status tweet = getTweetFromId(this.tokens, tweetId);
+                quoteTweet(tweet);
+                return;
+            }
 
-				favorite(tweet);
-				return;
-			}
-			
+            if (clickedElement.InnerText == "☆" ||
+                clickedElement.InnerText == "★")
+            {
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                tweetId = tweetId.Substring(5, tweetId.Length - 5);
+                Status tweet = getTweetFromId(this.tokens, tweetId);
+                if (tweet.RetweetedStatus != null)
+                {
+                    tweet = tweet.RetweetedStatus;
+                }
+
+                favorite(tweet);
+                return;
+            }
+
 			if (link == null || link == string.Empty)
             {
                 return;
@@ -210,50 +215,41 @@ namespace Twitter_Test
 			return tweet;
 		}
 
-		private void retweet(Status tweet)
-		{
-			/*
-			if ((bool)tweet.IsRetweeted)
-			{
-				long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
-				this.tokens.Statuses.Destroy(id => retweetId);
-			}
-			else
-			{
-				this.tokens.Statuses.Retweet(id => tweet.Id);
-			}
-			*/
+        private void retweet(Status tweet)
+        {
+            /*
+            if ((bool)tweet.IsRetweeted)
+            {
+                long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
+                this.tokens.Statuses.Destroy(id => retweetId);
+            }
+            else
+            {
+                this.tokens.Statuses.Retweet(id => tweet.Id);
+            }
+            */
 
-			this.tokens.Statuses.Retweet(id => tweet.Id);
-			string message = string.Format("Retweeted to @{0}: {1}",
-				tweet.User.ScreenName,
-				tweet.Text);
-		}
+            this.tokens.Statuses.Retweet(id => tweet.Id);
+        }
 
-		private void quoteTweet(Status tweet)
-		{
-			string context = string.Format(@"https://twitter.com/{0}/status/{1}",
-				tweet.User.ScreenName,
-				tweet.ToString());
-			this.parentForm.SetQt(context);
-		}
+        private void quoteTweet(Status tweet)
+        {
+            this.parentForm.SetQt(string.Format(@"https://twitter.com/{0}/status/{1}",
+                tweet.User.ScreenName,
+                tweet.ToString()));
+        }
 
-		private void favorite(Status tweet)
-		{
-			if ((bool)tweet.IsFavorited)
-			{
-				this.tokens.Favorites.Destroy(id => tweet.Id);
-				string message = string.Format("Un-Favorited to @{0}: {1}",
-					tweet.User.ScreenName,
-					tweet.Text);
-			}
-			else
-			{
-				this.tokens.Favorites.Create(id => tweet.Id);
-				string message = string.Format("Favorited to @{0}: {1}",
-					tweet.User.ScreenName,
-					tweet.Text);
-			}
-		}
+        private void favorite(Status tweet)
+        {
+            if ((bool)tweet.IsFavorited)
+            {
+                this.tokens.Favorites.Destroy(id => tweet.Id);
+            }
+            else
+            {
+                this.tokens.Favorites.Create(id => tweet.Id);
+            }
+        }
+
     }
 }

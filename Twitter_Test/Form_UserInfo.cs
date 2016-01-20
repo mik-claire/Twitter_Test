@@ -280,37 +280,40 @@ namespace Twitter_Test
                 }
             }
 
-			if (clickedElement.InnerText == "RT")
-			{
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
-				Status tweet = getTweetFromId(this.tokens, tweetId);
+            if (clickedElement.InnerText == "RT")
+            {
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                tweetId = tweetId.Substring(5, tweetId.Length - 5);
+                Status tweet = getTweetFromId(this.tokens, tweetId);
 
-				retweet(tweet);
-				return;
-			}
+                retweet(tweet);
+                return;
+            }
 
-			if (clickedElement.InnerText == "QT")
-			{
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
-				Status tweet = getTweetFromId(this.tokens, tweetId);
+            if (clickedElement.InnerText == "QT")
+            {
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                tweetId = tweetId.Substring(5, tweetId.Length - 5);
+                Status tweet = getTweetFromId(this.tokens, tweetId);
 
-				quoteTweet(tweet);
-				return;
-			}
+                quoteTweet(tweet);
+                return;
+            }
 
-			if (clickedElement.InnerText == "☆")
-			{
-				ListView lv = getFocusedListView();
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
-				Status tweet = getTweetFromId(this.tokens, tweetId);
+            if (clickedElement.InnerText == "☆" ||
+                clickedElement.InnerText == "★")
+            {
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+                tweetId = tweetId.Substring(5, tweetId.Length - 5);
+                Status tweet = getTweetFromId(this.tokens, tweetId);
+                if (tweet.RetweetedStatus != null)
+                {
+                    tweet = tweet.RetweetedStatus;
+                }
 
-				favorite(tweet);
-				lv.Items[lv.SelectedIndices[0]].Selected = true;
-				return;
-			}
+                favorite(tweet);
+                return;
+            }
 
             if (link == null || link == string.Empty)
             {
@@ -526,17 +529,18 @@ namespace Twitter_Test
             */
 
             this.tokens.Statuses.Retweet(id => tweet.Id);
-            string message = string.Format("Retweeted to @{0}: {1}",
-                tweet.User.ScreenName,
-                tweet.Text);
+
+            int index = this.listView_Tweet.SelectedIndices[0];
+            ((Status)this.listView_Tweet.Items[index].Tag).IsRetweeted = true;
+            this.listView_Tweet.Items[index].Selected = false;
+            this.listView_Tweet.Items[index].Selected = true;
         }
 
         private void quoteTweet(Status tweet)
         {
-            string context = string.Format(@"https://twitter.com/{0}/status/{1}",
+            parentForm.SetQt(string.Format(@"https://twitter.com/{0}/status/{1}",
                 tweet.User.ScreenName,
-                tweet.ToString());
-            this.parentForm.SetQt(context);
+                tweet.ToString()));
         }
 
         private void favorite(Status tweet)
@@ -544,17 +548,16 @@ namespace Twitter_Test
             if ((bool)tweet.IsFavorited)
             {
                 this.tokens.Favorites.Destroy(id => tweet.Id);
-                string message = string.Format("Un-Favorited to @{0}: {1}",
-                    tweet.User.ScreenName,
-                    tweet.Text);
             }
             else
             {
                 this.tokens.Favorites.Create(id => tweet.Id);
-                string message = string.Format("Favorited to @{0}: {1}",
-                    tweet.User.ScreenName,
-                    tweet.Text);
             }
+
+            int index = this.listView_Tweet.SelectedIndices[0];
+            ((Status)this.listView_Tweet.Items[index].Tag).IsFavorited = !((Status)this.listView_Tweet.Items[index].Tag).IsFavorited;
+            this.listView_Tweet.Items[index].Selected = false;
+            this.listView_Tweet.Items[index].Selected = true;
         }
 
         private Status getTweetFromId(Tokens tokens, string tweetId)

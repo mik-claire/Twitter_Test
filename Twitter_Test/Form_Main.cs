@@ -532,10 +532,11 @@ namespace Twitter_Test
             {
                 return;
             }
-
-            Properties.Settings.Default.LastLoginUser = getLastLoginUser();
-            Properties.Settings.Default.Save();
-
+            if (Properties.Settings.Default.AccessTokenList != null)
+            {
+                Properties.Settings.Default.LastLoginUser = getLastLoginUser();
+                Properties.Settings.Default.Save();
+            }
             if (this.disposable != null)
             {
                 this.disposable.Dispose();
@@ -584,33 +585,36 @@ namespace Twitter_Test
 
 			if (clickedElement.InnerText == "RT")
 			{
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+				string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 5);
 				Status tweet = getTweetFromId(this.tokens, tweetId);
 
-				retweet(tweet);
+                retweet(tweet);
 				return;
 			}
 
 			if (clickedElement.InnerText == "QT")
 			{
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 5);
 				Status tweet = getTweetFromId(this.tokens, tweetId);
 
 				quoteTweet(tweet);
 				return;
 			}
 
-			if (clickedElement.InnerText == "☆")
+			if (clickedElement.InnerText == "☆" ||
+                clickedElement.InnerText == "★")
 			{
-				ListView lv = getFocusedListView();
-				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
-				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+                string tweetId = clickedElement.Parent.Parent.Parent.InnerHtml.Split(new string[] { " -->" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 5);
 				Status tweet = getTweetFromId(this.tokens, tweetId);
+                if (tweet.RetweetedStatus != null)
+                {
+                    tweet = tweet.RetweetedStatus;
+                }
 
-				favorite(tweet);
-				lv.Items[lv.SelectedIndices[0]].Selected = true;
+                favorite(tweet);
 				return;
 			}
 
@@ -664,9 +668,17 @@ namespace Twitter_Test
 			*/
 
 			this.tokens.Statuses.Retweet(id => tweet.Id);
+
+            ListView lv = getFocusedListView();
+            int index = lv.SelectedIndices[0];
+            ((Status)lv.Items[index].Tag).IsRetweeted = true;
+            lv.Items[index].Selected = false;
+            lv.Items[index].Selected = true;
+
 			string message = string.Format("Retweeted to @{0}: {1}",
 				tweet.User.ScreenName,
 				tweet.Text);
+            changeStatus(message, NotificationStatus.DoRetweet);
 		}
 
 		private void quoteTweet(Status tweet)
@@ -683,15 +695,23 @@ namespace Twitter_Test
 				this.tokens.Favorites.Destroy(id => tweet.Id);
 				string message = string.Format("Un-Favorited to @{0}: {1}",
 					tweet.User.ScreenName,
-					tweet.Text);
+                    tweet.Text);
+                changeStatus(message, NotificationStatus.DoFavorite);
 			}
 			else
 			{
 				this.tokens.Favorites.Create(id => tweet.Id);
 				string message = string.Format("Favorited to @{0}: {1}",
 					tweet.User.ScreenName,
-					tweet.Text);
+                    tweet.Text);
+                changeStatus(message, NotificationStatus.DoUnFavorite);
 			}
+
+            ListView lv = getFocusedListView();
+            int index = lv.SelectedIndices[0];
+            ((Status)lv.Items[index].Tag).IsFavorited = !((Status)lv.Items[index].Tag).IsFavorited;
+            lv.Items[index].Selected = false;
+            lv.Items[index].Selected = true;
 
 			showFavTimeline(this.listView_Fav);
 		}
@@ -738,6 +758,7 @@ namespace Twitter_Test
         private int getLastLoginUser()
         {
             int lastLoginUserIndex = 0;
+
             foreach(string row in Properties.Settings.Default.AccessTokenList)
             {
                 string screenName = row.Split(',')[0];
@@ -775,8 +796,8 @@ namespace Twitter_Test
                 if (command.Length == 14 &&
                     command == "reset all data")
                 {
-                    Properties.Settings.Default.AccessTokenList = null;
                     Properties.Settings.Default.LastLoginUser = getLastLoginUser();
+                    Properties.Settings.Default.AccessTokenList = null;
                     Properties.Settings.Default.Save();
                     Application.Restart();
                 }
@@ -1046,23 +1067,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    /*
-                    if ((bool)tweet.IsRetweeted)
-                    {
-                        long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
-                        this.tokens.Statuses.Destroy(id => retweetId);
-                    }
-                    else
-                    {
-                        this.tokens.Statuses.Retweet(id => tweet.Id);
-                    }
-                    */
-
-                    this.tokens.Statuses.Retweet(id => tweet.Id);
-                    string message = string.Format("Retweeted to @{0}: {1}",
-                        tweet.User.ScreenName,
-                        tweet.Text);
-                    changeStatus(message, NotificationStatus.DoRetweet);
+                    retweet(tweet);
                 }
                 catch (Exception)
                 {
@@ -1081,9 +1086,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    this.textBox_Input.Text += string.Format(@"https://twitter.com/{0}/status/{1}",
-                        tweet.User.ScreenName,
-                        tweet.ToString());
+                    quoteTweet(tweet);
                 }
                 catch (Exception)
                 {
@@ -1102,23 +1105,7 @@ namespace Twitter_Test
             {
                 try
                 {
-                    if ((bool)tweet.IsFavorited)
-                    {
-                        this.tokens.Favorites.Destroy(id => tweet.Id);
-                        lv.Items.RemoveAt(lv.SelectedIndices[0]);
-                        string message = string.Format("Un-Favorited to @{0}: {1}",
-                            tweet.User.ScreenName,
-                            tweet.Text);
-                        changeStatus(message, NotificationStatus.DoUnFavorite);
-                    }
-                    else
-                    {
-                        this.tokens.Favorites.Create(id => tweet.Id);
-                        string message = string.Format("Favorited to @{0}: {1}",
-                            tweet.User.ScreenName,
-                            tweet.Text);
-                        changeStatus(message, NotificationStatus.DoFavorite);
-                    }
+                    favorite(tweet);
                 }
                 catch (Exception)
                 {
