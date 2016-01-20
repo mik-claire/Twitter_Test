@@ -98,33 +98,36 @@
             this.label_CountTweet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_CountTweet.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_CountTweet.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_CountTweet.Location = new System.Drawing.Point(12, 179);
+            this.label_CountTweet.Location = new System.Drawing.Point(12, 177);
             this.label_CountTweet.Name = "label_CountTweet";
-            this.label_CountTweet.Size = new System.Drawing.Size(125, 15);
+            this.label_CountTweet.Size = new System.Drawing.Size(125, 19);
             this.label_CountTweet.TabIndex = 20;
             this.label_CountTweet.Text = " Tweet : ";
+            this.label_CountTweet.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label_Following
             // 
             this.label_Following.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_Following.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_Following.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_Following.Location = new System.Drawing.Point(143, 179);
+            this.label_Following.Location = new System.Drawing.Point(143, 177);
             this.label_Following.Name = "label_Following";
-            this.label_Following.Size = new System.Drawing.Size(125, 15);
+            this.label_Following.Size = new System.Drawing.Size(125, 19);
             this.label_Following.TabIndex = 21;
             this.label_Following.Text = " Following : ";
+            this.label_Following.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label_Follower
             // 
             this.label_Follower.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_Follower.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_Follower.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_Follower.Location = new System.Drawing.Point(274, 179);
+            this.label_Follower.Location = new System.Drawing.Point(274, 177);
             this.label_Follower.Name = "label_Follower";
-            this.label_Follower.Size = new System.Drawing.Size(125, 15);
+            this.label_Follower.Size = new System.Drawing.Size(125, 19);
             this.label_Follower.TabIndex = 22;
             this.label_Follower.Text = " Follower : ";
+            this.label_Follower.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // tabControl_Timeline
             // 
@@ -150,10 +153,10 @@
             // 
             // webBrowser_Detail
             // 
-            this.webBrowser_Detail.Location = new System.Drawing.Point(1, 168);
+            this.webBrowser_Detail.Location = new System.Drawing.Point(1, 133);
             this.webBrowser_Detail.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_Detail.Name = "webBrowser_Detail";
-            this.webBrowser_Detail.Size = new System.Drawing.Size(377, 92);
+            this.webBrowser_Detail.Size = new System.Drawing.Size(377, 127);
             this.webBrowser_Detail.TabIndex = 24;
             // 
             // listView_Tweet
@@ -170,7 +173,7 @@
             this.listView_Tweet.Location = new System.Drawing.Point(2, 2);
             this.listView_Tweet.MultiSelect = false;
             this.listView_Tweet.Name = "listView_Tweet";
-            this.listView_Tweet.Size = new System.Drawing.Size(375, 160);
+            this.listView_Tweet.Size = new System.Drawing.Size(375, 129);
             this.listView_Tweet.TabIndex = 0;
             this.listView_Tweet.UseCompatibleStateImageBehavior = false;
             this.listView_Tweet.View = System.Windows.Forms.View.Details;
