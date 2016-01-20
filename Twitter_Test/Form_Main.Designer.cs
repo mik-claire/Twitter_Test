@@ -317,9 +317,10 @@
             this.button_Tweet.ForeColor = System.Drawing.Color.AliceBlue;
             this.button_Tweet.Location = new System.Drawing.Point(545, 24);
             this.button_Tweet.Name = "button_Tweet";
-            this.button_Tweet.Size = new System.Drawing.Size(54, 15);
+            this.button_Tweet.Size = new System.Drawing.Size(54, 20);
             this.button_Tweet.TabIndex = 1;
             this.button_Tweet.Text = " Reload ";
+            this.button_Tweet.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.button_Tweet.Click += new System.EventHandler(this.button_Tweet_Click);
             // 
             // button_AccountChange
