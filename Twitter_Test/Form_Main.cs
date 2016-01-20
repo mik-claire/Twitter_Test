@@ -720,7 +720,33 @@ namespace Twitter_Test
                         num++;
                     }
 
-                    string message = string.Format("Account \"{0}\" has not been added.", inputScreenName);
+                    string message = string.Format("Account @{0} has not been added.", inputScreenName);
+                    MessageBox.Show(message,
+                        "Information.",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+
+                if (command.Length >= 4 &&
+                    command.Substring(0, 4) == "info")
+                {
+                    if (command == "info")
+                    {
+                        Form_UserInfo f = new Form_UserInfo(this.tokens, this.user, this.user, this);
+                        f.Show();
+                        return;
+                    }
+
+                    string inputScreenName = command.Substring(5, command.Length - 5);
+                    User inputUser = getUserFromScreenName(this.tokens, inputScreenName);
+                    if (inputUser != null)
+                    {
+                        Form_UserInfo f = new Form_UserInfo(this.tokens, inputUser, this.user, this);
+                        f.Show();
+                        return;
+                    }
+
+                    string message = string.Format("Account @{0} is not exist.", inputScreenName);
                     MessageBox.Show(message,
                         "Information.",
                         MessageBoxButtons.OK,
@@ -1048,6 +1074,21 @@ namespace Twitter_Test
         {
             var tweet = tokens.Statuses.Show(id => tweetId);
             return tweet;
+        }
+
+        private User getUserFromScreenName(Tokens tokens, string screenName)
+        {
+            User user = null;
+            try
+            {
+                user = tokens.Users.Show(screen_name => screenName);
+            }
+            catch(Exception)
+            {
+
+            }
+
+            return user;
         }
 
         private List<Status> getTalk(Status tweet)

@@ -61,27 +61,27 @@
             // 
             // label_Id
             // 
-            this.label_Id.AutoSize = true;
             this.label_Id.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_Id.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_Id.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_Id.Location = new System.Drawing.Point(58, 31);
+            this.label_Id.Location = new System.Drawing.Point(58, 26);
             this.label_Id.Name = "label_Id";
-            this.label_Id.Size = new System.Drawing.Size(23, 15);
+            this.label_Id.Size = new System.Drawing.Size(152, 20);
             this.label_Id.TabIndex = 17;
             this.label_Id.Text = " @";
+            this.label_Id.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label_Name
             // 
-            this.label_Name.AutoSize = true;
             this.label_Name.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_Name.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_Name.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_Name.Location = new System.Drawing.Point(58, 50);
+            this.label_Name.Location = new System.Drawing.Point(58, 46);
             this.label_Name.Name = "label_Name";
-            this.label_Name.Size = new System.Drawing.Size(11, 15);
+            this.label_Name.Size = new System.Drawing.Size(152, 20);
             this.label_Name.TabIndex = 18;
             this.label_Name.Text = " ";
+            this.label_Name.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label_Profile
             // 
@@ -193,9 +193,9 @@
             this.label_MyRelation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_MyRelation.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_MyRelation.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_MyRelation.Location = new System.Drawing.Point(216, 31);
+            this.label_MyRelation.Location = new System.Drawing.Point(216, 26);
             this.label_MyRelation.Name = "label_MyRelation";
-            this.label_MyRelation.Size = new System.Drawing.Size(109, 18);
+            this.label_MyRelation.Size = new System.Drawing.Size(109, 20);
             this.label_MyRelation.TabIndex = 24;
             this.label_MyRelation.Text = " Following : false ";
             this.label_MyRelation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -205,11 +205,12 @@
             this.button_Follow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_Follow.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_Follow.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_Follow.Location = new System.Drawing.Point(331, 31);
+            this.button_Follow.Location = new System.Drawing.Point(331, 26);
             this.button_Follow.Name = "button_Follow";
-            this.button_Follow.Size = new System.Drawing.Size(68, 15);
+            this.button_Follow.Size = new System.Drawing.Size(68, 18);
             this.button_Follow.TabIndex = 25;
             this.button_Follow.Text = " UnFollow ";
+            this.button_Follow.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.button_Follow.Click += new System.EventHandler(this.button_Follow_Click);
             // 
             // button_Block
@@ -217,9 +218,9 @@
             this.button_Block.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_Block.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_Block.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_Block.Location = new System.Drawing.Point(331, 51);
+            this.button_Block.Location = new System.Drawing.Point(331, 48);
             this.button_Block.Name = "button_Block";
-            this.button_Block.Size = new System.Drawing.Size(68, 15);
+            this.button_Block.Size = new System.Drawing.Size(68, 18);
             this.button_Block.TabIndex = 26;
             this.button_Block.Text = " Block ";
             this.button_Block.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -230,9 +231,9 @@
             this.label_UserRelation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.label_UserRelation.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.label_UserRelation.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_UserRelation.Location = new System.Drawing.Point(216, 48);
+            this.label_UserRelation.Location = new System.Drawing.Point(216, 46);
             this.label_UserRelation.Name = "label_UserRelation";
-            this.label_UserRelation.Size = new System.Drawing.Size(109, 18);
+            this.label_UserRelation.Size = new System.Drawing.Size(109, 20);
             this.label_UserRelation.TabIndex = 27;
             this.label_UserRelation.Text = " Followed : false ";
             this.label_UserRelation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -256,7 +257,7 @@
             this.Controls.Add(this.pictureBox_UserIcon);
             this.Name = "Form_UserInfo";
             this.Text = "Form_UserTweetList";
-            this.Load += new System.EventHandler(this.Form_UserTweetList_Load);
+            this.Load += new System.EventHandler(this.Form_UserInfo_Load);
             this.Controls.SetChildIndex(this.pictureBox_UserIcon, 0);
             this.Controls.SetChildIndex(this.label_Id, 0);
             this.Controls.SetChildIndex(this.label_Name, 0);
@@ -273,7 +274,6 @@
             this.tabControl_Timeline.ResumeLayout(false);
             this.tabPage_Tweet.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

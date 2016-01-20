@@ -38,16 +38,26 @@ namespace Twitter_Test
         private Form_Main parentForm = null;
         private MyClass util = new MyClass();
 
-        private void Form_UserTweetList_Load(object sender, EventArgs e)
+        private void Form_UserInfo_Load(object sender, EventArgs e)
         {
             this.Title = "@" + this.user.ScreenName;
             setData(this.user);
+
+            if (this.user.Equals(this.myData))
+            {
+                this.label_MyRelation.TextAlign = ContentAlignment.BottomCenter;
+                this.label_MyRelation.Text = " My Data. ";
+                this.label_UserRelation.Text = string.Empty;
+
+                this.button_Follow.Text = string.Empty;
+                this.button_Follow.Enabled = false;
+                this.button_Block.Text = string.Empty;
+                this.button_Block.Enabled = false;
+            }
         }
 
         private void setData(User user)
         {
-
-
             this.label_Id.Text += string.Format("{0} ", user.ScreenName);
             this.label_Name.Text = string.Format(" {0} ", user.Name);
             this.label_Profile.Text = user.Description != null ? user.Description : string.Empty;
@@ -540,12 +550,40 @@ namespace Twitter_Test
 
         private void button_Follow_Click(object sender, EventArgs e)
         {
+            try
+            {
+                if (this.button_Follow.Text == " Follow ")
+                {
+                    this.tokens.Friendships.Create(screen_name => this.user.ScreenName);
+                    return;
+                }
 
+                this.tokens.Friendships.Destroy(screen_name => this.user.ScreenName);
+            }
+            catch (Exception ex)
+            {
+                util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+            }
+            finally
+            {
+                setRelation(this.user, this.myData, this.tokens);
+            }
         }
 
         private void button_Block_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                this.tokens.Blocks.Create(screen_name => this.user.ScreenName);
+            }
+            catch (Exception ex)
+            {
+                util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+            }
+            finally
+            {
+                setRelation(this.user, this.myData, this.tokens);
+            }
         }
     }
 }
