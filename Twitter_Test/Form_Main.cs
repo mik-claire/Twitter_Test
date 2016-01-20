@@ -796,7 +796,7 @@ namespace Twitter_Test
                 if (command.Length == 14 &&
                     command == "reset all data")
                 {
-                    Properties.Settings.Default.LastLoginUser = getLastLoginUser();
+                    Properties.Settings.Default.LastLoginUser = 0;
                     Properties.Settings.Default.AccessTokenList = null;
                     Properties.Settings.Default.Save();
                     Application.Restart();
