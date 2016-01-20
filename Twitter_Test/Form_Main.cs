@@ -121,7 +121,7 @@ namespace Twitter_Test
             try
             {
                 this.textBox_Input.Text = string.Empty;
-                this.Title = "@" + this.user.ScreenName;
+                this.Title = "mik-Client - @" + this.user.ScreenName;
                 this.pictureBox_UserIcon.ImageLocation = this.user.ProfileImageUrl;
                 this.pictureBox_UserIcon.Refresh();
 
@@ -523,6 +523,9 @@ namespace Twitter_Test
                 return;
             }
 
+            Properties.Settings.Default.LastLoginUser = getLastLoginUser();
+            Properties.Settings.Default.Save();
+
             if (this.disposable != null)
             {
                 this.disposable.Dispose();
@@ -643,6 +646,22 @@ namespace Twitter_Test
             }
         }
 
+        private int getLastLoginUser()
+        {
+            int lastLoginUserIndex = 0;
+            foreach(string row in Properties.Settings.Default.AccessTokenList)
+            {
+                string screenName = row.Split(',')[0];
+                if (screenName == this.user.ScreenName)
+                {
+                    return lastLoginUserIndex;
+                }
+                lastLoginUserIndex++;
+            }
+
+            return 0;
+        }
+
         private void shell()
         {
             using (Form_Shell shell = new Form_Shell())
@@ -657,11 +676,18 @@ namespace Twitter_Test
                     return;
                 }
 
+                if (command.Length == 7 &&
+                    command == "restart")
+                {
+                    Application.Restart();
+                    return;
+                }
+
                 if (command.Length == 14 &&
                     command == "reset all data")
                 {
                     Properties.Settings.Default.AccessTokenList = null;
-                    Properties.Settings.Default.LastLoginUser = 0;
+                    Properties.Settings.Default.LastLoginUser = getLastLoginUser();
                     Properties.Settings.Default.Save();
                     Application.Restart();
                 }
@@ -753,7 +779,6 @@ namespace Twitter_Test
                 this.tokens.AccessToken,
                 this.tokens.AccessTokenSecret);
             Properties.Settings.Default.AccessTokenList.Add(tokenData);
-            Properties.Settings.Default.LastLoginUser = Properties.Settings.Default.AccessTokenList.Count - 1;
             Properties.Settings.Default.Save();
         }
 
