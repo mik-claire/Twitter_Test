@@ -70,11 +70,21 @@ namespace Twitter_Test
                             media.Sizes.Small.Height * (96 / (float)media.Sizes.Small.Width));
                     }
                 }
+				
+			string rt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>RT</u></font>";
+			string qt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>QT</u></font>";
+			string fav = string.Format(
+@"<font style=""cursor:hand;"" color=""#6495ED""><u>{0}</u></font>",
+				(bool)tweet.IsFavorited ? "★" : "☆");
 
-                StringBuilder doc = new StringBuilder();
+			StringBuilder doc = new StringBuilder();
+			doc.Append(string.Format(
+@"<!-- {0} --><br>",
+				tweet.Id));
                 doc.Append("<font size=\"2\" face=\"Meiryo UI\">");
                 doc.Append(tweet.CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss")); // Date-Time
-                doc.AppendFormat(" via {0}<br>", tweet.Source);                                 // via
+                doc.AppendFormat(" via {0} {1} {2} {3}<br>", tweet.Source,						// via
+					rt, qt, fav);																// control
                 doc.AppendFormat("<a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}<br>",
                     tweet.User.ScreenName,                                                      // user-ID
                     tweet.User.Name);                                                           // user-Name
@@ -120,8 +130,38 @@ namespace Twitter_Test
                     link = clickedElement.Parent.GetAttribute("href");
                 }
             }
+			
+			if (clickedElement.InnerText == "RT")
+			{
+				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+				Status tweet = getTweetFromId(this.tokens, tweetId);
 
-            if (link == null || link == string.Empty)
+				retweet(tweet);
+				return;
+			}
+
+			if (clickedElement.InnerText == "QT")
+			{
+				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+				Status tweet = getTweetFromId(this.tokens, tweetId);
+
+				quoteTweet(tweet);
+				return;
+			}
+
+			if (clickedElement.InnerText == "☆")
+			{
+				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+				Status tweet = getTweetFromId(this.tokens, tweetId);
+
+				favorite(tweet);
+				return;
+			}
+			
+			if (link == null || link == string.Empty)
             {
                 return;
             }
@@ -162,6 +202,58 @@ namespace Twitter_Test
             {
                 e.Cancel = true;
             }
-        }
+		}
+
+		private Status getTweetFromId(Tokens tokens, string tweetId)
+		{
+			var tweet = tokens.Statuses.Show(id => tweetId);
+			return tweet;
+		}
+
+		private void retweet(Status tweet)
+		{
+			/*
+			if ((bool)tweet.IsRetweeted)
+			{
+				long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
+				this.tokens.Statuses.Destroy(id => retweetId);
+			}
+			else
+			{
+				this.tokens.Statuses.Retweet(id => tweet.Id);
+			}
+			*/
+
+			this.tokens.Statuses.Retweet(id => tweet.Id);
+			string message = string.Format("Retweeted to @{0}: {1}",
+				tweet.User.ScreenName,
+				tweet.Text);
+		}
+
+		private void quoteTweet(Status tweet)
+		{
+			string context = string.Format(@"https://twitter.com/{0}/status/{1}",
+				tweet.User.ScreenName,
+				tweet.ToString());
+			this.parentForm.SetQt(context);
+		}
+
+		private void favorite(Status tweet)
+		{
+			if ((bool)tweet.IsFavorited)
+			{
+				this.tokens.Favorites.Destroy(id => tweet.Id);
+				string message = string.Format("Un-Favorited to @{0}: {1}",
+					tweet.User.ScreenName,
+					tweet.Text);
+			}
+			else
+			{
+				this.tokens.Favorites.Create(id => tweet.Id);
+				string message = string.Format("Favorited to @{0}: {1}",
+					tweet.User.ScreenName,
+					tweet.Text);
+			}
+		}
     }
 }

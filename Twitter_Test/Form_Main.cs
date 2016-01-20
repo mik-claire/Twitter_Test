@@ -304,27 +304,26 @@ namespace Twitter_Test
                 }
             }
 
-            string rt = string.Format(
-@"<font color=""#6495ED""><u><rt id={0}>RT</rt></u></font>",
-                tweet.Id);
-            string qt = string.Format(
-@"<font color=""#6495ED""><u><qt id={0}>QT</qt></u></font>",
-                tweet.Id);
+            string rt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>RT</u></font>";
+            string qt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>QT</u></font>";
             string fav = string.Format(
-@"<font color=""#6495ED""><u><fav id={0}>☆</fav></u></font>",
-                tweet.Id);
+@"<font style=""cursor:hand;"" color=""#6495ED""><u>{0}</u></font>",
+				(bool)tweet.IsFavorited ? "★" : "☆");
 
-            StringBuilder sb2 = new StringBuilder();
-            sb2.Append("<font size=\"2\" face=\"Meiryo UI\">");
-            sb2.Append(item.SubItems[0].Text);                                  // Date-Time
-            sb2.AppendFormat(" via {0} {1} {2} {3}<br>", tweet.Source,          // via
+			StringBuilder doc = new StringBuilder();
+			doc.Append(string.Format(
+@"<!-- {0} --><br>",
+				tweet.Id));
+            doc.Append("<font size=\"2\" face=\"Meiryo UI\">");
+            doc.Append(item.SubItems[0].Text);                                  // Date-Time
+            doc.AppendFormat(" via {0} {1} {2} {3}<br>", tweet.Source,          // via
                 rt, qt, fav);                                                   // contorl
-            sb2.AppendFormat(
+            doc.AppendFormat(
                 "<a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}{2}<br>",
                 item.SubItems[1].Text,                                          // user-ID
                 item.SubItems[2].Text,                                          // user-Name
                 retweeter);                                                     // retweeter-Name
-            sb2.AppendFormat("{0}<br></font>", context.Replace("\n", "<br>"));  // context
+            doc.AppendFormat("{0}<br></font>", context.Replace("\n", "<br>"));  // context
             this.webBrowser_Detail.DocumentText = string.Format(
 @"<html>
 <head>
@@ -346,7 +345,7 @@ namespace Twitter_Test
 </body>
 </html>",
                 tweet.RetweetedStatus == null ? tweet.User.ProfileImageUrl : tweet.RetweetedStatus.User.ProfileImageUrl,
-                sb2.ToString(),
+                doc.ToString(),
                 entities == string.Empty ? string.Empty : "<div>" + entities + "</div>");
             
             this.webBrowser_Detail.Document.Click -= new HtmlElementEventHandler(webBrowser_Detail_DocumentClick);
@@ -386,10 +385,10 @@ namespace Twitter_Test
                             showHomeTimeline(lv);
                             break;
                         case "listView_Mention":
-                            showHomeTimeline(lv);
+                            showMentionTimeline(lv);
                             break;
                         case "listView_Fav":
-                            showHomeTimeline(lv);
+                            showFavTimeline(lv);
                             break;
                         default:
                             break;
@@ -575,13 +574,45 @@ namespace Twitter_Test
             {
                 link = clickedElement.GetAttribute("href");
             }
-            else if (clickedElement.Parent != null)
-            {
-                if (clickedElement.Parent.TagName == "a" || clickedElement.Parent.TagName == "A")
-                {
-                    link = clickedElement.Parent.GetAttribute("href");
-                }
-            }
+			else if (clickedElement.Parent != null)
+			{
+				if (clickedElement.Parent.TagName == "a" || clickedElement.Parent.TagName == "A")
+				{
+					link = clickedElement.Parent.GetAttribute("href");
+				}
+			}
+
+			if (clickedElement.InnerText == "RT")
+			{
+				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+				Status tweet = getTweetFromId(this.tokens, tweetId);
+
+				retweet(tweet);
+				return;
+			}
+
+			if (clickedElement.InnerText == "QT")
+			{
+				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+				Status tweet = getTweetFromId(this.tokens, tweetId);
+
+				quoteTweet(tweet);
+				return;
+			}
+
+			if (clickedElement.InnerText == "☆")
+			{
+				ListView lv = getFocusedListView();
+				string tweetId = clickedElement.Parent.Parent.InnerHtml.Split(new string[] { "t" }, StringSplitOptions.RemoveEmptyEntries)[0];
+				tweetId = tweetId.Substring(5, tweetId.Length - 4);
+				Status tweet = getTweetFromId(this.tokens, tweetId);
+
+				favorite(tweet);
+				lv.Items[lv.SelectedIndices[0]].Selected = true;
+				return;
+			}
 
             if (link == null || link == string.Empty)
             {
@@ -617,6 +648,53 @@ namespace Twitter_Test
             {
             }
         }
+
+		private void retweet(Status tweet)
+		{
+			/*
+			if ((bool)tweet.IsRetweeted)
+			{
+				long retweetId = this.tokens.Statuses.Show(include_my_retweet => true).Id;
+				this.tokens.Statuses.Destroy(id => retweetId);
+			}
+			else
+			{
+				this.tokens.Statuses.Retweet(id => tweet.Id);
+			}
+			*/
+
+			this.tokens.Statuses.Retweet(id => tweet.Id);
+			string message = string.Format("Retweeted to @{0}: {1}",
+				tweet.User.ScreenName,
+				tweet.Text);
+		}
+
+		private void quoteTweet(Status tweet)
+		{
+			this.textBox_Input.Text += string.Format(@"https://twitter.com/{0}/status/{1}",
+				tweet.User.ScreenName,
+				tweet.ToString());
+		}
+
+		private void favorite(Status tweet)
+		{
+			if ((bool)tweet.IsFavorited)
+			{
+				this.tokens.Favorites.Destroy(id => tweet.Id);
+				string message = string.Format("Un-Favorited to @{0}: {1}",
+					tweet.User.ScreenName,
+					tweet.Text);
+			}
+			else
+			{
+				this.tokens.Favorites.Create(id => tweet.Id);
+				string message = string.Format("Favorited to @{0}: {1}",
+					tweet.User.ScreenName,
+					tweet.Text);
+			}
+
+			showFavTimeline(this.listView_Fav);
+		}
 
         private void webBrowser_Detail_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
