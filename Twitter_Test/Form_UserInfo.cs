@@ -112,6 +112,7 @@ namespace Twitter_Test
             try
             {
                 var home = getUserTweet(this.tokens, this.user.ScreenName);
+                lv.Items.Clear();
 
                 for (int i = home.Count - 1; i >= 0; i--)
                 {

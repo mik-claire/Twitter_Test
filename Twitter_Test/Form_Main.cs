@@ -147,6 +147,7 @@ namespace Twitter_Test
             try
             {
                 var home = tokens.Statuses.HomeTimeline(count => 100);
+                lv.Items.Clear();
 
                 for (int i = home.Count - 1; i >= 0; i--)
                 {
@@ -165,6 +166,7 @@ namespace Twitter_Test
             try
             {
                 var mention = tokens.Statuses.MentionsTimeline(count => 100);
+                lv.Items.Clear();
 
                 for (int i = mention.Count - 1; i >= 0; i--)
                 {
@@ -183,6 +185,7 @@ namespace Twitter_Test
             try
             {
                 var fav = tokens.Favorites.List(count => 300);
+                lv.Items.Clear();
 
                 for (int i = fav.Count - 1; i >= 0; i--)
                 {
