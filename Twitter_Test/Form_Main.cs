@@ -338,6 +338,50 @@ namespace Twitter_Test
                 }
             }
 
+            StringBuilder docQt = new StringBuilder();
+            if (tweet.QuotedStatus != null)
+            {
+                Status quotedTweet = tweet.QuotedStatus;
+
+                string rtInQt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>RT</u></font>";
+                string qtInQt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>QT</u></font>";
+                string favInQt = string.Format(
+@"<font style=""cursor:hand;"" color=""#6495ED""><u>{0}</u></font>",
+                    (bool)quotedTweet.IsFavorited ? "★" : "☆");
+                string contextInQt = url.Replace(quotedTweet.Text, "<a href=\"$&\">$&</a>");
+                contextInQt = userId.Replace(contextInQt, "<a href=\"https://www.twitter.com/$1\">$&</a>");
+
+                docQt.Append(string.Format(@"<!-- {0} -->",
+                    quotedTweet.Id));
+                docQt.Append("<div id=\"QtContext\">");
+                docQt.Append("<font size=\"1\" color=\"#E6E6FA\" face=\"Meiryo UI\">");
+                docQt.Append("=== QT ===<br>");
+                docQt.Append(quotedTweet.CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss"));
+                docQt.AppendFormat("{0} {1} {2}<br>", rtInQt, qtInQt, favInQt);
+                docQt.AppendFormat(
+                    "<a href=\"https://www.twitter.com/{0}\">@{0}</a> / {1}<br>",
+                    quotedTweet.User.ScreenName,                                    // user-ID
+                    quotedTweet.User.Name);                                         // user-Name
+                docQt.AppendFormat("{0}<br></font>",
+                    contextInQt.Replace("\n", "<br>"));                             // context
+                docQt.Append("</div>");
+
+                string entitiesInQt = string.Empty;
+                if (quotedTweet.ExtendedEntities != null)
+                {
+                    foreach (var media in quotedTweet.ExtendedEntities.Media)
+                    {
+                        entitiesInQt += string.Format(@"<div id=""QtImage""><a href=""{0}"">
+<img border=""0"" src=""{0}"" width=""{1}"" height=""{2}"" alt=""{0}"">
+</a></div>",
+                            media.MediaUrl,
+                            media.Sizes.Small.Width * (96 / (float)media.Sizes.Small.Width),
+                            media.Sizes.Small.Height * (96 / (float)media.Sizes.Small.Width));
+                    }
+                }
+                docQt.Append(entitiesInQt);
+            }
+
             string rt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>RT</u></font>";
             string qt = @"<font style=""cursor:hand;"" color=""#6495ED""><u>QT</u></font>";
             string fav = string.Format(
@@ -345,8 +389,7 @@ namespace Twitter_Test
 				(bool)tweet.IsFavorited ? "★" : "☆");
 
 			StringBuilder doc = new StringBuilder();
-			doc.Append(string.Format(
-@"<!-- {0} --><br>",
+			doc.Append(string.Format(@"<!-- {0} -->",
 				tweet.Id));
             doc.Append("<font size=\"2\" face=\"Meiryo UI\">");
             doc.Append(item.SubItems[0].Text);                                  // Date-Time
@@ -375,12 +418,16 @@ namespace Twitter_Test
   <div id=""context"">
     {1}
   </div>
-  {2}
+  <div id=""image"">
+    {2}
+  </div>
+  {3}
 </body>
 </html>",
                 tweet.RetweetedStatus == null ? tweet.User.ProfileImageUrl : tweet.RetweetedStatus.User.ProfileImageUrl,
                 doc.ToString(),
-                entities == string.Empty ? string.Empty : "<div>" + entities + "</div>");
+                entities == string.Empty ? string.Empty : "<div>" + entities + "</div>",
+                docQt.ToString());
             
             this.webBrowser_Detail.Document.Click -= new HtmlElementEventHandler(webBrowser_Detail_DocumentClick);
             this.webBrowser_Detail.Document.Click += new HtmlElementEventHandler(webBrowser_Detail_DocumentClick);
@@ -437,7 +484,6 @@ namespace Twitter_Test
 
         private void tweet(Tokens tokens, string context, List<string> uploadFiles)
         {
-            // var image = uploadFiles.Select(m => this.tokens.Media.Upload(media => m).MediaId);
             List<MediaUploadResult> results = new List<MediaUploadResult>();
             foreach (string filePath in uploadFiles)
             {
@@ -547,9 +593,8 @@ namespace Twitter_Test
         private void streamTL(Status tweet)
         {
             displayTimeline(this.listView_Home, tweet);
-            
-            if (tweet.InReplyToScreenName != null &&
-                tweet.InReplyToScreenName == this.user.ScreenName)
+
+            if (tweet.Text.Contains(string.Format("@{0}", this.user.ScreenName)))
             {
                 displayTimeline(this.listView_Mention, tweet);
                 string message = string.Format("Reply from @{0}: {1}",
@@ -1076,7 +1121,7 @@ namespace Twitter_Test
                 {
                     try
                     {
-                        List<Status> talk = getTalk((Status)lv.SelectedItems[0].Tag);
+                        List<Status> talk = getTalk(tweet);
 
                         Form_Talk f = new Form_Talk(this.tokens, talk, this);
                         f.Show();
@@ -1212,15 +1257,6 @@ namespace Twitter_Test
             }
 
             return talk;
-        }
-
-        private void button_ShowTalk_Click(object sender, EventArgs e)
-        {
-            ListView lv = getFocusedListView();
-            List<Status> talk =  getTalk((Status)lv.SelectedItems[0].Tag);
-
-            Form_Talk f = new Form_Talk(this.tokens, talk, this);
-            f.Show();
         }
 
         private void tabControl_Timeline_SelectedIndexChanged(object sender, EventArgs e)

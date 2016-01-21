@@ -79,7 +79,7 @@ namespace Twitter_Test
 
 			StringBuilder doc = new StringBuilder();
 			doc.Append(string.Format(
-@"<!-- {0} --><br>",
+@"<!-- {0} -->",
 				tweet.Id));
                 doc.Append("<font size=\"2\" face=\"Meiryo UI\">");
                 doc.Append(tweet.CreatedAt.LocalDateTime.ToString("yyyy/MM/dd(ddd) HH:mm:ss")); // Date-Time
