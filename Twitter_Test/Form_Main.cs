@@ -504,7 +504,7 @@ namespace Twitter_Test
                 param.Add("in_reply_to_status_id", this.status.Id.ToString());
             }
 
-            tokens.Statuses.Update(param);
+            tokens.Statuses.UpdateAsync(param);
             resetReply();
             resetAppend();
 
@@ -746,7 +746,7 @@ namespace Twitter_Test
 			}
 			*/
 
-			this.tokens.Statuses.Retweet(id => tweet.Id);
+			this.tokens.Statuses.RetweetAsync(id => tweet.Id);
 
             ListView lv = getFocusedListView();
             int index = lv.SelectedIndices[0];
@@ -771,7 +771,7 @@ namespace Twitter_Test
 		{
 			if ((bool)tweet.IsFavorited)
 			{
-				this.tokens.Favorites.Destroy(id => tweet.Id);
+				this.tokens.Favorites.DestroyAsync(id => tweet.Id);
 				string message = string.Format("Un-Favorited to @{0}: {1}",
 					tweet.User.ScreenName,
                     tweet.Text);
@@ -779,7 +779,7 @@ namespace Twitter_Test
 			}
 			else
 			{
-				this.tokens.Favorites.Create(id => tweet.Id);
+				this.tokens.Favorites.CreateAsync(id => tweet.Id);
 				string message = string.Format("Favorited to @{0}: {1}",
 					tweet.User.ScreenName,
                     tweet.Text);

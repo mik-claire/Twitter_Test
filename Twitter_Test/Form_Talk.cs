@@ -229,7 +229,7 @@ namespace Twitter_Test
             }
             */
 
-            this.tokens.Statuses.Retweet(id => tweet.Id);
+            this.tokens.Statuses.RetweetAsync(id => tweet.Id);
         }
 
         private void quoteTweet(Status tweet)
@@ -243,11 +243,11 @@ namespace Twitter_Test
         {
             if ((bool)tweet.IsFavorited)
             {
-                this.tokens.Favorites.Destroy(id => tweet.Id);
+                this.tokens.Favorites.DestroyAsync(id => tweet.Id);
             }
             else
             {
-                this.tokens.Favorites.Create(id => tweet.Id);
+                this.tokens.Favorites.CreateAsync(id => tweet.Id);
             }
         }
 

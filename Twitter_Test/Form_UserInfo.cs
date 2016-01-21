@@ -608,7 +608,7 @@ namespace Twitter_Test
             }
             */
 
-            this.tokens.Statuses.Retweet(id => tweet.Id);
+            this.tokens.Statuses.RetweetAsync(id => tweet.Id);
 
             int index = this.listView_Tweet.SelectedIndices[0];
             ((Status)this.listView_Tweet.Items[index].Tag).IsRetweeted = true;
@@ -627,11 +627,11 @@ namespace Twitter_Test
         {
             if ((bool)tweet.IsFavorited)
             {
-                this.tokens.Favorites.Destroy(id => tweet.Id);
+                this.tokens.Favorites.DestroyAsync(id => tweet.Id);
             }
             else
             {
-                this.tokens.Favorites.Create(id => tweet.Id);
+                this.tokens.Favorites.CreateAsync(id => tweet.Id);
             }
 
             int index = this.listView_Tweet.SelectedIndices[0];
@@ -694,11 +694,11 @@ namespace Twitter_Test
             {
                 if (this.button_Follow.Text == " Follow ")
                 {
-                    this.tokens.Friendships.Create(screen_name => this.user.ScreenName);
+                    this.tokens.Friendships.CreateAsync(screen_name => this.user.ScreenName);
                     return;
                 }
 
-                this.tokens.Friendships.Destroy(screen_name => this.user.ScreenName);
+                this.tokens.Friendships.DestroyAsync(screen_name => this.user.ScreenName);
             }
             catch (Exception ex)
             {
@@ -714,7 +714,7 @@ namespace Twitter_Test
         {
             try
             {
-                this.tokens.Blocks.Create(screen_name => this.user.ScreenName);
+                this.tokens.Blocks.CreateAsync(screen_name => this.user.ScreenName);
             }
             catch (Exception ex)
             {
