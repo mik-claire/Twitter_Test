@@ -403,8 +403,7 @@ namespace Twitter_Test
 
         private void tweet(Tokens tokens, string context, List<string> uploadFiles)
         {
-            var image = uploadFiles.Select(m => this.tokens.Media.Upload(media => m).MediaId);
-
+            // var image = uploadFiles.Select(m => this.tokens.Media.Upload(media => m).MediaId);
             List<MediaUploadResult> results = new List<MediaUploadResult>();
             foreach (string filePath in uploadFiles)
             {
@@ -1248,10 +1247,15 @@ namespace Twitter_Test
                 }
 
                 this.label_Status.Text = message;
-                if (58 < message.Length)
+                if (message.Contains(Environment.NewLine))
+                {
+                    this.label_Status.Text = message.Substring(0, message.IndexOf(Environment.NewLine)) + "...";
+                }
+                else if (58 < message.Length)
                 {
                     this.label_Status.Text = message.Substring(0, 58) + "...";
                 }
+
                 if (this.label_Status.Text != string.Empty)
                 {
                     this.timerCount = 0;
