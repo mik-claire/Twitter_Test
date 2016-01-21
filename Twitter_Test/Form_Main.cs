@@ -196,6 +196,24 @@ namespace Twitter_Test
             }
         }
 
+        private void changeItemColor(ListViewItem item, string status)
+        {
+            switch(status)
+            {
+                case "retweet":
+                    item.BackColor = Color.FromArgb(28, 64, 28);
+                    break;
+                case "myTweet":
+                    item.BackColor = Color.FromArgb(64, 28, 28);
+                    break;
+                case "reply":
+                    item.BackColor = Color.FromArgb(28, 28, 64);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private delegate void delegateDispay(ListView lv, Status tweet);
         private void displayTimeline(ListView lv, Status tweet)
         {
@@ -219,6 +237,19 @@ namespace Twitter_Test
                     };
                     ListViewItem item = new ListViewItem(msg);
                     item.Tag = tweet;
+
+                    if (tweet.RetweetedStatus != null)
+                    {
+                        changeItemColor(item, "retweet");
+                    }
+                    else if (tweet.User.Id == this.user.Id)
+                    {
+                        changeItemColor(item, "myTweet");
+                    }
+                    else if (tweet.Text.Contains(string.Format("@{0}", this.user.ScreenName)))
+                    {
+                        changeItemColor(item, "reply");
+                    }
 
                     deleteOldTweet(lv);
                     lv.Items.Insert(0, item);
@@ -1255,7 +1286,6 @@ namespace Twitter_Test
                 {
                     this.label_Status.Text = message.Substring(0, 58) + "...";
                 }
-
                 if (this.label_Status.Text != string.Empty)
                 {
                     this.timerCount = 0;
