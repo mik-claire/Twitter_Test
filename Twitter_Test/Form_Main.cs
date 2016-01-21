@@ -122,6 +122,7 @@ namespace Twitter_Test
             {
                 this.textBox_Input.Text = string.Empty;
                 this.Title = "mik-Client - @" + this.user.ScreenName;
+                this.Text = "mik-Client - @" + this.user.ScreenName;
                 this.pictureBox_UserIcon.ImageLocation = this.user.ProfileImageUrl;
                 this.pictureBox_UserIcon.Refresh();
 
