@@ -15,6 +15,7 @@ namespace Twitter_Test
         public Form_Shell()
         {
             InitializeComponent();
+            this.Text = string.Empty;
         }
 
         private string command = string.Empty;

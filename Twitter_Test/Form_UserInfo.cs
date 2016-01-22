@@ -41,6 +41,7 @@ namespace Twitter_Test
         private void Form_UserInfo_Load(object sender, EventArgs e)
         {
             this.Title = "@" + this.user.ScreenName;
+            this.Text = "@" + this.user.ScreenName;
             setData(this.user);
 
             if (this.user.Equals(this.myData))
@@ -81,30 +82,38 @@ namespace Twitter_Test
             this.button_Follow.Text = " Follow ";
             string myRelation = " Following : {0} ";
             string following = "false";
-            var myFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => this.myData.Id);
-            foreach (var id in myFriendIds)
-            {
-                if (id == user.Id)
-                {
-                    following = "true";
-                    this.button_Follow.Text = " UnFollow ";
-                    break;
-                }
-            }
-            this.label_MyRelation.Text = string.Format(myRelation, following);
 
-            string userRelation = " Followed : {0} ";
-            string followed = "false";
-            var userFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => user.Id);
-            foreach (var id in userFriendIds)
+            try
             {
-                if (id == this.myData.Id)
+                var myFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => this.myData.Id);
+                foreach (var id in myFriendIds)
                 {
-                    followed = "true";
-                    break;
+                    if (id == user.Id)
+                    {
+                        following = "true";
+                        this.button_Follow.Text = " UnFollow ";
+                        break;
+                    }
                 }
+                this.label_MyRelation.Text = string.Format(myRelation, following);
+
+                string userRelation = " Followed : {0} ";
+                string followed = "false";
+                var userFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => user.Id);
+                foreach (var id in userFriendIds)
+                {
+                    if (id == this.myData.Id)
+                    {
+                        followed = "true";
+                        break;
+                    }
+                }
+                this.label_UserRelation.Text = string.Format(userRelation, followed);
             }
-            this.label_UserRelation.Text = string.Format(userRelation, followed);
+            catch(Exception ex)
+            {
+                util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+            }
         }
 
         private void showUserTimeline(ListView lv)

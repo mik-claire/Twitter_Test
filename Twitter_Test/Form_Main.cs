@@ -147,7 +147,7 @@ namespace Twitter_Test
         {
             try
             {
-                var home = tokens.Statuses.HomeTimeline(count => 100);
+                var home = tokens.Statuses.HomeTimeline(count => 200);
                 lv.Items.Clear();
 
                 for (int i = home.Count - 1; i >= 0; i--)
@@ -166,7 +166,7 @@ namespace Twitter_Test
         {
             try
             {
-                var mention = tokens.Statuses.MentionsTimeline(count => 100);
+                var mention = tokens.Statuses.MentionsTimeline(count => 200);
                 lv.Items.Clear();
 
                 for (int i = mention.Count - 1; i >= 0; i--)
@@ -185,7 +185,7 @@ namespace Twitter_Test
         {
             try
             {
-                var fav = tokens.Favorites.List(count => 300);
+                var fav = tokens.Favorites.List(count => 200);
                 lv.Items.Clear();
 
                 for (int i = fav.Count - 1; i >= 0; i--)
@@ -255,7 +255,6 @@ namespace Twitter_Test
                         changeItemColor(item, "reply");
                     }
 
-                    deleteOldTweet(lv);
                     lv.Items.Insert(0, item);
                     // lv.Items[0].EnsureVisible();
                 }
@@ -269,14 +268,6 @@ namespace Twitter_Test
             catch(Exception ex)
             {
                 util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
-            }
-        }
-
-        private void deleteOldTweet(ListView lv)
-        {
-            while (100 < lv.Items.Count)
-            {
-                lv.Items.RemoveAt(lv.Items.Count - 1);
             }
         }
 

@@ -26,6 +26,7 @@ namespace Twitter_Test
         {
             InitializeComponent();
             this.Title = "Select your account.";
+            this.Text = "Account Selector";
         }
 
         private int accountNumber = 0;

@@ -21,6 +21,8 @@ namespace Twitter_Test
             this.tokens = tokens;
             this.talk = talk;
             this.parentForm = parentForm;
+
+            this.Text = "Talk.";
         }
 
         private Tokens tokens = null;
