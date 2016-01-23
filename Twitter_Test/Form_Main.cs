@@ -18,6 +18,8 @@ using MyControls;
 using CoreTweet;
 using CoreTweet.Streaming;
 
+using NLog;
+
 namespace Twitter_Test
 {
     public partial class Form_Main : Mik_Form
@@ -48,12 +50,16 @@ namespace Twitter_Test
         {
             InitializeComponent();
 
+            logger.Info("=== Activated. ===");
+
             string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
             string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
 
             if (Properties.Settings.Default.AccessTokenList == null ||
                 Properties.Settings.Default.AccessTokenList.Count == 0)
             {
+                logger.Info("First activated.");
+
                 var sessions = OAuth.Authorize(apiKey, apiKeySecret);
                 var url = sessions.AuthorizeUri;
 
@@ -80,6 +86,8 @@ namespace Twitter_Test
                 Properties.Settings.Default.AccessTokenList.Add(tokenData);
                 Properties.Settings.Default.Save();
 
+                logger.Info("First setting is completed.");
+
                 return;
             }
 
@@ -91,12 +99,16 @@ namespace Twitter_Test
                 tokenDataArray[2],
                 tokenDataArray[3]);
             this.user = this.tokens.Account.VerifyCredentials();
+
+            logger.Info("Data is loaded.");
         }
 
         private MyClass util = new MyClass();
 
         private Tokens tokens;
         private User user;
+
+        private Logger logger = LogManager.GetCurrentClassLogger();
 
         private void Form_Main_Load(object sender, EventArgs e)
         {
@@ -576,8 +588,10 @@ namespace Twitter_Test
         IDisposable disposable = null;
         private void streaming(Tokens tokens)
         {
+            logger.Debug("Streaming is start!");
+
             var homeStream = tokens.Streaming.UserAsObservable().Publish();
-            homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromSeconds(10)).Retry()).Repeat();
+            homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromMinutes(30)).Retry()).Repeat();
             homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status));
 
             this.disposable = homeStream.Connect();
@@ -585,6 +599,8 @@ namespace Twitter_Test
 
         private void streamTL(Status tweet)
         {
+            logger.Debug("Streaming is enabled.", tweet.User.ScreenName, tweet.Text);
+
             displayTimeline(this.listView_Home, tweet);
 
             if (tweet.Text.Contains(string.Format("@{0}", this.user.ScreenName)))
@@ -860,6 +876,11 @@ namespace Twitter_Test
                 if (command.Length == 7 &&
                     command == "restart")
                 {
+                    logger.Debug("Restarting...");
+                    if (this.disposable != null)
+                    {
+                        this.disposable.Dispose();
+                    }
                     Application.Restart();
                     return;
                 }
@@ -1324,9 +1345,11 @@ namespace Twitter_Test
                     this.timer_ShowStatus.Stop();
                 }
 
+                string log = message.Replace(Environment.NewLine, " ");
+                logger.Debug("Get status: {0}", log);
+
                 this.timer_ShowStatus.Start();
             }
-
         }
 
         private int timerCount = 0;
