@@ -577,6 +577,7 @@ namespace Twitter_Test
         private void streaming(Tokens tokens)
         {
             var homeStream = tokens.Streaming.UserAsObservable().Publish();
+            homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromSeconds(10)).Retry()).Repeat();
             homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status));
 
             this.disposable = homeStream.Connect();
