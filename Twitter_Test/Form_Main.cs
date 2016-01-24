@@ -591,8 +591,8 @@ namespace Twitter_Test
             logger.Debug("Streaming is start!");
 
             var homeStream = tokens.Streaming.UserAsObservable().Publish();
-            homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromMinutes(30)).Retry()).Repeat();
-            homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status));
+            homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromSeconds(15)).Retry()).Repeat();
+            homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status), onError: exception => reStreaming());
 
             this.disposable = homeStream.Connect();
         }
@@ -613,6 +613,20 @@ namespace Twitter_Test
             }
         }
 
+        private void reStreaming()
+        {
+            logger.Warn("Streaming has disconnected!");
+
+            if (this.disposable != null)
+            {
+                this.disposable.Dispose();
+                logger.Debug("Streaming has disposed.");
+            }
+
+            logger.Debug("Re-acquire stream.");
+            streaming(this.tokens);
+        }
+
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (this.tokens == null)
@@ -627,6 +641,7 @@ namespace Twitter_Test
             if (this.disposable != null)
             {
                 this.disposable.Dispose();
+                logger.Debug("Streaming has disposed.");
             }
         }
 
@@ -880,6 +895,7 @@ namespace Twitter_Test
                     if (this.disposable != null)
                     {
                         this.disposable.Dispose();
+                        logger.Debug("Streaming has disposed.");
                     }
                     Application.Restart();
                     return;
@@ -997,6 +1013,7 @@ namespace Twitter_Test
             if (this.disposable != null)
             {
                 this.disposable.Dispose();
+                logger.Debug("Streaming has disposed.");
             }
 
             streaming(this.tokens);
@@ -1042,6 +1059,7 @@ namespace Twitter_Test
             if (this.disposable != null)
             {
                 this.disposable.Dispose();
+                logger.Debug("Streaming has disposed.");
             }
 
             streaming(this.tokens);
