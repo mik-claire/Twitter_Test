@@ -86,7 +86,7 @@ namespace Twitter_Test
                 Properties.Settings.Default.AccessTokenList.Add(tokenData);
                 Properties.Settings.Default.Save();
 
-                logger.Info("First setting is completed.");
+                logger.Info("Initializing has completed.");
 
                 return;
             }
@@ -100,7 +100,7 @@ namespace Twitter_Test
                 tokenDataArray[3]);
             this.user = this.tokens.Account.VerifyCredentials();
 
-            logger.Info("Data is loaded.");
+            logger.Info("Data has loaded.");
         }
 
         private MyClass util = new MyClass();
@@ -268,31 +268,12 @@ namespace Twitter_Test
                     }
 
                     lv.Items.Insert(0, item);
-                    // lv.Items[0].EnsureVisible();
                 }
-                /*
-                if (lvスクロールが一番下)
-                {
-                    lv.Items[lv.Items.Count - 1].EnsureVisible();
-                }
-                */
             }
             catch(Exception ex)
             {
                 util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
             }
-        }
-
-        private List<string> getSourceNameAndUrl(string source)
-        {
-            List<string> sourceList = new List<string>();
-
-            string[] ary = source.Split(new string[] { "<", ">" }, StringSplitOptions.RemoveEmptyEntries);
-
-            sourceList.Add(ary[1]);
-            sourceList.Add(ary[0].Split('"')[1]);
-
-            return sourceList;
         }
 
         private void listView_Timeline_SelectedIndexChanged(object sender, EventArgs e)
@@ -588,18 +569,24 @@ namespace Twitter_Test
         IDisposable disposable = null;
         private void streaming(Tokens tokens)
         {
-            logger.Debug("Streaming is start!");
+            this.timer_ReStreaming.Enabled = false;
+            this.reStreamingCount = 0;
+            logger.Debug("Re-Streaming timer has stopped.");
 
             var homeStream = tokens.Streaming.UserAsObservable().Publish();
             homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromSeconds(15)).Retry()).Repeat();
             homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status), onError: exception => reStreaming());
 
             this.disposable = homeStream.Connect();
+            logger.Info("Streaming is start!");
+
+            this.timer_ReStreaming.Enabled = true;
+            logger.Debug("Re-Streaming timer has started.");
         }
 
         private void streamTL(Status tweet)
         {
-            logger.Debug("Streaming is enabled.", tweet.User.ScreenName, tweet.Text);
+            logger.Trace("Streaming is enabled.");
 
             displayTimeline(this.listView_Home, tweet);
 
@@ -623,7 +610,7 @@ namespace Twitter_Test
                 logger.Debug("Streaming has disposed.");
             }
 
-            logger.Debug("Re-acquire stream.");
+            logger.Info("Re-acquiring stream...");
             streaming(this.tokens);
         }
 
@@ -635,8 +622,10 @@ namespace Twitter_Test
             }
             if (Properties.Settings.Default.AccessTokenList != null)
             {
-                Properties.Settings.Default.LastLoginUser = getLastLoginUser();
+                Properties.Settings.Default.LastLoginUser = getLastLoginUserIndex();
                 Properties.Settings.Default.Save();
+
+                logger.Debug("Account data has saved.");
             }
             if (this.disposable != null)
             {
@@ -857,7 +846,7 @@ namespace Twitter_Test
             }
         }
 
-        private int getLastLoginUser()
+        private int getLastLoginUserIndex()
         {
             int lastLoginUserIndex = 0;
 
@@ -876,10 +865,12 @@ namespace Twitter_Test
 
         private void shell()
         {
+            logger.Debug("Shell open.");
             using (Form_Shell shell = new Form_Shell())
             {
                 shell.ShowDialog();
                 string command = shell.Command;
+                logger.Debug("Command: {0}", command);
 
                 if (command.Length == 4 &&
                     command == "exit")
@@ -907,6 +898,9 @@ namespace Twitter_Test
                     Properties.Settings.Default.LastLoginUser = 0;
                     Properties.Settings.Default.AccessTokenList = null;
                     Properties.Settings.Default.Save();
+                    logger.Debug("Account data has saved.");
+
+                    logger.Debug("Restarting...");
                     Application.Restart();
                 }
 
@@ -1056,13 +1050,7 @@ namespace Twitter_Test
 
             show(this.tokens);
 
-            if (this.disposable != null)
-            {
-                this.disposable.Dispose();
-                logger.Debug("Streaming has disposed.");
-            }
-
-            streaming(this.tokens);
+            reStreaming();
         }
 
         List<string> uploadFilePathList = new List<string>();
@@ -1291,23 +1279,6 @@ namespace Twitter_Test
             return talk;
         }
 
-        private void tabControl_Timeline_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            /*
-            switch (this.tabControl_Timeline.SelectedIndex)
-            {
-                case 0:
-                    this.listView_Home.Items[0].EnsureVisible();
-                    break;
-                case 1:
-                    this.listView_Mention.Items[0].EnsureVisible();
-                    break;
-                default:
-                    break;
-            }
-            */
-        }
-
         private void button_AccountChange_Click(object sender, EventArgs e)
         {
             manageAccount();
@@ -1396,6 +1367,18 @@ namespace Twitter_Test
                 e.KeyCode == Keys.Space)
             {
                 shell();
+            }
+        }
+
+        private int reStreamingCount = 0;
+        private void timer_ReStreaming_Tick(object sender, EventArgs e)
+        {
+            this.reStreamingCount++;
+
+            if (1800 < reStreamingCount)
+            {
+                reStreaming();
+                this.reStreamingCount = 0;
             }
         }
     }

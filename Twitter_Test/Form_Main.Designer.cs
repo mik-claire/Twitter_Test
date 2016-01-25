@@ -59,6 +59,7 @@
             this.label_Status = new MyControls.Mik_Label();
             this.timer_ShowStatus = new System.Windows.Forms.Timer(this.components);
             this.pictureBox_UserIcon = new System.Windows.Forms.PictureBox();
+            this.timer_ReStreaming = new System.Windows.Forms.Timer(this.components);
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -121,7 +122,6 @@
             this.tabControl_Timeline.SelectedIndex = 0;
             this.tabControl_Timeline.Size = new System.Drawing.Size(586, 280);
             this.tabControl_Timeline.TabIndex = 3;
-            this.tabControl_Timeline.SelectedIndexChanged += new System.EventHandler(this.tabControl_Timeline_SelectedIndexChanged);
             // 
             // tabPage_Home
             // 
@@ -362,6 +362,11 @@
             this.pictureBox_UserIcon.TabIndex = 15;
             this.pictureBox_UserIcon.TabStop = false;
             // 
+            // timer_ReStreaming
+            // 
+            this.timer_ReStreaming.Interval = 1000;
+            this.timer_ReStreaming.Tick += new System.EventHandler(this.timer_ReStreaming_Tick);
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -436,6 +441,7 @@
         private MyControls.Mik_Label label_Status;
         private System.Windows.Forms.Timer timer_ShowStatus;
         private System.Windows.Forms.PictureBox pictureBox_UserIcon;
+        private System.Windows.Forms.Timer timer_ReStreaming;
     }
 }
 
