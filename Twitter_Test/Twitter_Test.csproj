@@ -178,6 +178,8 @@
 if $(ConfigurationName) == Release (
   "C:\Program Files (x86)\Microsoft\ILMerge\ILMerge.exe" /wildcards /out:%25fname_new%25 $(TargetFileName) *.dll /targetplatform:v4,"C:\Windows\Microsoft.NET\Framework\v4.0.30319"
   copy "C:\git\Twitter_Test\Twitter_Test\bin\Release\Twitter_Test_merge.exe" "C:\Users\Mikaze\Documents\ついったてすと\mik-Client.exe"
+  copy "C:\git\Twitter_Test\Twitter_Test\bin\Release\NLog.config" "C:\Users\Mikaze\Documents\ついったてすと\NLog.config"
+  copy "C:\Users\Mikaze\Documents\ついったてすと" "C:\Users\Mikaze\Documents\mik-Client"
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
