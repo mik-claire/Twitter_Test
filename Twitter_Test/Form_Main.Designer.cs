@@ -346,6 +346,7 @@
             this.label_Status.Size = new System.Drawing.Size(610, 20);
             this.label_Status.TabIndex = 14;
             this.label_Status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label_Status.Click += new System.EventHandler(this.label_Status_Click);
             // 
             // timer_ShowStatus
             // 

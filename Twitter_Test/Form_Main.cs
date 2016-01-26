@@ -287,8 +287,7 @@ namespace Twitter_Test
 
             if (lv.SelectedItems.Count == 0)
             {
-                this.webBrowser_Detail.DocumentText =
-@"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
+                setCleanDocumentText();
                 return;
             }
 
@@ -1401,10 +1400,14 @@ namespace Twitter_Test
                 lv.SelectedItems[0].Selected = false;
             }
 
-            this.webBrowser_Detail.DocumentText =
-@"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
+            setCleanDocumentText();
 
             this.textBox_Input.Focus();
+        }
+
+        private void label_Status_Click(object sender, EventArgs e)
+        {
+            clearSelectedIndex();
         }
     }
 }
