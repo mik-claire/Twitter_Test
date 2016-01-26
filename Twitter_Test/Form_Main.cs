@@ -602,7 +602,7 @@ namespace Twitter_Test
 
         private void reStreaming()
         {
-            logger.Warn("Streaming has disconnected!");
+            logger.Debug("Streaming has disconnected!");
 
             if (this.disposable != null)
             {
