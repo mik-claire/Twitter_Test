@@ -119,6 +119,11 @@ namespace Twitter_Test
 
             streaming(this.tokens);
 
+            setCleanDocumentText();
+        }
+
+        private void setCleanDocumentText()
+        {
             this.webBrowser_Detail.DocumentText =
 @"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
         }
@@ -1362,6 +1367,11 @@ namespace Twitter_Test
 
         private void Form_Main_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Escape)
+            {
+                clearSelectedIndex();
+            }
+
             // shell open
             if (Control.ModifierKeys == Keys.Control &&
                 e.KeyCode == Keys.Space)
@@ -1380,6 +1390,21 @@ namespace Twitter_Test
                 reStreaming();
                 this.reStreamingCount = 0;
             }
+        }
+
+        private void clearSelectedIndex()
+        {
+            ListView lv = getFocusedListView();
+
+            if (0 < lv.SelectedItems.Count)
+            {
+                lv.SelectedItems[0].Selected = false;
+            }
+
+            this.webBrowser_Detail.DocumentText =
+@"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
+
+            this.textBox_Input.Focus();
         }
     }
 }
