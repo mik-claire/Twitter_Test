@@ -394,8 +394,10 @@
             this.Name = "Form_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "mik_Twitter_Test";
+            this.Activated += new System.EventHandler(this.Form_Main_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_Main_FormClosing);
             this.Load += new System.EventHandler(this.Form_Main_Load);
+            this.SizeChanged += new System.EventHandler(this.Form_Main_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_Main_KeyDown);
             this.Controls.SetChildIndex(this.tabControl_Timeline, 0);
             this.Controls.SetChildIndex(this.textBox_Input, 0);

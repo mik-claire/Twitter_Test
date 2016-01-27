@@ -932,6 +932,27 @@ namespace Twitter_Test
                         return;
                     }
 
+                    if (command.Length == 12 &&
+                        command.Substring(0, 10) == "account -i")
+                    {
+                        int selectedIndex = 0;
+                        if (int.TryParse(command.Substring(11, 1), out selectedIndex))
+                        {
+                            if (Properties.Settings.Default.AccessTokenList.Count <= selectedIndex)
+                            {
+                                return;
+                            }
+
+                            if (Properties.Settings.Default.AccessTokenList[selectedIndex].Split(',')[0] == this.user.ScreenName)
+                            {
+                                return;
+                            }
+
+                            changeAccount(selectedIndex);
+                            return;
+                        }
+                    }
+
                     int num = 0;
                     string inputScreenName = command.Substring(8, command.Length - 8);
                     foreach(string row in Properties.Settings.Default.AccessTokenList)
@@ -939,6 +960,11 @@ namespace Twitter_Test
                         string screenName = row.Split(',')[0];
                         if (screenName == inputScreenName)
                         {
+                            if (screenName == this.user.ScreenName)
+                            {
+                                return;
+                            }
+
                             changeAccount(num);
                             return;
                         }
@@ -1438,6 +1464,19 @@ namespace Twitter_Test
         {
             this.WindowState = FormWindowState.Normal;
             this.Activate();
+        }
+
+        private void Form_Main_Activated(object sender, EventArgs e)
+        {
+            this.ShowInTaskbar = true;
+        }
+
+        private void Form_Main_SizeChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.ShowInTaskbar = false;
+            }
         }
     }
 }
