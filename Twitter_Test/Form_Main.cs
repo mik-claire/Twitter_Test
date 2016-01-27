@@ -604,7 +604,10 @@ namespace Twitter_Test
                     tweet.User.ScreenName,
                     tweet.Text);
                 changeStatus(message, NotificationStatus.GetReply);
-                showNortificationForm(NotificationStatus.GetReply, tweet);
+				if (tweet.User.Id != this.user.Id)
+				{
+					showNortificationForm(NotificationStatus.GetReply, tweet);
+				}
             }
         }
 
