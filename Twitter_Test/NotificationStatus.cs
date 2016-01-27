@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Twitter_Test
 {
-    enum NotificationStatus
+    public enum NotificationStatus
     {
         /// <summary>
         /// ツイートした

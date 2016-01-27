@@ -60,6 +60,7 @@
             this.timer_ShowStatus = new System.Windows.Forms.Timer(this.components);
             this.pictureBox_UserIcon = new System.Windows.Forms.PictureBox();
             this.timer_ReStreaming = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
@@ -368,6 +369,12 @@
             this.timer_ReStreaming.Interval = 1000;
             this.timer_ReStreaming.Tick += new System.EventHandler(this.timer_ReStreaming_Tick);
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Text = "mik-Client";
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -443,6 +450,7 @@
         private System.Windows.Forms.Timer timer_ShowStatus;
         private System.Windows.Forms.PictureBox pictureBox_UserIcon;
         private System.Windows.Forms.Timer timer_ReStreaming;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 

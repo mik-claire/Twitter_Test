@@ -52,6 +52,9 @@ namespace Twitter_Test
 
             logger.Info("=== Activated. ===");
 
+            this.ShowInTaskbar = false;
+            this.notifyIcon.Icon = System.Drawing.SystemIcons.Application;
+
             string apiKey = "9LQZDfaCSJR88d2HLkkXrBFz0";
             string apiKeySecret = "HzupFEw0SFaLA2U4NGIBW0BFXybVY3M7uTgS33x1nByiEmjnI7";
 
@@ -601,6 +604,7 @@ namespace Twitter_Test
                     tweet.User.ScreenName,
                     tweet.Text);
                 changeStatus(message, NotificationStatus.GetReply);
+                showNortificationForm(NotificationStatus.GetReply, tweet);
             }
         }
 
@@ -620,6 +624,8 @@ namespace Twitter_Test
 
         private void Form_Main_FormClosing(object sender, FormClosingEventArgs e)
         {
+            this.notifyIcon.Dispose();
+
             if (this.tokens == null)
             {
                 return;
@@ -1345,6 +1351,20 @@ namespace Twitter_Test
             }
         }
 
+        private void showNortificationForm(NotificationStatus notificationType, Status tweet)
+        {
+            switch(notificationType)
+            {
+                case NotificationStatus.GetReply:
+                    this.notifyIcon.BalloonTipTitle = notificationType.ToString();
+                    this.notifyIcon.BalloonTipText = tweet.Text;
+                    this.notifyIcon.ShowBalloonTip(5000);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private int timerCount = 0;
         private void timer_ShowStatus_Tick(object sender, EventArgs e)
         {
@@ -1408,6 +1428,12 @@ namespace Twitter_Test
         private void label_Status_Click(object sender, EventArgs e)
         {
             clearSelectedIndex();
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.Activate();
         }
     }
 }

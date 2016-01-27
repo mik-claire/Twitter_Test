@@ -90,6 +90,12 @@
     <Compile Include="Form_Main.Designer.cs">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_Notification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_Notification.Designer.cs">
+      <DependentUpon>Form_Notification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Talk.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Main.resx">
       <DependentUpon>Form_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_Notification.resx">
+      <DependentUpon>Form_Notification.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Talk.resx">
       <DependentUpon>Form_Talk.cs</DependentUpon>
