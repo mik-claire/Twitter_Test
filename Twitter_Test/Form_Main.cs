@@ -1356,8 +1356,9 @@ namespace Twitter_Test
             switch(notificationType)
             {
                 case NotificationStatus.GetReply:
-                    this.notifyIcon.BalloonTipTitle = notificationType.ToString();
-                    this.notifyIcon.BalloonTipText = tweet.Text;
+					string title = @"You got a reply from @{0}.";
+                    this.notifyIcon.BalloonTipTitle = string.Format(title, tweet.User.ScreenName);
+					this.notifyIcon.BalloonTipText = tweet.Text.Length < 40 ? tweet.Text : (tweet.Text.Substring(0, 40) + "...");
                     this.notifyIcon.ShowBalloonTip(5000);
                     break;
                 default:
