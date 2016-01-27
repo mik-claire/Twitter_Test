@@ -30,3 +30,5 @@ _UpgradeReport_Files/
 _ReSharper.*/
 ![Dd]ebug*/*.dll
 ![Rr]elease*/*.dll
+
+build.bat
