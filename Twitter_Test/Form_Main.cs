@@ -220,21 +220,25 @@ namespace Twitter_Test
             }
         }
 
-        private void changeItemColor(ListViewItem item, string status)
+        private void changeItemColor(ListViewItem item)
         {
-            switch(status)
+            Status tweet = (Status)item.Tag;
+
+            if (tweet.RetweetedStatus != null)
             {
-                case "retweet":
-                    item.BackColor = Color.FromArgb(28, 64, 28);
-                    break;
-                case "myTweet":
-                    item.BackColor = Color.FromArgb(64, 28, 28);
-                    break;
-                case "reply":
-                    item.BackColor = Color.FromArgb(28, 28, 64);
-                    break;
-                default:
-                    break;
+                item.BackColor = Color.FromArgb(28, 64, 28);
+            }
+            else if (tweet.User.Id == this.user.Id)
+            {
+                item.BackColor = Color.FromArgb(64, 28, 28);
+            }
+            else if (tweet.Text.Contains(string.Format("@{0}", this.user.ScreenName)))
+            {
+                item.BackColor = Color.FromArgb(28, 28, 64);
+            }
+            else
+            {
+                item.BackColor = Color.FromArgb(28, 28, 28);
             }
         }
 
@@ -262,20 +266,14 @@ namespace Twitter_Test
                     ListViewItem item = new ListViewItem(msg);
                     item.Tag = tweet;
 
-                    if (tweet.RetweetedStatus != null)
-                    {
-                        changeItemColor(item, "retweet");
-                    }
-                    else if (tweet.User.Id == this.user.Id)
-                    {
-                        changeItemColor(item, "myTweet");
-                    }
-                    else if (tweet.Text.Contains(string.Format("@{0}", this.user.ScreenName)))
-                    {
-                        changeItemColor(item, "reply");
-                    }
+                    changeItemColor(item);
 
                     lv.Items.Insert(0, item);
+
+                    if (this.markingUser == tweet.User.Id)
+                    {
+                        markUserInSpecifiedItem((long)tweet.User.Id, lv.Items[0]);
+                    }
                 }
             }
             catch(Exception ex)
@@ -1089,6 +1087,8 @@ namespace Twitter_Test
 
             show(this.tokens);
 
+            clearMarkUser();
+
             reStreaming();
         }
 
@@ -1170,6 +1170,25 @@ namespace Twitter_Test
                 }
             };
             cMenu.Items.Add(menuItem_UserInfo);
+
+            // UserMarking
+            ToolStripMenuItem menuItem_UserMarking = new ToolStripMenuItem();
+            menuItem_UserMarking.Text = "Marking";
+            menuItem_UserMarking.Click += delegate
+            {
+                try
+                {
+                    markUserInAllItem((long)tweet.User.Id);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            };
+            cMenu.Items.Add(menuItem_UserMarking);
 
             if (tweet.InReplyToStatusId != null)
             {
@@ -1281,6 +1300,47 @@ namespace Twitter_Test
             }
 
             cMenu.Show(Cursor.Position);
+        }
+
+        private long markingUser = 0;
+        private void markUserInSpecifiedItem(long userId, ListViewItem item)
+        {
+            item.BackColor = Color.FromArgb(92, 64, 28);
+        }
+
+        private void markUserInAllItem(long userId)
+        {
+            clearMarkUser();
+
+            ListView[] lvs = { this.listView_Home, this.listView_Mention, this.listView_Fav };
+            foreach(ListView lv in lvs)
+            {
+                foreach(ListViewItem item in lv.Items)
+                {
+                    if (((Status)item.Tag).User.Id != userId)
+                    {
+                        continue;
+                    }
+
+                    item.BackColor = Color.FromArgb(92, 64, 28);
+                }
+            }
+
+            this.markingUser = userId;
+        }
+
+        private void clearMarkUser()
+        {
+            ListView[] lvs = { this.listView_Home, this.listView_Mention, this.listView_Fav };
+            foreach (ListView lv in lvs)
+            {
+                foreach (ListViewItem item in lv.Items)
+                {
+                    changeItemColor(item);
+                }
+            }
+
+            this.markingUser = 0;
         }
 
         private Status getTweetFromId(Tokens tokens, string tweetId)
@@ -1419,6 +1479,7 @@ namespace Twitter_Test
             if (e.KeyCode == Keys.Escape)
             {
                 clearSelectedIndex();
+                clearMarkUser();
             }
 
             // shell open
