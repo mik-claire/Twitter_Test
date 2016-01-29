@@ -347,7 +347,7 @@
             this.label_Status.Size = new System.Drawing.Size(610, 20);
             this.label_Status.TabIndex = 14;
             this.label_Status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label_Status.Click += new System.EventHandler(this.label_Status_Click);
+            this.label_Status.MouseClick += new System.Windows.Forms.MouseEventHandler(this.label_Status_MouseClick);
             // 
             // timer_ShowStatus
             // 
@@ -373,6 +373,8 @@
             // 
             this.notifyIcon.Text = "mik-Client";
             this.notifyIcon.Visible = true;
+            this.notifyIcon.BalloonTipClicked += new System.EventHandler(this.notifyIcon_BalloonTipClicked);
+            this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
             // Form_Main

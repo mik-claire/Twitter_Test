@@ -1516,9 +1516,36 @@ namespace Twitter_Test
             this.textBox_Input.Focus();
         }
 
-        private void label_Status_Click(object sender, EventArgs e)
+        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
-            clearSelectedIndex();
+            // 右クリック判定
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
+
+            ContextMenuStrip cMenu = new ContextMenuStrip();
+
+            // Activate
+            ToolStripMenuItem menuItem_Activate = new ToolStripMenuItem();
+            menuItem_Activate.Text = "Activate";
+            menuItem_Activate.Click += delegate
+            {
+                this.WindowState = FormWindowState.Normal;
+                this.Activate();
+            };
+            cMenu.Items.Add(menuItem_Activate);
+
+            // Exit
+            ToolStripMenuItem menuItem_Exit = new ToolStripMenuItem();
+            menuItem_Exit.Text = "Exit";
+            menuItem_Exit.Click += delegate
+            {
+                this.Close();
+            };
+            cMenu.Items.Add(menuItem_Exit);
+
+            cMenu.Show(Cursor.Position);
         }
 
         private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -1537,6 +1564,23 @@ namespace Twitter_Test
             if (this.WindowState == FormWindowState.Minimized)
             {
                 this.ShowInTaskbar = false;
+            }
+        }
+
+        private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.Activate();
+        }
+
+        private void label_Status_MouseClick(object sender, MouseEventArgs e)
+        {
+            clearSelectedIndex();
+
+            // 右クリック判定
+            if (e.Button == MouseButtons.Right)
+            {
+                clearMarkUser();
             }
         }
     }
