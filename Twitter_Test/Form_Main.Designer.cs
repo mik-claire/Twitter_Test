@@ -85,7 +85,7 @@
             this.listView_Home.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Home.MultiSelect = false;
             this.listView_Home.Name = "listView_Home";
-            this.listView_Home.Size = new System.Drawing.Size(579, 252);
+            this.listView_Home.Size = new System.Drawing.Size(684, 252);
             this.listView_Home.TabIndex = 0;
             this.listView_Home.UseCompatibleStateImageBehavior = false;
             this.listView_Home.View = System.Windows.Forms.View.Details;
@@ -101,17 +101,17 @@
             // columnHeader_HomeUserId
             // 
             this.columnHeader_HomeUserId.Text = "UserId";
-            this.columnHeader_HomeUserId.Width = 80;
+            this.columnHeader_HomeUserId.Width = 95;
             // 
             // columnHeader_HomeUserName
             // 
             this.columnHeader_HomeUserName.Text = "UserName";
-            this.columnHeader_HomeUserName.Width = 100;
+            this.columnHeader_HomeUserName.Width = 115;
             // 
             // columnHeader_HomeText
             // 
             this.columnHeader_HomeText.Text = "Text";
-            this.columnHeader_HomeText.Width = 220;
+            this.columnHeader_HomeText.Width = 300;
             // 
             // tabControl_Timeline
             // 
@@ -121,7 +121,7 @@
             this.tabControl_Timeline.Location = new System.Drawing.Point(12, 94);
             this.tabControl_Timeline.Name = "tabControl_Timeline";
             this.tabControl_Timeline.SelectedIndex = 0;
-            this.tabControl_Timeline.Size = new System.Drawing.Size(586, 280);
+            this.tabControl_Timeline.Size = new System.Drawing.Size(692, 280);
             this.tabControl_Timeline.TabIndex = 3;
             // 
             // tabPage_Home
@@ -132,7 +132,7 @@
             this.tabPage_Home.Location = new System.Drawing.Point(4, 24);
             this.tabPage_Home.Name = "tabPage_Home";
             this.tabPage_Home.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Home.Size = new System.Drawing.Size(578, 252);
+            this.tabPage_Home.Size = new System.Drawing.Size(684, 252);
             this.tabPage_Home.TabIndex = 0;
             this.tabPage_Home.Text = "Home";
             // 
@@ -144,7 +144,7 @@
             this.tabPage_Mention.Location = new System.Drawing.Point(4, 24);
             this.tabPage_Mention.Name = "tabPage_Mention";
             this.tabPage_Mention.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Mention.Size = new System.Drawing.Size(578, 252);
+            this.tabPage_Mention.Size = new System.Drawing.Size(684, 252);
             this.tabPage_Mention.TabIndex = 1;
             this.tabPage_Mention.Text = "Mention";
             // 
@@ -165,7 +165,7 @@
             this.listView_Mention.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Mention.MultiSelect = false;
             this.listView_Mention.Name = "listView_Mention";
-            this.listView_Mention.Size = new System.Drawing.Size(580, 252);
+            this.listView_Mention.Size = new System.Drawing.Size(684, 252);
             this.listView_Mention.TabIndex = 1;
             this.listView_Mention.UseCompatibleStateImageBehavior = false;
             this.listView_Mention.View = System.Windows.Forms.View.Details;
@@ -181,17 +181,17 @@
             // columnHeader_MentionUserId
             // 
             this.columnHeader_MentionUserId.Text = "UserId";
-            this.columnHeader_MentionUserId.Width = 80;
+            this.columnHeader_MentionUserId.Width = 95;
             // 
             // columnHeader_MentionUserName
             // 
             this.columnHeader_MentionUserName.Text = "UserName";
-            this.columnHeader_MentionUserName.Width = 100;
+            this.columnHeader_MentionUserName.Width = 115;
             // 
             // columnHeader_MentionText
             // 
             this.columnHeader_MentionText.Text = "Text";
-            this.columnHeader_MentionText.Width = 220;
+            this.columnHeader_MentionText.Width = 300;
             // 
             // tabPage_Fav
             // 
@@ -201,7 +201,7 @@
             this.tabPage_Fav.Location = new System.Drawing.Point(4, 24);
             this.tabPage_Fav.Name = "tabPage_Fav";
             this.tabPage_Fav.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_Fav.Size = new System.Drawing.Size(578, 252);
+            this.tabPage_Fav.Size = new System.Drawing.Size(684, 252);
             this.tabPage_Fav.TabIndex = 2;
             this.tabPage_Fav.Text = "Fav";
             // 
@@ -222,7 +222,7 @@
             this.listView_Fav.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listView_Fav.MultiSelect = false;
             this.listView_Fav.Name = "listView_Fav";
-            this.listView_Fav.Size = new System.Drawing.Size(580, 252);
+            this.listView_Fav.Size = new System.Drawing.Size(684, 252);
             this.listView_Fav.TabIndex = 2;
             this.listView_Fav.UseCompatibleStateImageBehavior = false;
             this.listView_Fav.View = System.Windows.Forms.View.Details;
@@ -238,17 +238,17 @@
             // columnHeader_FavUserId
             // 
             this.columnHeader_FavUserId.Text = "UserId";
-            this.columnHeader_FavUserId.Width = 80;
+            this.columnHeader_FavUserId.Width = 95;
             // 
             // columnHeader_FavUserName
             // 
             this.columnHeader_FavUserName.Text = "UserName";
-            this.columnHeader_FavUserName.Width = 100;
+            this.columnHeader_FavUserName.Width = 115;
             // 
             // columnHeader_FavText
             // 
             this.columnHeader_FavText.Text = "Text";
-            this.columnHeader_FavText.Width = 220;
+            this.columnHeader_FavText.Width = 300;
             // 
             // textBox_Input
             // 
@@ -256,11 +256,11 @@
             this.textBox_Input.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBox_Input.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox_Input.ForeColor = System.Drawing.Color.AliceBlue;
-            this.textBox_Input.Location = new System.Drawing.Point(58, 24);
+            this.textBox_Input.Location = new System.Drawing.Point(63, 23);
             this.textBox_Input.Multiline = true;
             this.textBox_Input.Name = "textBox_Input";
             this.textBox_Input.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox_Input.Size = new System.Drawing.Size(477, 40);
+            this.textBox_Input.Size = new System.Drawing.Size(581, 40);
             this.textBox_Input.TabIndex = 0;
             this.textBox_Input.TextChanged += new System.EventHandler(this.textBox_Input_TextChanged);
             this.textBox_Input.DragDrop += new System.Windows.Forms.DragEventHandler(this.textBox_Input_DragDrop);
@@ -273,7 +273,7 @@
             this.webBrowser_Detail.Location = new System.Drawing.Point(12, 380);
             this.webBrowser_Detail.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser_Detail.Name = "webBrowser_Detail";
-            this.webBrowser_Detail.Size = new System.Drawing.Size(586, 93);
+            this.webBrowser_Detail.Size = new System.Drawing.Size(692, 93);
             this.webBrowser_Detail.TabIndex = 7;
             this.webBrowser_Detail.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser_Detail_Navigating);
             // 
@@ -291,7 +291,7 @@
             // 
             this.label_AppendFilesCount.AutoSize = true;
             this.label_AppendFilesCount.ForeColor = System.Drawing.Color.AliceBlue;
-            this.label_AppendFilesCount.Location = new System.Drawing.Point(546, 49);
+            this.label_AppendFilesCount.Location = new System.Drawing.Point(651, 49);
             this.label_AppendFilesCount.Name = "label_AppendFilesCount";
             this.label_AppendFilesCount.Size = new System.Drawing.Size(53, 15);
             this.label_AppendFilesCount.TabIndex = 9;
@@ -316,7 +316,7 @@
             this.button_Tweet.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_Tweet.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_Tweet.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_Tweet.Location = new System.Drawing.Point(545, 24);
+            this.button_Tweet.Location = new System.Drawing.Point(650, 24);
             this.button_Tweet.Name = "button_Tweet";
             this.button_Tweet.Size = new System.Drawing.Size(54, 20);
             this.button_Tweet.TabIndex = 1;
@@ -329,7 +329,7 @@
             this.button_AccountChange.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_AccountChange.Font = new System.Drawing.Font("Meiryo UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             this.button_AccountChange.ForeColor = System.Drawing.Color.AliceBlue;
-            this.button_AccountChange.Location = new System.Drawing.Point(384, 0);
+            this.button_AccountChange.Location = new System.Drawing.Point(487, 0);
             this.button_AccountChange.Name = "button_AccountChange";
             this.button_AccountChange.Size = new System.Drawing.Size(108, 20);
             this.button_AccountChange.TabIndex = 11;
@@ -344,7 +344,7 @@
             this.label_Status.ForeColor = System.Drawing.Color.AliceBlue;
             this.label_Status.Location = new System.Drawing.Point(0, 480);
             this.label_Status.Name = "label_Status";
-            this.label_Status.Size = new System.Drawing.Size(610, 20);
+            this.label_Status.Size = new System.Drawing.Size(716, 20);
             this.label_Status.TabIndex = 14;
             this.label_Status.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label_Status.MouseClick += new System.Windows.Forms.MouseEventHandler(this.label_Status_MouseClick);
@@ -381,7 +381,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(610, 500);
+            this.ClientSize = new System.Drawing.Size(716, 500);
             this.Controls.Add(this.pictureBox_UserIcon);
             this.Controls.Add(this.label_Status);
             this.Controls.Add(this.button_ResetReply);
