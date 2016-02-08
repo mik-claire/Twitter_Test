@@ -48,8 +48,9 @@
       <HintPath>..\..\MyLib\MyLib\bin\Release\MyLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
@@ -105,6 +106,8 @@
     <Compile Include="NotificationStatus.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Relationship.cs" />
+    <Compile Include="var_dump.cs" />
     <EmbeddedResource Include="Form_InputPinCode.resx">
       <DependentUpon>Form_InputPinCode.cs</DependentUpon>
     </EmbeddedResource>

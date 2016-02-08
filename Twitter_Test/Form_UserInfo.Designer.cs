@@ -41,6 +41,14 @@
             this.listView_Tweet = new System.Windows.Forms.ListView();
             this.columnHeader_Date = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_Text = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage_Following = new System.Windows.Forms.TabPage();
+            this.listView_Following = new System.Windows.Forms.ListView();
+            this.columnHeader_FollowingID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FollowingName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage_Followers = new System.Windows.Forms.TabPage();
+            this.listView_Followers = new System.Windows.Forms.ListView();
+            this.columnHeader_FollowersID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_FollowersName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label_MyRelation = new MyControls.Mik_Label();
             this.button_Follow = new MyControls.Mik_LabelButton();
             this.button_Block = new MyControls.Mik_LabelButton();
@@ -48,6 +56,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_UserIcon)).BeginInit();
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Tweet.SuspendLayout();
+            this.tabPage_Following.SuspendLayout();
+            this.tabPage_Followers.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox_UserIcon
@@ -132,6 +142,8 @@
             // tabControl_Timeline
             // 
             this.tabControl_Timeline.Controls.Add(this.tabPage_Tweet);
+            this.tabControl_Timeline.Controls.Add(this.tabPage_Following);
+            this.tabControl_Timeline.Controls.Add(this.tabPage_Followers);
             this.tabControl_Timeline.Location = new System.Drawing.Point(12, 199);
             this.tabControl_Timeline.Name = "tabControl_Timeline";
             this.tabControl_Timeline.SelectedIndex = 0;
@@ -191,6 +203,90 @@
             // 
             this.columnHeader_Text.Text = "Text";
             this.columnHeader_Text.Width = 200;
+            // 
+            // tabPage_Following
+            // 
+            this.tabPage_Following.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.tabPage_Following.Controls.Add(this.listView_Following);
+            this.tabPage_Following.ForeColor = System.Drawing.Color.AliceBlue;
+            this.tabPage_Following.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_Following.Name = "tabPage_Following";
+            this.tabPage_Following.Size = new System.Drawing.Size(379, 261);
+            this.tabPage_Following.TabIndex = 1;
+            this.tabPage_Following.Text = "Following";
+            // 
+            // listView_Following
+            // 
+            this.listView_Following.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.listView_Following.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listView_Following.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader_FollowingID,
+            this.columnHeader_FollowingName});
+            this.listView_Following.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_Following.ForeColor = System.Drawing.Color.AliceBlue;
+            this.listView_Following.FullRowSelect = true;
+            this.listView_Following.GridLines = true;
+            this.listView_Following.Location = new System.Drawing.Point(2, 2);
+            this.listView_Following.MultiSelect = false;
+            this.listView_Following.Name = "listView_Following";
+            this.listView_Following.Size = new System.Drawing.Size(375, 259);
+            this.listView_Following.TabIndex = 0;
+            this.listView_Following.UseCompatibleStateImageBehavior = false;
+            this.listView_Following.View = System.Windows.Forms.View.Details;
+            this.listView_Following.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Users_MouseClick);
+            // 
+            // columnHeader_FollowingID
+            // 
+            this.columnHeader_FollowingID.Text = "ID";
+            this.columnHeader_FollowingID.Width = 120;
+            // 
+            // columnHeader_FollowingName
+            // 
+            this.columnHeader_FollowingName.Text = "UserName";
+            this.columnHeader_FollowingName.Width = 235;
+            // 
+            // tabPage_Followers
+            // 
+            this.tabPage_Followers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.tabPage_Followers.Controls.Add(this.listView_Followers);
+            this.tabPage_Followers.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.tabPage_Followers.ForeColor = System.Drawing.Color.AliceBlue;
+            this.tabPage_Followers.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_Followers.Name = "tabPage_Followers";
+            this.tabPage_Followers.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_Followers.Size = new System.Drawing.Size(379, 261);
+            this.tabPage_Followers.TabIndex = 2;
+            this.tabPage_Followers.Text = "Followers";
+            // 
+            // listView_Followers
+            // 
+            this.listView_Followers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.listView_Followers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listView_Followers.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader_FollowersID,
+            this.columnHeader_FollowersName});
+            this.listView_Followers.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_Followers.ForeColor = System.Drawing.Color.AliceBlue;
+            this.listView_Followers.FullRowSelect = true;
+            this.listView_Followers.GridLines = true;
+            this.listView_Followers.Location = new System.Drawing.Point(2, 2);
+            this.listView_Followers.MultiSelect = false;
+            this.listView_Followers.Name = "listView_Followers";
+            this.listView_Followers.Size = new System.Drawing.Size(375, 259);
+            this.listView_Followers.TabIndex = 1;
+            this.listView_Followers.UseCompatibleStateImageBehavior = false;
+            this.listView_Followers.View = System.Windows.Forms.View.Details;
+            this.listView_Followers.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView_Users_MouseClick);
+            // 
+            // columnHeader_FollowersID
+            // 
+            this.columnHeader_FollowersID.Text = "ID";
+            this.columnHeader_FollowersID.Width = 120;
+            // 
+            // columnHeader_FollowersName
+            // 
+            this.columnHeader_FollowersName.Text = "UserName";
+            this.columnHeader_FollowersName.Width = 235;
             // 
             // label_MyRelation
             // 
@@ -277,6 +373,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_UserIcon)).EndInit();
             this.tabControl_Timeline.ResumeLayout(false);
             this.tabPage_Tweet.ResumeLayout(false);
+            this.tabPage_Following.ResumeLayout(false);
+            this.tabPage_Followers.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -300,5 +398,13 @@
         private MyControls.Mik_LabelButton button_Follow;
         private MyControls.Mik_LabelButton button_Block;
         private MyControls.Mik_Label label_UserRelation;
+        private System.Windows.Forms.TabPage tabPage_Following;
+        private System.Windows.Forms.ListView listView_Following;
+        private System.Windows.Forms.ColumnHeader columnHeader_FollowingID;
+        private System.Windows.Forms.ColumnHeader columnHeader_FollowingName;
+        private System.Windows.Forms.TabPage tabPage_Followers;
+        private System.Windows.Forms.ListView listView_Followers;
+        private System.Windows.Forms.ColumnHeader columnHeader_FollowersID;
+        private System.Windows.Forms.ColumnHeader columnHeader_FollowersName;
     }
 }

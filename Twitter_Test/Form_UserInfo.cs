@@ -12,8 +12,11 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using MyLib;
 using MyControls;
+using Newtonsoft.Json;
+
 
 using CoreTweet;
 using CoreTweet.Core;
@@ -40,9 +43,13 @@ namespace Twitter_Test
 
         private void Form_UserInfo_Load(object sender, EventArgs e)
         {
+            /*
+            var dumper = new var_dump();
+            string json = this.tokens.Friendships.Lookup(user_id => this.user.Id).Json;
+            MessageBox.Show(json);
+            */
             this.Title = "@" + this.user.ScreenName;
             this.Text = "@" + this.user.ScreenName;
-            setData(this.user);
 
             if (this.user.Equals(this.myData))
             {
@@ -55,6 +62,12 @@ namespace Twitter_Test
                 this.button_Block.Text = string.Empty;
                 this.button_Block.Enabled = false;
             }
+            else
+            {
+                setRelation(this.user, this.myData, this.tokens);
+            }
+
+            setData(this.user);
         }
 
         private void setData(User user)
@@ -66,8 +79,6 @@ namespace Twitter_Test
             this.label_Following.Text += string.Format("{0} ", user.FriendsCount);
             this.label_Follower.Text += string.Format("{0} ", user.FollowersCount);
 
-            setRelation(user, this.myData, this.tokens);
-
             this.pictureBox_UserIcon.ImageLocation = user.ProfileImageUrl;
             this.pictureBox_UserIcon.Refresh();
 
@@ -75,6 +86,8 @@ namespace Twitter_Test
 @"<body bgcolor=""#404040"" text=""#F0F8FF"" link=""#B0C4DE"" vlink=""#FFB6C1"">";
 
             showUserTimeline(this.listView_Tweet);
+            showFollowing(this.listView_Following);
+            showFollowers(this.listView_Followers);
         }
 
         private void setRelation(User user, User myData, Tokens tokens)
@@ -82,32 +95,26 @@ namespace Twitter_Test
             this.button_Follow.Text = " Follow ";
             string myRelation = " Following : {0} ";
             string following = "false";
+            string userRelation = " Followed : {0} ";
+            string followed = "false";
 
             try
             {
-                var myFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => this.myData.Id);
-                foreach (var id in myFriendIds)
-                {
-                    if (id == user.Id)
-                    {
-                        following = "true";
-                        this.button_Follow.Text = " UnFollow ";
-                        break;
-                    }
-                }
-                this.label_MyRelation.Text = string.Format(myRelation, following);
+                string json = this.tokens.Friendships.Lookup(user_id => this.user.Id).Json;
+                string cleanJson = new var_dump().GetCleanJson(json);
+                var relationship = JsonConvert.DeserializeObject<Relationship>(cleanJson);
 
-                string userRelation = " Followed : {0} ";
-                string followed = "false";
-                var userFriendIds = this.tokens.Friends.EnumerateIds(EnumerateMode.Next, user_id => user.Id);
-                foreach (var id in userFriendIds)
+                if (relationship.connections.Contains("following"))
                 {
-                    if (id == this.myData.Id)
-                    {
-                        followed = "true";
-                        break;
-                    }
+                    following = "true";
+                    this.button_Follow.Text = " UnFollow ";
                 }
+                if (relationship.connections.Contains("followed_by"))
+                {
+                    followed = "true";
+                }
+
+                this.label_MyRelation.Text = string.Format(myRelation, following);
                 this.label_UserRelation.Text = string.Format(userRelation, followed);
             }
             catch(Exception ex)
@@ -135,6 +142,56 @@ namespace Twitter_Test
             }
         }
 
+        private void showFollowing(ListView lv)
+        {
+            try
+            {
+                var following = this.tokens.Friends.EnumerateList(EnumerateMode.Next, user_id => this.user.Id, count => 200);
+
+                lv.Items.Clear();
+                foreach (var user in following)
+                {
+                    displayUser(lv, user);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+                return;
+            }
+        }
+
+        private void showFollowers(ListView lv)
+        {
+            try
+            {
+                var followers = this.tokens.Followers.EnumerateList(EnumerateMode.Next, user_id => this.user.Id, count => 200);
+
+                lv.Items.Clear();
+                foreach (var user in followers)
+                {
+                    displayUser(lv, user);
+                }
+            }
+            catch (Exception ex)
+            {
+                this.util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+                return;
+            }
+        }
+
+        private void displayUser(ListView lv, User user)
+        {
+            string[] row = new string[]
+            {
+                user.ScreenName,
+                user.Name
+            };
+            ListViewItem item = new ListViewItem(row);
+
+            lv.Items.Add(item);
+        }
+
         private ListedResponse<Status> getUserTweet(Tokens tokens, string screenName)
         {
             var param = new Dictionary<string, object>();
@@ -144,6 +201,12 @@ namespace Twitter_Test
             var timeline = tokens.Statuses.UserTimeline(param);
 
             return timeline;
+        }
+
+        private User getUserFromId(Tokens tokens, long id)
+        {
+            var user = this.tokens.Users.Show(user_id => id);
+            return user;
         }
 
         private void changeItemColor(ListViewItem item, string status)
@@ -348,6 +411,10 @@ namespace Twitter_Test
             {
                 case 0:
                     return this.listView_Tweet;
+                case 1:
+                    return this.listView_Following;
+                case 2:
+                    return this.listView_Followers;
                 default:
                     return this.listView_Tweet;
             }
@@ -733,6 +800,56 @@ namespace Twitter_Test
             {
                 setRelation(this.user, this.myData, this.tokens);
             }
+        }
+
+        private User getUserFromScreenName(string screenName)
+        {
+            User user = this.tokens.Users.Show(screen_name => screenName);
+            return user;
+        }
+
+        private void listView_Users_MouseClick(object sender, MouseEventArgs e)
+        {
+            ListView lv = getFocusedListView();
+
+            // 右クリック判定
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
+
+            // フォーカス判定
+            ListViewItem item = lv.FocusedItem;
+            if (!lv.FocusedItem.Bounds.Contains(e.Location))
+            {
+                return;
+            }
+
+            User user = getUserFromScreenName(item.SubItems[0].Text);
+
+            ContextMenuStrip cMenu = new ContextMenuStrip();
+
+            // UserInfo
+            ToolStripMenuItem menuItem_UserInfo = new ToolStripMenuItem();
+            menuItem_UserInfo.Text = "UserInfo";
+            menuItem_UserInfo.Click += delegate
+            {
+                try
+                {
+                    Form_UserInfo f = new Form_UserInfo(this.tokens, user, this.myData, this.parentForm);
+                    f.Show();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("存在しないユーザーです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            };
+            cMenu.Items.Add(menuItem_UserInfo);
+
+            cMenu.Show(Cursor.Position);
         }
     }
 }
