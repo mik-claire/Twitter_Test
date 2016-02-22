@@ -662,7 +662,9 @@ namespace Twitter_Test
                     tweet.User.ScreenName,
                     tweet.Text);
                 changeStatus(message, NotificationStatus.GetReply);
-				if (tweet.User.Id != this.user.Id)
+
+                if (this.enabledNotify &&
+                    tweet.User.Id != this.user.Id)
 				{
 					showNortificationForm(NotificationStatus.GetReply, tweet);
 				}
@@ -960,6 +962,24 @@ namespace Twitter_Test
                         logger.Debug("Streaming has disposed.");
                     }
                     Application.Restart();
+                    return;
+                }
+
+                if ((command.Length == 9 ||
+                    command.Length == 10) &&
+                    command.Substring(0, 6) == "notify")
+                {
+                    if (command.Substring(7) == "on")
+                    {
+                        this.enabledNotify = true;
+                        MessageBox.Show("notify: ON");
+                    }
+                    else if (command.Substring(7) == "off")
+                    {
+                        this.enabledNotify = false;
+                        MessageBox.Show("notify: OFF");
+                    }
+
                     return;
                 }
 
@@ -1500,6 +1520,7 @@ namespace Twitter_Test
             }
         }
 
+        private bool enabledNotify = true;
         private void showNortificationForm(NotificationStatus notificationType, Status tweet)
         {
             switch(notificationType)
