@@ -61,11 +61,17 @@
             this.pictureBox_UserIcon = new System.Windows.Forms.PictureBox();
             this.timer_ReStreaming = new System.Windows.Forms.Timer(this.components);
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.tabPage_DM = new System.Windows.Forms.TabPage();
+            this.listView_DM = new System.Windows.Forms.ListView();
+            this.columnHeader_ID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_Name = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader_Message = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl_Timeline.SuspendLayout();
             this.tabPage_Home.SuspendLayout();
             this.tabPage_Mention.SuspendLayout();
             this.tabPage_Fav.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_UserIcon)).BeginInit();
+            this.tabPage_DM.SuspendLayout();
             this.SuspendLayout();
             // 
             // listView_Home
@@ -117,6 +123,7 @@
             // 
             this.tabControl_Timeline.Controls.Add(this.tabPage_Home);
             this.tabControl_Timeline.Controls.Add(this.tabPage_Mention);
+            this.tabControl_Timeline.Controls.Add(this.tabPage_DM);
             this.tabControl_Timeline.Controls.Add(this.tabPage_Fav);
             this.tabControl_Timeline.Location = new System.Drawing.Point(12, 94);
             this.tabControl_Timeline.Name = "tabControl_Timeline";
@@ -166,7 +173,7 @@
             this.listView_Mention.MultiSelect = false;
             this.listView_Mention.Name = "listView_Mention";
             this.listView_Mention.Size = new System.Drawing.Size(684, 252);
-            this.listView_Mention.TabIndex = 1;
+            this.listView_Mention.TabIndex = 0;
             this.listView_Mention.UseCompatibleStateImageBehavior = false;
             this.listView_Mention.View = System.Windows.Forms.View.Details;
             this.listView_Mention.SelectedIndexChanged += new System.EventHandler(this.listView_Timeline_SelectedIndexChanged);
@@ -377,6 +384,55 @@
             this.notifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseClick);
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
+            // tabPage_DM
+            // 
+            this.tabPage_DM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.tabPage_DM.Controls.Add(this.listView_DM);
+            this.tabPage_DM.ForeColor = System.Drawing.Color.AliceBlue;
+            this.tabPage_DM.Location = new System.Drawing.Point(4, 24);
+            this.tabPage_DM.Name = "tabPage_DM";
+            this.tabPage_DM.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_DM.Size = new System.Drawing.Size(684, 252);
+            this.tabPage_DM.TabIndex = 3;
+            this.tabPage_DM.Text = "DM";
+            // 
+            // listView_DM
+            // 
+            this.listView_DM.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(28)))), ((int)(((byte)(28)))));
+            this.listView_DM.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listView_DM.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader_ID,
+            this.columnHeader_Name,
+            this.columnHeader_Message});
+            this.listView_DM.Font = new System.Drawing.Font("Meiryo UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.listView_DM.ForeColor = System.Drawing.Color.AliceBlue;
+            this.listView_DM.FullRowSelect = true;
+            this.listView_DM.GridLines = true;
+            this.listView_DM.Location = new System.Drawing.Point(0, 0);
+            this.listView_DM.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.listView_DM.MultiSelect = false;
+            this.listView_DM.Name = "listView_DM";
+            this.listView_DM.Size = new System.Drawing.Size(684, 252);
+            this.listView_DM.TabIndex = 0;
+            this.listView_DM.UseCompatibleStateImageBehavior = false;
+            this.listView_DM.View = System.Windows.Forms.View.Details;
+            this.listView_DM.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listView_DM_MouseDoubleClick);
+            // 
+            // columnHeader_ID
+            // 
+            this.columnHeader_ID.Text = "ID";
+            this.columnHeader_ID.Width = 150;
+            // 
+            // columnHeader_Name
+            // 
+            this.columnHeader_Name.Text = "UserName";
+            this.columnHeader_Name.Width = 200;
+            // 
+            // columnHeader_Message
+            // 
+            this.columnHeader_Message.Text = "Message";
+            this.columnHeader_Message.Width = 300;
+            // 
             // Form_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -416,6 +472,7 @@
             this.tabPage_Mention.ResumeLayout(false);
             this.tabPage_Fav.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_UserIcon)).EndInit();
+            this.tabPage_DM.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -455,6 +512,11 @@
         private System.Windows.Forms.PictureBox pictureBox_UserIcon;
         private System.Windows.Forms.Timer timer_ReStreaming;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.TabPage tabPage_DM;
+        private System.Windows.Forms.ListView listView_DM;
+        private System.Windows.Forms.ColumnHeader columnHeader_ID;
+        private System.Windows.Forms.ColumnHeader columnHeader_Name;
+        private System.Windows.Forms.ColumnHeader columnHeader_Message;
     }
 }
 

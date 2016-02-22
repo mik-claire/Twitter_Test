@@ -154,6 +154,9 @@ namespace Twitter_Test
                 showMentionTimeline(this.listView_Mention);
                 this.listView_Mention.Items[0].EnsureVisible();
 
+                showDirectMessage();
+                this.listView_DM.Items[0].EnsureVisible();
+
                 showFavTimeline(this.listView_Fav);
                 this.listView_Fav.Items[0].EnsureVisible();
             }
@@ -192,6 +195,25 @@ namespace Twitter_Test
                 for (int i = mention.Count - 1; i >= 0; i--)
                 {
                     displayTimeline(this.listView_Mention, mention[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+                return;
+            }
+        }
+
+        private void showDirectMessage()
+        {
+            try
+            {
+                var dm = tokens.DirectMessages.Received();
+                this.listView_DM.Items.Clear();
+
+                for (int i = dm.Count - 1; i >= 0; i--)
+                {
+                    displayDirectMessage(dm[i]);
                 }
             }
             catch (Exception ex)
@@ -242,14 +264,14 @@ namespace Twitter_Test
             }
         }
 
-        private delegate void delegateDispay(ListView lv, Status tweet);
+        private delegate void delegateDispayTL(ListView lv, Status tweet);
         private void displayTimeline(ListView lv, Status tweet)
         {
             try
             {
                 if (lv.InvokeRequired)
                 {
-                    delegateDispay d = new delegateDispay(displayTimeline);
+                    delegateDispayTL d = new delegateDispayTL(displayTimeline);
 
                     this.Invoke(d, new object[] { lv, tweet });
                 }
@@ -277,6 +299,37 @@ namespace Twitter_Test
                 }
             }
             catch(Exception ex)
+            {
+                util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
+            }
+        }
+
+        private delegate void delegatedisplayDM(DirectMessage dm);
+        private void displayDirectMessage(DirectMessage dm)
+        {
+            try
+            {
+                if (this.listView_DM.InvokeRequired)
+                {
+                    delegatedisplayDM d = new delegatedisplayDM(displayDirectMessage);
+
+                    this.Invoke(d, new object[] { this.listView_DM, dm });
+                }
+                else
+                {
+                    string[] msg = 
+                    {
+                        dm.Sender.ScreenName.ToString(),
+                        dm.Sender.Name,
+                        dm.Text
+                    };
+                    ListViewItem item = new ListViewItem(msg);
+                    item.Tag = dm;
+                    
+                    this.listView_DM.Items.Insert(0, item);
+                }
+            }
+            catch (Exception ex)
             {
                 util.ShowExceptionMessageBox(ex.Message, ex.StackTrace);
             }
@@ -580,13 +633,20 @@ namespace Twitter_Test
 
             var homeStream = tokens.Streaming.UserAsObservable().Publish();
             homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromSeconds(15)).Retry()).Repeat();
-            homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status), onError: exception => reStreaming());
+            var tl = homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status), onError: exception => reStreaming());
+
+            var dm = homeStream.OfType<DirectMessageMessage>().Subscribe(y => streamDM(y.DirectMessage));
 
             this.disposable = homeStream.Connect();
             logger.Info("Streaming is start!");
 
             this.timer_ReStreaming.Enabled = true;
             logger.Debug("Re-Streaming timer has started.");
+        }
+
+        private void streamDM(DirectMessage message)
+        {
+            displayDirectMessage(message);
         }
 
         private void streamTL(Status tweet)
@@ -1582,6 +1642,30 @@ namespace Twitter_Test
             {
                 clearMarkUser();
             }
+        }
+
+        private void listView_DM_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // 右クリック判定
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            // フォーカス判定
+            ListViewItem item = this.listView_DM.FocusedItem;
+            if (!listView_DM.FocusedItem.Bounds.Contains(e.Location))
+            {
+                return;
+            }
+
+            //getDM();
+        }
+
+        private void getDM()
+        {
+            var dm = this.tokens.DirectMessages.Show();
+            Console.WriteLine(dm.Text);
         }
     }
 }
