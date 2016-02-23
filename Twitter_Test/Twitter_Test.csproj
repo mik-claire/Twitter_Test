@@ -91,6 +91,12 @@
     <Compile Include="Form_Main.Designer.cs">
       <DependentUpon>Form_Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form_TalkDM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_TalkDM.Designer.cs">
+      <DependentUpon>Form_TalkDM.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_Talk.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -113,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Main.resx">
       <DependentUpon>Form_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form_TalkDM.resx">
+      <DependentUpon>Form_TalkDM.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form_Talk.resx">
       <DependentUpon>Form_Talk.cs</DependentUpon>

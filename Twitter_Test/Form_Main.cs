@@ -208,12 +208,16 @@ namespace Twitter_Test
         {
             try
             {
-                var dm = tokens.DirectMessages.Received();
+                var dmRecieved = tokens.DirectMessages.Received();
+
+                var query = dmRecieved.OrderByDescending(s => s.CreatedAt);
+                List<DirectMessage> sortedDm = query.ToList<DirectMessage>();
+
                 this.listView_DM.Items.Clear();
 
-                for (int i = dm.Count - 1; i >= 0; i--)
+                for (int i = sortedDm.Count - 1; i >= 0; i--)
                 {
-                    displayDirectMessage(dm[i]);
+                    displayDirectMessage(sortedDm[i]);
                 }
             }
             catch (Exception ex)
@@ -313,7 +317,7 @@ namespace Twitter_Test
                 {
                     delegatedisplayDM d = new delegatedisplayDM(displayDirectMessage);
 
-                    this.Invoke(d, new object[] { this.listView_DM, dm });
+                    this.Invoke(d, new object[] { dm });
                 }
                 else
                 {
@@ -484,7 +488,7 @@ namespace Twitter_Test
                     return this.listView_Home;
                 case 1:
                     return this.listView_Mention;
-                case 2:
+                case 3:
                     return this.listView_Fav;
                 default:
                     return this.listView_Home;
@@ -635,7 +639,7 @@ namespace Twitter_Test
             homeStream.Catch(homeStream.DelaySubscription(TimeSpan.FromSeconds(15)).Retry()).Repeat();
             var tl = homeStream.OfType<StatusMessage>().Subscribe(x => streamTL(x.Status), onError: exception => reStreaming());
 
-            var dm = homeStream.OfType<DirectMessageMessage>().Subscribe(y => streamDM(y.DirectMessage));
+            var dmRecieve = homeStream.OfType<DirectMessageMessage>().Subscribe(y => streamDM(y.DirectMessage));
 
             this.disposable = homeStream.Connect();
             logger.Info("Streaming is start!");
@@ -1665,9 +1669,71 @@ namespace Twitter_Test
             }
         }
 
-        private void listView_DM_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void listView_DM_MouseClick(object sender, MouseEventArgs e)
         {
             // 右クリック判定
+            if (e.Button != MouseButtons.Right)
+            {
+                return;
+            }
+
+            // フォーカス判定
+            ListViewItem item = this.listView_DM.FocusedItem;
+            DirectMessage dm = ((DirectMessage)item.Tag);
+
+            // 自分との会話は不要
+            if (dm.Sender.ScreenName == this.user.ScreenName)
+            {
+                return;
+            }
+
+            ContextMenuStrip cMenu = new ContextMenuStrip();
+
+            // Show Talk with this user
+            ToolStripMenuItem menuItem_Talk = new ToolStripMenuItem();
+            menuItem_Talk.Text = "Talk";
+            menuItem_Talk.Click += delegate
+            {
+                try
+                {
+                    List<DirectMessage> talk = getTalkDm(dm);
+
+                    Form_TalkDM f = new Form_TalkDM(this.tokens, talk, this);
+                    f.Show();
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("存在しないツイートです。",
+                        "Error!!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            };
+            cMenu.Items.Add(menuItem_Talk);
+
+            cMenu.Show(Cursor.Position);
+        }
+
+        private List<DirectMessage> getTalkDm(DirectMessage dm)
+        {
+            User talkingUser = dm.Sender;
+
+            var dmRecieved = tokens.DirectMessages.Received(count => 200).Where(x => x.Sender.ScreenName == talkingUser.ScreenName);
+            var dmSent = tokens.DirectMessages.Sent(count => 200).Where(x => x.Recipient.ScreenName == talkingUser.ScreenName);
+
+            List<DirectMessage> dmList = new List<DirectMessage>();
+            dmList.AddRange(dmRecieved);
+            dmList.AddRange(dmSent);
+
+            var query = dmList.OrderByDescending(s => s.CreatedAt);
+            List<DirectMessage> talk = query.ToList<DirectMessage>();
+
+            return talk;
+        }
+
+        private void listView_DM_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // 左クリック判定
             if (e.Button != MouseButtons.Left)
             {
                 return;
@@ -1675,18 +1741,28 @@ namespace Twitter_Test
 
             // フォーカス判定
             ListViewItem item = this.listView_DM.FocusedItem;
-            if (!listView_DM.FocusedItem.Bounds.Contains(e.Location))
+            DirectMessage dm = ((DirectMessage)item.Tag);
+
+            string inReplyTo = string.Format(
+@"{0}: 
+{1}",
+                dm.Sender.ScreenName,
+                dm.Text.Substring(0, dm.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1 == 0 ?
+                    dm.Text.Length : dm.Text.IndexOfAny(new char[] { '\0', '\n' }) + 1));
+            this.label_InReplyTo.Text = inReplyTo;
+            this.toolTip.Active = false;
+
+            if (70 < inReplyTo.Length)
             {
-                return;
+                this.label_InReplyTo.Text = inReplyTo.Substring(0, 70) + "...";
+                this.toolTip.SetToolTip(this.label_InReplyTo, inReplyTo);
+                this.toolTip.Active = true;
             }
+            this.textBox_Input.Text =
+                this.textBox_Input.Text.Insert(0, string.Format("D {0} ", dm.Sender.ScreenName));
+            this.button_ResetReply.Visible = true;
 
-            //getDM();
-        }
-
-        private void getDM()
-        {
-            var dm = this.tokens.DirectMessages.Show();
-            Console.WriteLine(dm.Text);
+            this.textBox_Input.Focus();
         }
     }
 }
