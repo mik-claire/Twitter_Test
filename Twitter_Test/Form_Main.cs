@@ -208,7 +208,7 @@ namespace Twitter_Test
         {
             try
             {
-                var dmRecieved = tokens.DirectMessages.Received();
+                var dmRecieved = tokens.DirectMessages.Received(count => 200);
 
                 var query = dmRecieved.OrderByDescending(s => s.CreatedAt);
                 List<DirectMessage> sortedDm = query.ToList<DirectMessage>();
