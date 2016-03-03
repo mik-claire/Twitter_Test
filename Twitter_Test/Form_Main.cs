@@ -940,6 +940,147 @@ namespace Twitter_Test
             return 0;
         }
 
+        private void shell2()
+        {
+            logger.Debug("Shell open.");
+            using (Form_Shell shell = new Form_Shell())
+            {
+                shell.ShowDialog();
+                string command = shell.Command;
+                logger.Debug("Command: {0}", command);
+
+                switch(command)
+                {
+                    case "exit":
+                        this.Close();
+                        return;
+                    case "restart":
+                        logger.Debug("Restarting...");
+                        if (this.disposable != null)
+                        {
+                            this.disposable.Dispose();
+                            logger.Debug("Streaming has disposed.");
+                        }
+                        Application.Restart();
+                        return;
+                    case "reset all data":
+                        Properties.Settings.Default.LastLoginUser = 0;
+                        Properties.Settings.Default.AccessTokenList = null;
+                        Properties.Settings.Default.Save();
+                        logger.Debug("Account data has saved.");
+
+                        logger.Debug("Restarting...");
+                        Application.Restart();
+                        return;
+                    case "account":
+                    case "ac":
+                        manageAccount();
+                        return;
+                    case "info":
+                        Form_UserInfo f = new Form_UserInfo(this.tokens, this.user, this.user, this);
+                        f.Show();
+                        return;
+                    default:
+                        break;
+                }
+                
+                string[] commandArray = command.Split(' ');
+                switch(commandArray[0])
+                {
+                    case "notify":
+                        switch (commandArray[1])
+                        {
+                            case "on":
+                                this.enabledNotify = true;
+                                MessageBox.Show("notify: ON");
+                                break;
+                            case "off":
+                                this.enabledNotify = false;
+                                MessageBox.Show("notify: OFF");
+                                break;
+                            default:
+                                break;
+                        }
+                        break;  // ?
+                    case "account":
+                    case "ac":
+                        switch(commandArray[1])
+                        {
+                            case "add":
+                                addAccount();
+                                break;
+                            case "-i":
+                                int selectedIndex = 0;
+                                if (int.TryParse(commandArray[2], out selectedIndex))
+                                {
+                                    if (Properties.Settings.Default.AccessTokenList.Count <= selectedIndex)
+                                    {
+                                        break;
+                                    }
+
+                                    if (Properties.Settings.Default.AccessTokenList[selectedIndex].Split(',')[0] == this.user.ScreenName)
+                                    {
+                                        break;
+                                    }
+
+                                    changeAccount(selectedIndex);
+                                }
+                                break;
+                            default:
+                                int num = 0;
+                                string inputScreenName = commandArray[2];
+                                foreach (string row in Properties.Settings.Default.AccessTokenList)
+                                {
+                                    string screenName = row.Split(',')[0];
+                                    if (screenName == inputScreenName)
+                                    {
+                                        if (screenName == this.user.ScreenName)
+                                        {
+                                            break;
+                                        }
+
+                                        changeAccount(num);
+                                        break;
+                                    }
+                                    num++;
+                                }
+                                string message = string.Format("Account @{0} has not been added.", inputScreenName);
+                                MessageBox.Show(message,
+                                    "Information.",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                                break;
+                        }
+                        break;  // ?
+                    case "info":
+                        if (command == "info")
+                        {
+                            Form_UserInfo f = new Form_UserInfo(this.tokens, this.user, this.user, this);
+                            f.Show();
+                            break;
+                        }
+
+                        string inputScreenName2 = command.Substring(5, command.Length - 5);
+                        User inputUser = getUserFromScreenName(this.tokens, inputScreenName2);
+                        if (inputUser != null)
+                        {
+                            Form_UserInfo f = new Form_UserInfo(this.tokens, inputUser, this.user, this);
+                            f.Show();
+                            break;
+                        }
+
+                        string message2 = string.Format("Account @{0} is not exist.", inputScreenName2);
+                        MessageBox.Show(message2,
+                            "Information.",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         private void shell()
         {
             logger.Debug("Shell open.");
@@ -1571,7 +1712,7 @@ namespace Twitter_Test
             if (Control.ModifierKeys == Keys.Control &&
                 e.KeyCode == Keys.Space)
             {
-                shell();
+                shell2();
             }
         }
 
