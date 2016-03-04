@@ -940,7 +940,7 @@ namespace Twitter_Test
             return 0;
         }
 
-        private void shell2()
+        private void shell()
         {
             logger.Debug("Shell open.");
             using (Form_Shell shell = new Form_Shell())
@@ -1077,154 +1077,6 @@ namespace Twitter_Test
                         break;
                     default:
                         break;
-                }
-            }
-        }
-
-        private void shell()
-        {
-            logger.Debug("Shell open.");
-            using (Form_Shell shell = new Form_Shell())
-            {
-                shell.ShowDialog();
-                string command = shell.Command;
-                logger.Debug("Command: {0}", command);
-
-                if (command.Length == 4 &&
-                    command == "exit")
-                {
-                    this.Close();
-                    return;
-                }
-
-                if (command.Length == 7 &&
-                    command == "restart")
-                {
-                    logger.Debug("Restarting...");
-                    if (this.disposable != null)
-                    {
-                        this.disposable.Dispose();
-                        logger.Debug("Streaming has disposed.");
-                    }
-                    Application.Restart();
-                    return;
-                }
-
-                if ((command.Length == 9 ||
-                    command.Length == 10) &&
-                    command.Substring(0, 6) == "notify")
-                {
-                    if (command.Substring(7) == "on")
-                    {
-                        this.enabledNotify = true;
-                        MessageBox.Show("notify: ON");
-                    }
-                    else if (command.Substring(7) == "off")
-                    {
-                        this.enabledNotify = false;
-                        MessageBox.Show("notify: OFF");
-                    }
-
-                    return;
-                }
-
-                if (command.Length == 14 &&
-                    command == "reset all data")
-                {
-                    Properties.Settings.Default.LastLoginUser = 0;
-                    Properties.Settings.Default.AccessTokenList = null;
-                    Properties.Settings.Default.Save();
-                    logger.Debug("Account data has saved.");
-
-                    logger.Debug("Restarting...");
-                    Application.Restart();
-                }
-
-                if (command.Length >= 7 &&
-                    command.Substring(0, 7) == "account")
-                {
-                    if (command == "account")
-                    {
-                        manageAccount();
-                        return;
-                    }
-
-                    if (command == "account add")
-                    {
-                        addAccount();
-                        return;
-                    }
-
-                    if (command.Length == 12 &&
-                        command.Substring(0, 10) == "account -i")
-                    {
-                        int selectedIndex = 0;
-                        if (int.TryParse(command.Substring(11, 1), out selectedIndex))
-                        {
-                            if (Properties.Settings.Default.AccessTokenList.Count <= selectedIndex)
-                            {
-                                return;
-                            }
-
-                            if (Properties.Settings.Default.AccessTokenList[selectedIndex].Split(',')[0] == this.user.ScreenName)
-                            {
-                                return;
-                            }
-
-                            changeAccount(selectedIndex);
-                            return;
-                        }
-                    }
-
-                    int num = 0;
-                    string inputScreenName = command.Substring(8, command.Length - 8);
-                    foreach(string row in Properties.Settings.Default.AccessTokenList)
-                    {
-                        string screenName = row.Split(',')[0];
-                        if (screenName == inputScreenName)
-                        {
-                            if (screenName == this.user.ScreenName)
-                            {
-                                return;
-                            }
-
-                            changeAccount(num);
-                            return;
-                        }
-                        num++;
-                    }
-
-                    string message = string.Format("Account @{0} has not been added.", inputScreenName);
-                    MessageBox.Show(message,
-                        "Information.",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
-
-                if (command.Length >= 4 &&
-                    command.Substring(0, 4) == "info")
-                {
-                    if (command == "info")
-                    {
-                        Form_UserInfo f = new Form_UserInfo(this.tokens, this.user, this.user, this);
-                        f.Show();
-                        return;
-                    }
-
-                    string inputScreenName = command.Substring(5, command.Length - 5);
-                    User inputUser = getUserFromScreenName(this.tokens, inputScreenName);
-                    if (inputUser != null)
-                    {
-                        Form_UserInfo f = new Form_UserInfo(this.tokens, inputUser, this.user, this);
-                        f.Show();
-                        return;
-                    }
-
-                    string message = string.Format("Account @{0} is not exist.", inputScreenName);
-                    MessageBox.Show(message,
-                        "Information.",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
                 }
             }
         }
@@ -1712,7 +1564,7 @@ namespace Twitter_Test
             if (Control.ModifierKeys == Keys.Control &&
                 e.KeyCode == Keys.Space)
             {
-                shell2();
+                shell();
             }
         }
 
