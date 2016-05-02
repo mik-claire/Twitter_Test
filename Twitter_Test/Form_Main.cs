@@ -152,13 +152,10 @@ namespace Twitter_Test
                 this.listView_Home.Items[0].EnsureVisible();
 
                 showMentionTimeline(this.listView_Mention);
-                this.listView_Mention.Items[0].EnsureVisible();
 
                 showDirectMessage();
-                this.listView_DM.Items[0].EnsureVisible();
 
                 showFavTimeline(this.listView_Fav);
-                this.listView_Fav.Items[0].EnsureVisible();
             }
             catch(Exception ex)
             {
@@ -196,6 +193,11 @@ namespace Twitter_Test
                 {
                     displayTimeline(this.listView_Mention, mention[i]);
                 }
+
+                if (0 < mention.Count)
+                {
+                    this.listView_Mention.Items[0].EnsureVisible();
+                }
             }
             catch (Exception ex)
             {
@@ -219,6 +221,11 @@ namespace Twitter_Test
                 {
                     displayDirectMessage(sortedDm[i]);
                 }
+
+                if (0 < sortedDm.Count)
+                {
+                    this.listView_DM.Items[0].EnsureVisible();
+                }
             }
             catch (Exception ex)
             {
@@ -237,6 +244,11 @@ namespace Twitter_Test
                 for (int i = fav.Count - 1; i >= 0; i--)
                 {
                     displayTimeline(this.listView_Fav, fav[i]);
+                }
+
+                if (0 < fav.Count)
+                {
+                    this.listView_Fav.Items[0].EnsureVisible();
                 }
             }
             catch (Exception ex)
