@@ -1040,7 +1040,7 @@ namespace Twitter_Test
                                 break;
                             default:
                                 int num = 0;
-                                string inputScreenName = commandArray[2];
+                                string inputScreenName = commandArray[1];
                                 foreach (string row in Properties.Settings.Default.AccessTokenList)
                                 {
                                     string screenName = row.Split(',')[0];
